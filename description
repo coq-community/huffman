@@ -1,7 +1,7 @@
 Name: Huffman algorithm
 Title: A correctness proof of Huffman algorithm
-Author: Laurent Thery
-Institution: INRIA
+Author: Laurent Théry
+Institution: INRIA Sophia-Antipolis
 Date: October 2003
 Description:
 This directory contains the proof of correctness of Huffman algorithm
