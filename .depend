@@ -1,0 +1,78 @@
+Aux.vo: Aux.v ./sTactic.vo
+Aux.vi: Aux.v ./sTactic.vo
+BTree.vo: BTree.v ./Code.vo ./ISort.vo ./Weight.vo ./UniqueKey.vo
+BTree.vi: BTree.v ./Code.vo ./ISort.vo ./Weight.vo ./UniqueKey.vo
+Build.vo: Build.v ./OneStep.vo ./HeightPred.vo ./CoverMin.vo ./OrderedCover.vo ./SubstPred.vo
+Build.vi: Build.v ./OneStep.vo ./HeightPred.vo ./CoverMin.vo ./OrderedCover.vo ./SubstPred.vo
+Code.vo: Code.v ./Aux.vo ./Permutation.vo ./UniqueKey.vo ./Frequency.vo
+Code.vi: Code.v ./Aux.vo ./Permutation.vo ./UniqueKey.vo ./Frequency.vo
+Cover.vo: Cover.v ./BTree.vo ./Permutation.vo
+Cover.vi: Cover.v ./BTree.vo ./Permutation.vo
+CoverMin.vo: CoverMin.v ./Cover.vo ./WeightTree.vo
+CoverMin.vi: CoverMin.v ./Cover.vo ./WeightTree.vo
+Extraction.vo: Extraction.v ./Huffman.vo
+Extraction.vi: Extraction.v ./Huffman.vo
+Frequency.vo: Frequency.v ./Aux.vo ./UniqueKey.vo ./Permutation.vo
+Frequency.vi: Frequency.v ./Aux.vo ./UniqueKey.vo ./Permutation.vo
+HeightPred.vo: HeightPred.v ./OrderedCover.vo ./WeightTree.vo ./Ordered.vo ./Prod2List.vo
+HeightPred.vi: HeightPred.v ./OrderedCover.vo ./WeightTree.vo ./Ordered.vo ./Prod2List.vo
+Huffman.vo: Huffman.v ./Code.vo ./BTree.vo ./Build.vo ./PBTree2BTree.vo ./Restrict.vo
+Huffman.vi: Huffman.v ./Code.vo ./BTree.vo ./Build.vo ./PBTree2BTree.vo ./Restrict.vo
+ISort.vo: ISort.v ./Permutation.vo ./Ordered.vo ./sTactic.vo
+ISort.vi: ISort.v ./Permutation.vo ./Ordered.vo ./sTactic.vo
+OneStep.vo: OneStep.v ./WeightTree.vo ./Ordered.vo ./SameSumLeaves.vo
+OneStep.vi: OneStep.v ./WeightTree.vo ./Ordered.vo ./SameSumLeaves.vo
+Ordered.vo: Ordered.v ./Permutation.vo ./Aux.vo
+Ordered.vi: Ordered.v ./Permutation.vo ./Aux.vo
+OrderedCover.vo: OrderedCover.v ./Cover.vo
+OrderedCover.vi: OrderedCover.v ./Cover.vo
+PBTree.vo: PBTree.v ./Aux.vo ./Code.vo ./Build.vo ./ISort.vo ./Permutation.vo ./UniqueKey.vo ./sTactic.vo
+PBTree.vi: PBTree.v ./Aux.vo ./Code.vo ./Build.vo ./ISort.vo ./Permutation.vo ./UniqueKey.vo ./sTactic.vo
+PBTree2BTree.vo: PBTree2BTree.v ./Aux.vo ./Code.vo ./Build.vo ./ISort.vo ./Permutation.vo ./UniqueKey.vo ./PBTree.vo ./BTree.vo
+PBTree2BTree.vi: PBTree2BTree.v ./Aux.vo ./Code.vo ./Build.vo ./ISort.vo ./Permutation.vo ./UniqueKey.vo ./PBTree.vo ./BTree.vo
+Permutation.vo: Permutation.v ./Aux.vo
+Permutation.vi: Permutation.v ./Aux.vo
+Prod2List.vo: Prod2List.v ./WeightTree.vo ./Ordered.vo
+Prod2List.vi: Prod2List.v ./WeightTree.vo ./Ordered.vo
+Restrict.vo: Restrict.v ./Code.vo ./Frequency.vo ./ISort.vo ./Permutation.vo ./UniqueKey.vo ./PBTree2BTree.vo
+Restrict.vi: Restrict.v ./Code.vo ./Frequency.vo ./ISort.vo ./Permutation.vo ./UniqueKey.vo ./PBTree2BTree.vo
+SameSumLeaves.vo: SameSumLeaves.v ./Cover.vo ./WeightTree.vo
+SameSumLeaves.vi: SameSumLeaves.v ./Cover.vo ./WeightTree.vo
+SubstPred.vo: SubstPred.v ./HeightPred.vo
+SubstPred.vi: SubstPred.v ./HeightPred.vo
+UList.vo: UList.v ./Permutation.vo ./sTactic.vo
+UList.vi: UList.v ./Permutation.vo ./sTactic.vo
+UniqueKey.vo: UniqueKey.v ./Aux.vo ./Permutation.vo ./UList.vo ./sTactic.vo
+UniqueKey.vi: UniqueKey.v ./Aux.vo ./Permutation.vo ./UList.vo ./sTactic.vo
+Weight.vo: Weight.v ./Code.vo ./Frequency.vo ./ISort.vo ./Permutation.vo ./UniqueKey.vo
+Weight.vi: Weight.v ./Code.vo ./Frequency.vo ./ISort.vo ./Permutation.vo ./UniqueKey.vo
+WeightTree.vo: WeightTree.v ./BTree.vo
+WeightTree.vi: WeightTree.v ./BTree.vo
+sTactic.vo: sTactic.v
+sTactic.vi: sTactic.v
+Aux.html: Aux.v ./sTactic.html
+BTree.html: BTree.v ./Code.html ./ISort.html ./Weight.html ./UniqueKey.html
+Build.html: Build.v ./OneStep.html ./HeightPred.html ./CoverMin.html ./OrderedCover.html ./SubstPred.html
+Code.html: Code.v ./Aux.html ./Permutation.html ./UniqueKey.html ./Frequency.html
+Cover.html: Cover.v ./BTree.html ./Permutation.html
+CoverMin.html: CoverMin.v ./Cover.html ./WeightTree.html
+Extraction.html: Extraction.v ./Huffman.html
+Frequency.html: Frequency.v ./Aux.html ./UniqueKey.html ./Permutation.html
+HeightPred.html: HeightPred.v ./OrderedCover.html ./WeightTree.html ./Ordered.html ./Prod2List.html
+Huffman.html: Huffman.v ./Code.html ./BTree.html ./Build.html ./PBTree2BTree.html ./Restrict.html
+ISort.html: ISort.v ./Permutation.html ./Ordered.html ./sTactic.html
+OneStep.html: OneStep.v ./WeightTree.html ./Ordered.html ./SameSumLeaves.html
+Ordered.html: Ordered.v ./Permutation.html ./Aux.html
+OrderedCover.html: OrderedCover.v ./Cover.html
+PBTree.html: PBTree.v ./Aux.html ./Code.html ./Build.html ./ISort.html ./Permutation.html ./UniqueKey.html ./sTactic.html
+PBTree2BTree.html: PBTree2BTree.v ./Aux.html ./Code.html ./Build.html ./ISort.html ./Permutation.html ./UniqueKey.html ./PBTree.html ./BTree.html
+Permutation.html: Permutation.v ./Aux.html
+Prod2List.html: Prod2List.v ./WeightTree.html ./Ordered.html
+Restrict.html: Restrict.v ./Code.html ./Frequency.html ./ISort.html ./Permutation.html ./UniqueKey.html ./PBTree2BTree.html
+SameSumLeaves.html: SameSumLeaves.v ./Cover.html ./WeightTree.html
+SubstPred.html: SubstPred.v ./HeightPred.html
+UList.html: UList.v ./Permutation.html ./sTactic.html
+UniqueKey.html: UniqueKey.v ./Aux.html ./Permutation.html ./UList.html ./sTactic.html
+Weight.html: Weight.v ./Code.html ./Frequency.html ./ISort.html ./Permutation.html ./UniqueKey.html
+WeightTree.html: WeightTree.v ./BTree.html
+sTactic.html: sTactic.v

@@ -1,0 +1,14 @@
+Name: Huffman algorithm
+Title: A correctness proof of Huffman algorithm
+Author: Laurent Thery
+Institution: INRIA
+Date: October 2003
+Description:
+This directory contains the proof of correctness of Huffman algorithm
+as described in:
+
+David A. Huffman,
+   "A Method for the Construction of Minimum-Redundancy Codes,"
+    Proc. IRE, pp. 1098-1101, September 1952.
+Keywords: Data Compression, Code, Huffman Tree
+Require:

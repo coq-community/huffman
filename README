@@ -1,0 +1,40 @@
+This directory contains the proof of correctness of Huffman algorithm
+as described in:
+
+David A. Huffman,
+   "A Method for the Construction of Minimum-Redundancy Codes,"
+    Proc. IRE, pp. 1098-1101, September 1952.
+
+A version is available on the Web at:
+
+   http://compression.graphicon.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf
+
+To build the directory, type
+ 
+    make all
+
+
+To run the algorithm do
+
+    ocaml
+
+    #use "run_huffman.ml";;
+
+To get the code gives the frequency string
+
+    let code = huffman "abbcccddddeeeee";;
+
+To code a string
+
+    let c = encode code "abcde";;
+
+To decode a string
+
+    decode code c;;
+
+
+Some information of the development is available at:
+
+ftp://ftp-sop.inria.fr/lemme/Laurent.Thery/Huffman/index.html
+
+ Laurent Thery thery@sophia.inria.fr
