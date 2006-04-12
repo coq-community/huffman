@@ -86,7 +86,6 @@ Section EqBool.
 Definition eq_bool_dec : forall a b : bool, {a = b} + {a <> b}.
 intros a b; case a; case b; simpl in |- *; auto.
 right; red in |- *; intros; discriminate.
-right; red in |- *; intros; discriminate.
 Defined.
  
 End EqBool.
