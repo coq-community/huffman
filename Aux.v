@@ -212,7 +212,7 @@ intros P H l;
  auto.
 apply wf_inverse_image with (R := lt); auto.
 apply lt_wf.
-Qed.
+Defined.
  
 Theorem in_ex_app :
  forall (a : A) (l : list A),

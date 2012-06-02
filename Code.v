@@ -476,10 +476,12 @@ Qed.
 (* 
   The value of an empty list cannot be found in a non empty code
    *)
- 
+
+Opaque list_eq_dec.
+
 Theorem not_null_find_val :
  forall c : code, not_null c -> find_val nil c = None.
-intros c; elim c; simpl in |- *; auto.
+intros c; elim c; simpl; auto.
 intros a; case a.
 intros a1 l; case (list_eq_dec eq_bool_dec nil l); auto.
 intros e l0 H H0; case (H0 a1); rewrite e; simpl in |- *; auto.
