@@ -1,4 +1,5 @@
 -R . Huffman
+
 Aux.v
 Cover.v
 HeightPred.v
@@ -30,5 +31,5 @@ SameSumLeaves.v
 WeightTree.v
 
 Extraction.v
--custom "cat ex1.ml huffman.ml ex2.ml > run_huffman.ml" "ex1.ml ex2.ml Extraction.vo" run_huffman.ml
 
+-extra run_huffman.ml "ex1.ml ex2.ml Extraction.vo" "cat ex1.ml huffman.ml ex2.ml > run_huffman.ml"
