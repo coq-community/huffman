@@ -27,7 +27,7 @@
 Require Import Huffman.
 Require Import Code.
 Require Import ISort.
-Require Extraction.
+From Coq Require Extraction.
  
 Extraction Inline list_length_induction.
 Extraction
