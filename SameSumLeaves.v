@@ -53,4 +53,4 @@ apply f_equal with (f := length (A:=nat)); auto.
 Qed.
  
 End SameSumLeaves.
-Implicit Arguments same_sum_leaves [A].
+Arguments same_sum_leaves [A].

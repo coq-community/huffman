@@ -134,7 +134,7 @@ Qed.
  
 End ordered.
 Hint Constructors ordered.
-Implicit Arguments ordered [A].
+Arguments ordered [A].
 (* 
    Ordered list are preserved by maps
    *)

@@ -296,4 +296,4 @@ apply build_correct; auto.
 Defined.
  
 End Build.
-Implicit Arguments build [A].
+Arguments build [A].

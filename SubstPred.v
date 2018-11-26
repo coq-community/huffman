@@ -124,5 +124,5 @@ exists (node t4 t5); rewrite <- (first_n_skip_n_app _ (length l1) l0); auto.
 Qed.
  
 End SubstPred.
-Implicit Arguments subst_pred [A].
+Arguments subst_pred [A].
 Hint Resolve subst_pred_id.

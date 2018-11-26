@@ -383,5 +383,5 @@ apply cover_app; auto.
 Qed.
  
 End Cover.
-Implicit Arguments cover [A].
+Arguments cover [A].
 Hint Constructors cover.

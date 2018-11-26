@@ -1271,19 +1271,19 @@ End PBTree.
 (* 
    Implicits
    *)
-Implicit Arguments pbleaf [A].
-Implicit Arguments pbleft [A].
-Implicit Arguments pbright [A].
-Implicit Arguments pbnode [A].
-Implicit Arguments inpb [A].
-Implicit Arguments pbfree [A].
-Implicit Arguments compute_pbcode [A].
-Implicit Arguments pbadd [A].
-Implicit Arguments pbbuild [A].
-Implicit Arguments all_pbleaves [A].
-Implicit Arguments distinct_pbleaves [A].
-Implicit Arguments compute_pbcode [A].
-Implicit Arguments inpb_dec [A].
+Arguments pbleaf [A].
+Arguments pbleft [A].
+Arguments pbright [A].
+Arguments pbnode [A].
+Arguments inpb [A].
+Arguments pbfree [A].
+Arguments compute_pbcode [A].
+Arguments pbadd [A].
+Arguments pbbuild [A].
+Arguments all_pbleaves [A].
+Arguments distinct_pbleaves [A].
+Arguments compute_pbcode [A].
+Arguments inpb_dec [A].
 (* 
    Hints
    *)

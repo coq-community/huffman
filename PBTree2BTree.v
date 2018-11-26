@@ -169,4 +169,4 @@ intros l; Contradict H1; apply to_btree_inpb;
 Qed.
  
 End PBTREE2BTREE.
-Implicit Arguments to_btree [A].
+Arguments to_btree [A].

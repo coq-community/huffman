@@ -208,5 +208,5 @@ intros m c; apply restrict_code_encode_length_inc; auto with datatypes.
 Qed.
  
 End Weight.
-Implicit Arguments weight [A].
-Implicit Arguments restrict_code [A].
+Arguments weight [A].
+Arguments restrict_code [A].

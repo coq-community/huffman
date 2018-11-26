@@ -500,5 +500,5 @@ apply btree_unique_prefix2; auto.
 Qed.
  
 End HeightPred.
-Implicit Arguments height_pred [A].
+Arguments height_pred [A].
 Hint Resolve height_pred_nil height_pred_node.

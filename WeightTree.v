@@ -81,11 +81,11 @@ End WeightTree.
    Implicits
  *)
 
-Implicit Arguments sum_leaves [A].
-Implicit Arguments sum_order [A].
-Implicit Arguments le_sum [A].
-Implicit Arguments weight_tree [A].
-Implicit Arguments weight_tree_list [A].
+Arguments sum_leaves [A].
+Arguments sum_order [A].
+Arguments le_sum [A].
+Arguments weight_tree [A].
+Arguments weight_tree_list [A].
 
 
 (* 

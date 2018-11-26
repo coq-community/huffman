@@ -148,7 +148,7 @@ Qed.
 
 End UniqueKey.
 Hint Constructors unique_key.
-Implicit Arguments unique_key [A B].
+Arguments unique_key [A B].
  
 (* 
   Uniqueness is compatible with map for injective functions
