@@ -1,5 +1,7 @@
 Makefile.coq
 Makefile.coq.conf
+huffman.ml
+huffman.mli
 *~
 *.d
 *.aux
