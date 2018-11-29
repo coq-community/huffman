@@ -402,7 +402,7 @@ rewrite H; auto.
 Qed.
  
 End map2.
-Implicit Arguments map2 [A B C].
+Arguments map2 [A B C].
 (* 
   Definitions of the first and skip function 
    *)
@@ -506,8 +506,8 @@ intros a l0; apply f_equal2 with (f := cons (A:=A)); auto.
 Qed.
  
 End First.
-Implicit Arguments first_n [A].
-Implicit Arguments skip_n [A].
+Arguments first_n [A].
+Arguments skip_n [A].
 (* Existence of a first max 
    *)
  
@@ -637,5 +637,5 @@ intros c [H1| H1]; rewrite H1 || case H1; auto.
 Qed.
  
 End FindMin.
-Implicit Arguments find_min [A].
-Implicit Arguments find_max [A].
+Arguments find_min [A].
+Arguments find_max [A].

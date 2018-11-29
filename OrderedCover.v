@@ -128,5 +128,5 @@ injection H6; auto.
 Qed.
  
 End OrderedCover.
-Implicit Arguments ordered_cover [A].
+Arguments ordered_cover [A].
 Hint Resolve ordered_cover_one ordered_cover_node.

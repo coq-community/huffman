@@ -425,10 +425,10 @@ Hint Resolve permutation_app_swap.
 (* 
    Implicits
    *)
-Implicit Arguments permutation [A].
-Implicit Arguments split_one [A].
-Implicit Arguments all_permutations [A].
-Implicit Arguments permutation_dec [A].
+Arguments permutation [A].
+Arguments split_one [A].
+Arguments all_permutations [A].
+Arguments permutation_dec [A].
 (* 
    Permutation is compatible with map
    *)

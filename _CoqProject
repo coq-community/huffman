@@ -6,22 +6,18 @@ HeightPred.v
 Ordered.v
 SubstPred.v
 sTactic.v
-
 OrderedCover.v
 UList.v
-
 BTree.v
 CoverMin.v
 ISort.v
 PBTree.v
 UniqueKey.v
-
 Huffman.v
 Restrict.v
 Build.v
 PBTree2BTree.v
 Weight.v
-
 Code.v
 Frequency.v
 OneStep.v
@@ -29,7 +25,4 @@ Permutation.v
 Prod2List.v
 SameSumLeaves.v
 WeightTree.v
-
 Extraction.v
-
--extra run_huffman.ml "ex1.ml ex2.ml Extraction.vo" "cat ex1.ml huffman.ml ex2.ml > run_huffman.ml"

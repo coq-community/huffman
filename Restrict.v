@@ -180,4 +180,4 @@ apply restrict_unique_prefix; auto.
 Qed.
  
 End Restrict.
-Implicit Arguments restrict_code [A].
+Arguments restrict_code [A].

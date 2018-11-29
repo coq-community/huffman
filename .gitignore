@@ -1,3 +1,10 @@
+Makefile.coq
+Makefile.coq.conf
 huffman.ml
-run_huffman.ml
 huffman.mli
+run_huffman.ml
+*~
+*.d
+*.aux
+*.glob
+*.vo

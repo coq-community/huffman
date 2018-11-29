@@ -677,16 +677,16 @@ intros l2 Hl2; apply in_alphabet_cons with l2; auto.
 Qed.
  
 End Code.
-Implicit Arguments encode [A].
+Arguments encode [A].
 (* 
   Implicits
    *)
-Implicit Arguments decode [A].
-Implicit Arguments find_code [A].
-Implicit Arguments find_val [A].
-Implicit Arguments in_alphabet [A].
-Implicit Arguments unique_prefix [A].
-Implicit Arguments not_null [A].
+Arguments decode [A].
+Arguments find_code [A].
+Arguments find_val [A].
+Arguments in_alphabet [A].
+Arguments unique_prefix [A].
+Arguments not_null [A].
 Hint Constructors is_prefix.
 (* 
   Hints

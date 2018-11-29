@@ -297,4 +297,4 @@ repeat rewrite plus_assoc_reverse; auto with arith.
 Qed.
  
 End Prod2List.
-Implicit Arguments prod2list [A].
+Arguments prod2list [A].

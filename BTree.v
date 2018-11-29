@@ -438,13 +438,13 @@ intros t H1; split; try exact (btree_unique_prefix1 t);
 Qed.
  
 End Tree.
-Implicit Arguments leaf [A].
-Implicit Arguments node [A].
-Implicit Arguments inb [A].
-Implicit Arguments all_leaves [A].
-Implicit Arguments distinct_leaves [A].
-Implicit Arguments compute_code [A].
-Implicit Arguments number_of_nodes [A].
+Arguments leaf [A].
+Arguments node [A].
+Arguments inb [A].
+Arguments all_leaves [A].
+Arguments distinct_leaves [A].
+Arguments compute_code [A].
+Arguments number_of_nodes [A].
 Hint Constructors inb.
 Hint Resolve distinct_leaves_leaf.
 Hint Resolve length_compute_lt_O.

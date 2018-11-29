@@ -137,4 +137,4 @@ apply ordered_map_inv; auto.
 Qed.
  
 End OneStep.
-Implicit Arguments one_step [A].
+Arguments one_step [A].

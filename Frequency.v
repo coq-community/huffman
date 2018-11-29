@@ -351,9 +351,9 @@ Qed.
  
  
 End Frequency.
-Implicit Arguments id_list [A].
-Implicit Arguments add_frequency_list [A].
-Implicit Arguments frequency_list [A].
-Implicit Arguments number_of_occurrences [A].
+Arguments id_list [A].
+Arguments add_frequency_list [A].
+Arguments frequency_list [A].
+Arguments number_of_occurrences [A].
 Hint Resolve in_frequency_map.
 Hint Resolve frequency_list_unique.

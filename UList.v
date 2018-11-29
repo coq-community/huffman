@@ -115,5 +115,5 @@ inversion H3; auto.
 Qed.
  
 End UniqueList.
-Implicit Arguments ulist [A].
+Arguments ulist [A].
 Hint Constructors ulist.

@@ -119,5 +119,5 @@ Hint Resolve isort_ordered isort_permutation.
  
 End ISortExample.
 
-Implicit Arguments insert [A].
-Implicit Arguments isort [A].
+Arguments insert [A].
+Arguments isort [A].
