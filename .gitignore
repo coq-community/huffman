@@ -2,6 +2,7 @@ Makefile.coq
 Makefile.coq.conf
 huffman.ml
 huffman.mli
+run_huffman.ml
 *~
 *.d
 *.aux

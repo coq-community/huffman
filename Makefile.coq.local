@@ -1,0 +1,7 @@
+post-all:: run_huffman.ml
+
+clean::
+	$(HIDE)rm -f huffman.ml huffman.mli run_hoffman.ml
+
+run_huffman.ml: ex1.ml ex2.ml Extraction.vo
+	cat ex1.ml huffman.ml ex2.ml > run_huffman.ml
