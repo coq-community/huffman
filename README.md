@@ -28,7 +28,7 @@ Proc. IRE, pp. 1098-1101, September 1952.
 ## Meta
 
 - Author(s):
-  - Laurent Théry
+  - Laurent Théry (initial)
 - Coq-community maintainer(s):
   - Karl Palmskog ([**@palmskog**](https://github.com/palmskog))
 - License: [GNU Lesser General Public License v2.1](LICENSE)
@@ -79,11 +79,9 @@ To decode a string:
 decode code c;;
 ```
 
-Some information on the development is available at:
+Some information on the development is available on the [web][website].
+In particular, a [note][note] in PDF describes the formalization.
 
-ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html
-
-In particular, the following note describes the formalization:
-
-ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/Note.pdf
+[website]: ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html
+[note]: ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/Note.pdf
 

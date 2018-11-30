@@ -12,6 +12,7 @@ description: |
 
 authors:
 - name: Laurent Théry
+  initial: true
 
 maintainers:
 - name: Karl Palmskog
@@ -69,11 +70,9 @@ documentation: |
   decode code c;;
   ```
 
-  Some information on the development is available at:
+  Some information on the development is available on the [web][website].
+  In particular, a [note][note] in PDF describes the formalization.
 
-  ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html
-
-  In particular, the following note describes the formalization:
-
-  ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/Note.pdf
+  [website]: ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html
+  [note]: ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/Note.pdf
 ---
