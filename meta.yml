@@ -70,9 +70,9 @@ documentation: |
   decode code c;;
   ```
 
-  Some information on the development is available on the [web][website].
-  In particular, a [note][note] in PDF describes the formalization.
-
-  [website]: ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html
-  [note]: ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/Note.pdf
+  Some information on the development is available as a
+  [website](ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html).
+  In particular, a
+  [note](ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/Note.pdf) in PDF
+  format describes the formalization.
 ---
