@@ -79,9 +79,9 @@ To decode a string:
 decode code c;;
 ```
 
-Some information on the development is available as a
-[website](ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html).
-In particular, a
-[note](ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/Note.pdf) in PDF
-format describes the formalization.
+Some more information on the development is available:
+ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html
+
+In particular, a note in PDF format describes the formalization:
+ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/Note.pdf
 
