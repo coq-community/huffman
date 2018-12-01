@@ -23,15 +23,15 @@
                                                                      
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
-Require Export Aux.
-Require Export Code.
-Require Export Build.
-Require Export ISort.
+From Huffman Require Export Aux.
+From Huffman Require Export Code.
+From Huffman Require Export Build.
+From Huffman Require Export ISort.
 Require Export Compare_dec.
-Require Export Permutation.
-Require Export UniqueKey.
-Require Export PBTree.
-Require Export BTree.
+From Huffman Require Export Permutation.
+From Huffman Require Export UniqueKey.
+From Huffman Require Export PBTree.
+From Huffman Require Export BTree.
  
 Section PBTREE2BTREE.
 Variable A : Set.

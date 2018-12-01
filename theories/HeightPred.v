@@ -23,11 +23,11 @@
     Definition: height_pred                                          
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
-Require Export OrderedCover.
-Require Export WeightTree.
+From Huffman Require Export OrderedCover.
+From Huffman Require Export WeightTree.
 Require Import ArithRing.
-Require Export Ordered.
-Require Export Prod2List.
+From Huffman Require Export Ordered.
+From Huffman Require Export Prod2List.
  
 Section HeightPred.
 Variable A : Set.

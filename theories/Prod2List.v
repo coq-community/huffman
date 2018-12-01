@@ -24,9 +24,9 @@
                                                                      
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
-Require Export WeightTree.
+From Huffman Require Export WeightTree.
 Require Import ArithRing.
-Require Export Ordered.
+From Huffman Require Export Ordered.
  
 Section Prod2List.
 Variable A : Set.

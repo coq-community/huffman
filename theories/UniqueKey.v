@@ -22,10 +22,10 @@
 (*                                    Laurent.Thery@inria.fr (2003)    *)
 (***********************************************************************)
 
-Require Export Aux.
-Require Export Permutation.
-Require Export UList.
-Require Export sTactic.
+From Huffman Require Export Aux.
+From Huffman Require Export Permutation.
+From Huffman Require Export UList.
+From Huffman Require Export sTactic.
  
 Section UniqueKey.
 Variables (A : Set) (B : Set).

@@ -25,10 +25,10 @@
                                                                      
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
-Require Export Aux.
-Require Export Permutation.
-Require Export UniqueKey.
-Require Export Frequency.
+From Huffman Require Export Aux.
+From Huffman Require Export Permutation.
+From Huffman Require Export UniqueKey.
+From Huffman Require Export Frequency.
  
 Section Code.
 (* 

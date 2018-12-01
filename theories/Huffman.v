@@ -22,11 +22,11 @@
     Definition: huffman                                              
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
-Require Import Code.
-Require Import BTree.
-Require Import Build.
-Require Import PBTree2BTree.
-Require Import Restrict.
+From Huffman Require Import Code.
+From Huffman Require Import BTree.
+From Huffman Require Import Build.
+From Huffman Require Import PBTree2BTree.
+From Huffman Require Import Restrict.
  
 Section Huffman.
 Variable A : Set.

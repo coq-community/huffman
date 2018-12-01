@@ -21,8 +21,8 @@
 (*                                    Laurent.Thery@inria.fr (2003)    *)
 (***********************************************************************)
 
-Require Export BTree.
-Require Export Ordered.
+From Huffman Require Export BTree.
+From Huffman Require Export Ordered.
 Require Import ArithRing.
  
 Section WeightTree.

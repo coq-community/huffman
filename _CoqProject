@@ -1,4 +1,4 @@
--R theories Huffman
+-Q theories Huffman
 
 theories/Aux.v
 theories/Cover.v

@@ -28,7 +28,7 @@
   **********************************************************************)
 Require Export List.
 Require Export Arith.
-Require Export sTactic.
+From Huffman Require Export sTactic.
 Require Import Inverse_Image.
 Require Import Wf_nat.
 (* 

@@ -25,9 +25,9 @@
 (***********************************************************************)
 
 Require Import List.
-Require Import Permutation.
-Require Import Ordered.
-Require Import sTactic.
+From Huffman Require Import Permutation.
+From Huffman Require Import Ordered.
+From Huffman Require Import sTactic.
  
 Section ISortExample.
 Variable A : Set.

@@ -23,7 +23,7 @@
                                                                      
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
-Require Import HeightPred.
+From Huffman Require Import HeightPred.
  
 Section SubstPred.
 Variable A : Set.

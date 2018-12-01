@@ -24,11 +24,11 @@
 (*                                    Laurent.Thery@inria.fr (2003)    *)
 (***********************************************************************)
 
-Require Export OneStep.
-Require Export HeightPred.
-Require Export CoverMin.
-Require Export OrderedCover.
-Require Export SubstPred.
+From Huffman Require Export OneStep.
+From Huffman Require Export HeightPred.
+From Huffman Require Export CoverMin.
+From Huffman Require Export OrderedCover.
+From Huffman Require Export SubstPred.
 Require Import ArithRing.
  
 Section Build.

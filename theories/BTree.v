@@ -25,11 +25,11 @@
                                                                      
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
-Require Export Code.
-Require Export ISort.
+From Huffman Require Export Code.
+From Huffman Require Export ISort.
 Require Export Compare_dec.
-Require Export Weight.
-Require Export UniqueKey.
+From Huffman Require Export Weight.
+From Huffman Require Export UniqueKey.
 Require Import ArithRing.
  
 Section Tree.
