@@ -8,3 +8,4 @@ run_huffman.ml
 *.aux
 *.glob
 *.vo
+*.vio
