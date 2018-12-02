@@ -24,10 +24,10 @@
 (*                                    Laurent.Thery@inria.fr (2003)    *)
 (***********************************************************************)
 
-Require Import Aux.
+From Huffman Require Import Aux.
 Require Import List.
-Require Import UniqueKey.
-Require Import Permutation.
+From Huffman Require Import UniqueKey.
+From Huffman Require Import Permutation.
  
 Section Frequency.
 Variable A : Set.

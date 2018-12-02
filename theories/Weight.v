@@ -20,11 +20,11 @@
                                                                      
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
-Require Export Code.
-Require Export Frequency.
-Require Export ISort.
-Require Export Permutation.
-Require Export UniqueKey.
+From Huffman Require Export Code.
+From Huffman Require Export Frequency.
+From Huffman Require Export ISort.
+From Huffman Require Export Permutation.
+From Huffman Require Export UniqueKey.
  
 Section Weight.
 Variable A : Set.

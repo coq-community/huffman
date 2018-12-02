@@ -26,14 +26,14 @@
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
 Require Import List.
-Require Import Aux.
-Require Import Code.
-Require Import Build.
-Require Import ISort.
+From Huffman Require Import Aux.
+From Huffman Require Import Code.
+From Huffman Require Import Build.
+From Huffman Require Import ISort.
 Require Import Compare_dec.
-Require Import Permutation.
-Require Import UniqueKey.
-Require Import sTactic.
+From Huffman Require Import Permutation.
+From Huffman Require Import UniqueKey.
+From Huffman Require Import sTactic.
  
 Section PBTree.
 Variable A : Set.

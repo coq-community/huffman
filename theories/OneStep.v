@@ -21,9 +21,9 @@
     smallest tree) and its properties                                
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
-Require Export WeightTree.
-Require Export Ordered.
-Require Export SameSumLeaves.
+From Huffman Require Export WeightTree.
+From Huffman Require Export Ordered.
+From Huffman Require Export SameSumLeaves.
  
 Section OneStep.
 Variable A : Set.

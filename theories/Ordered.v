@@ -23,8 +23,8 @@
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
 Require Export List.
-Require Export Permutation.
-Require Export Aux.
+From Huffman Require Export Permutation.
+From Huffman Require Export Aux.
  
 Section ordered.
 Variable A : Set.

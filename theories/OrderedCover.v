@@ -23,7 +23,7 @@
                                                                      
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
-Require Export Cover.
+From Huffman Require Export Cover.
  
 Section OrderedCover.
 Variable A : Set.

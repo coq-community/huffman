@@ -22,8 +22,8 @@
     Defintion: cover_min                                             
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
-Require Export Cover.
-Require Export WeightTree.
+From Huffman Require Export Cover.
+From Huffman Require Export WeightTree.
  
 Section CoverMin.
 Variable A : Set.

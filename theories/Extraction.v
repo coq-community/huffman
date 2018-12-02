@@ -24,9 +24,9 @@
                                                                      
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
-Require Import Huffman.
-Require Import Code.
-Require Import ISort.
+From Huffman Require Import Huffman.
+From Huffman Require Import Code.
+From Huffman Require Import ISort.
 From Coq Require Extraction.
  
 Extraction Inline list_length_induction.

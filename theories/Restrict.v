@@ -23,12 +23,12 @@
     Definition: restrict_code                                        
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
-Require Export Code.
-Require Export Frequency.
-Require Export ISort.
-Require Export Permutation.
-Require Export UniqueKey.
-Require Export PBTree2BTree.
+From Huffman Require Export Code.
+From Huffman Require Export Frequency.
+From Huffman Require Export ISort.
+From Huffman Require Export Permutation.
+From Huffman Require Export UniqueKey.
+From Huffman Require Export PBTree2BTree.
  
 Section Restrict.
 Variable A : Set.

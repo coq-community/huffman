@@ -22,8 +22,8 @@
     Definitions: cover                                               
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
-Require Export BTree.
-Require Export Permutation.
+From Huffman Require Export BTree.
+From Huffman Require Export Permutation.
 Require Import ArithRing.
  
 Section Cover.
