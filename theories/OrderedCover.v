@@ -39,7 +39,7 @@ Inductive ordered_cover : list (btree A) -> btree A -> Prop :=
       forall (t1 t2 : btree A) (l1 l2 l3 : list (btree A)),
       ordered_cover l1 t1 ->
       ordered_cover l2 t2 -> ordered_cover (l1 ++ l2) (node t1 t2).
-Hint Resolve ordered_cover_one ordered_cover_node.
+Hint Resolve ordered_cover_one ordered_cover_node : core.
 (* 
   Ordered covers are special cases of covers
    *)
@@ -129,4 +129,4 @@ Qed.
  
 End OrderedCover.
 Arguments ordered_cover [A].
-Hint Resolve ordered_cover_one ordered_cover_node.
+Hint Resolve ordered_cover_one ordered_cover_node : core.

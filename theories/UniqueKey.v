@@ -39,7 +39,7 @@ Inductive unique_key : list (A * B) -> Prop :=
       forall (a : A) (b : B) l,
       (forall b : B, ~ In (a, b) l) ->
       unique_key l -> unique_key ((a, b) :: l).
-Hint Constructors unique_key.
+Hint Constructors unique_key : core.
  
 (* 
   Inversion theorem 
@@ -147,7 +147,7 @@ Qed.
  
 
 End UniqueKey.
-Hint Constructors unique_key.
+Hint Constructors unique_key : core.
 Arguments unique_key [A B].
  
 (* 
@@ -172,4 +172,4 @@ apply H4.
 intros b2; red in |- *; intros H7.
 case (H5 b2); auto.
 Qed.
-Hint Resolve unique_key_app unique_key_map.
+Hint Resolve unique_key_app unique_key_map : core.

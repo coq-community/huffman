@@ -51,7 +51,7 @@ Inductive inb : btree -> btree -> Prop :=
   | inleaf : forall t : btree, inb t t
   | innodeL : forall t t1 t2 : btree, inb t t1 -> inb t (node t1 t2)
   | innodeR : forall t t1 t2 : btree, inb t t2 -> inb t (node t1 t2).
-Hint Constructors inb.
+Hint Constructors inb : core.
 (* 
   inb is transitive
    *)
@@ -190,7 +190,7 @@ Theorem distinct_leaves_leaf : forall a : A, distinct_leaves (leaf a).
 intros a; red in |- *.
 intros a0 t1 t2 H; inversion H.
 Qed.
-Hint Resolve distinct_leaves_leaf.
+Hint Resolve distinct_leaves_leaf : core.
 (* 
    An inversion theorem for node 
    *)
@@ -283,7 +283,7 @@ apply plus_lt_compat.
 generalize H; elim (compute_code b); simpl in |- *; auto with arith.
 generalize H0; elim (compute_code b0); simpl in |- *; auto with arith.
 Qed.
-Hint Resolve length_compute_lt_O.
+Hint Resolve length_compute_lt_O : core.
 (* 
    If the computed code has a key it was a leaf of the tree
    *)
@@ -445,6 +445,6 @@ Arguments all_leaves [A].
 Arguments distinct_leaves [A].
 Arguments compute_code [A].
 Arguments number_of_nodes [A].
-Hint Constructors inb.
-Hint Resolve distinct_leaves_leaf.
-Hint Resolve length_compute_lt_O.
+Hint Constructors inb : core.
+Hint Resolve distinct_leaves_leaf : core.
+Hint Resolve length_compute_lt_O : core.
