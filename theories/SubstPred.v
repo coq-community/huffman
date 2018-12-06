@@ -42,7 +42,7 @@ list (btree A) -> list (btree A) -> btree A -> btree A -> Prop :=
       subst_pred l1 l2 t1 t2 ->
       subst_pred l3 l4 t3 t4 ->
       subst_pred (l1 ++ l3) (l2 ++ l4) (node t1 t3) (node t2 t4).
-Hint Resolve subst_pred_id subst_pred_node.
+Hint Resolve subst_pred_id subst_pred_node : core.
 (* 
     The first cover of the substitution is an ordered cover
    *)
@@ -125,4 +125,4 @@ Qed.
  
 End SubstPred.
 Arguments subst_pred [A].
-Hint Resolve subst_pred_id.
+Hint Resolve subst_pred_id : core.

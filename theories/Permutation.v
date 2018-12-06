@@ -42,7 +42,7 @@ Inductive permutation : list A -> list A -> Prop :=
   | permutation_trans :
       forall l1 l2 l3 : list A,
       permutation l1 l2 -> permutation l2 l3 -> permutation l1 l3.
-Hint Constructors permutation.
+Hint Constructors permutation : core.
 (* 
    Reflexivity
    *)
@@ -53,7 +53,7 @@ apply permutation_nil.
 intros a l1 H.
 apply permutation_skip with (1 := H).
 Qed.
-Hint Resolve permutation_refl.
+Hint Resolve permutation_refl : core.
 (* 
    Symmetry
    *)
@@ -133,7 +133,7 @@ elim l; simpl in |- *; auto.
 intros l1 l2 l3 H H0 H1 H2 l4 l5 H3.
 apply permutation_trans with (l2 ++ l4); auto.
 Qed.
-Hint Resolve permutation_app_comp.
+Hint Resolve permutation_app_comp : core.
 (* 
    Swap two sublists
    *)
@@ -418,10 +418,10 @@ End permutation.
 (* 
    Hints
    *)
-Hint Constructors permutation.
-Hint Resolve permutation_refl.
-Hint Resolve permutation_app_comp.
-Hint Resolve permutation_app_swap.
+Hint Constructors permutation : core.
+Hint Resolve permutation_refl : core.
+Hint Resolve permutation_app_comp : core.
+Hint Resolve permutation_app_swap : core.
 (* 
    Implicits
    *)
@@ -439,7 +439,7 @@ Theorem permutation_map :
 intros A B f l1 l2 H; elim H; simpl in |- *; auto.
 intros l0 l3 l4 H0 H1 H2 H3; apply permutation_trans with (2 := H3); auto.
 Qed.
-Hint Resolve permutation_map.
+Hint Resolve permutation_map : core.
  
 Let permutation_map_ex_aux :
   forall (A B : Set) (f : A -> B) l1 l2 l3,

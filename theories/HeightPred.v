@@ -48,7 +48,7 @@ nat -> list nat -> list (btree A) -> btree A -> Prop :=
       height_pred (S n) ln1 l1 t1 ->
       height_pred (S n) ln2 l2 t2 ->
       height_pred n (ln1 ++ ln2) (l1 ++ l2) (node t1 t2).
-Hint Resolve height_pred_nil height_pred_node.
+Hint Resolve height_pred_nil height_pred_node : core.
 (* 
   The cover is an ordered cover
    *)
@@ -501,4 +501,4 @@ Qed.
  
 End HeightPred.
 Arguments height_pred [A].
-Hint Resolve height_pred_nil height_pred_node.
+Hint Resolve height_pred_nil height_pred_node : core.

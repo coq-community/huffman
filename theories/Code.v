@@ -67,7 +67,7 @@ Qed.
 Theorem in_alphabet_nil : forall c, in_alphabet nil c.
 intros c a H; inversion H.
 Qed.
-Hint Resolve in_alphabet_nil.
+Hint Resolve in_alphabet_nil : core.
 (* 
    An element can be added in the message if it is in the code
    *)
@@ -80,7 +80,7 @@ intros a1 [H1| H1].
 exists ca; rewrite <- H1; auto.
 case (H0 a1); auto.
 Qed.
-Hint Resolve in_alphabet_cons.
+Hint Resolve in_alphabet_cons : core.
 (* 
    Inversion theorem
    *)
@@ -149,7 +149,7 @@ intros a1; simpl in |- *; red in |- *; intros [H1| H1]; auto.
 case H; injection H1; auto.
 case (H0 a1); simpl in |- *; auto.
 Qed.
-Hint Resolve not_null_cons.
+Hint Resolve not_null_cons : core.
 (* 
    Non emptyness is compatible with append
    *)
@@ -165,7 +165,7 @@ red in |- *; intros H2; discriminate.
 apply H; auto.
 apply not_null_inv with (1 := H0).
 Qed.
-Hint Resolve not_null_app.
+Hint Resolve not_null_app : core.
 (* 
   Adding an element in each component of a code makes it non-empty
    *)
@@ -180,7 +180,7 @@ intros b; red in |- *; intros a; red in |- *; intros H; inversion H.
 intros (a1, l1) l0 H b; apply not_null_cons; auto.
 red in |- *; intros; discriminate.
 Qed.
-Hint Resolve not_null_map.
+Hint Resolve not_null_map : core.
 (* 
   Define the property of list of booleans to be a prefix of another 
    *)
@@ -190,7 +190,7 @@ Inductive is_prefix : list bool -> list bool -> Prop :=
   | prefixCons :
       forall (b : bool) l1 l2,
       is_prefix l1 l2 -> is_prefix (b :: l1) (b :: l2).
-Hint Constructors is_prefix.
+Hint Constructors is_prefix : core.
 (* 
    A list is a prefix of itself
    *)
@@ -198,7 +198,7 @@ Hint Constructors is_prefix.
 Theorem is_prefix_refl : forall l, is_prefix l l.
 intros l; elim l; simpl in |- *; auto.
 Qed.
-Hint Resolve is_prefix_refl.
+Hint Resolve is_prefix_refl : core.
 (* 
   A code is unique_prefix, if there is no encoding that is prefix of
   another 
@@ -216,7 +216,7 @@ Theorem unique_prefix_nil : unique_prefix nil.
 split; auto.
 intros a1 a2 lb1 lb2 H; inversion H; auto.
 Qed.
-Hint Resolve unique_prefix_nil.
+Hint Resolve unique_prefix_nil : core.
 (* 
    A unique prefix code can not have two elements prefix one from another
    *)
@@ -687,12 +687,12 @@ Arguments find_val [A].
 Arguments in_alphabet [A].
 Arguments unique_prefix [A].
 Arguments not_null [A].
-Hint Constructors is_prefix.
+Hint Constructors is_prefix : core.
 (* 
   Hints
    *)
-Hint Resolve is_prefix_refl.
-Hint Resolve not_null_map.
-Hint Resolve unique_prefix_nil.
-Hint Resolve in_alphabet_nil in_alphabet_cons.
-Hint Resolve not_null_app.
+Hint Resolve is_prefix_refl : core.
+Hint Resolve not_null_map : core.
+Hint Resolve unique_prefix_nil : core.
+Hint Resolve in_alphabet_nil in_alphabet_cons : core.
+Hint Resolve not_null_app : core.

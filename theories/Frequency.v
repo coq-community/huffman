@@ -215,7 +215,7 @@ Theorem frequency_list_unique :
 intros l; elim l; simpl in |- *; auto.
 intros a l0 H; apply add_frequency_list_unique_key; auto.
 Qed.
-Hint Resolve frequency_list_unique.
+Hint Resolve frequency_list_unique : core.
  
 
 (* 
@@ -236,7 +236,7 @@ case (eqA_dec a a1); simpl in |- *; auto.
 intros e H1 [H2| H2]; auto; left; rewrite <- H2; auto.
 intros e H1 [H2| H2]; auto.
 Qed.
-Hint Resolve in_frequency_map.
+Hint Resolve in_frequency_map : core.
 
 (* 
    Keys of the frequency list are elements of the message
@@ -355,5 +355,5 @@ Arguments id_list [A].
 Arguments add_frequency_list [A].
 Arguments frequency_list [A].
 Arguments number_of_occurrences [A].
-Hint Resolve in_frequency_map.
-Hint Resolve frequency_list_unique.
+Hint Resolve in_frequency_map : core.
+Hint Resolve frequency_list_unique : core.
