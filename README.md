@@ -31,8 +31,8 @@ Proc. IRE, pp. 1098-1101, September 1952.
   - Laurent Théry (initial)
 - Coq-community maintainer(s):
   - Karl Palmskog ([**@palmskog**](https://github.com/palmskog))
-- License: [GNU Lesser General Public License v2.1](LICENSE)
-- Compatible Coq versions: Coq 8.7 or greater
+- License: [GNU Lesser General Public License v2.1 or later](LICENSE)
+- Compatible Coq versions: Coq 8.7 or later
 - Additional dependencies: none
 
 ## Building and installation instructions
@@ -59,7 +59,7 @@ the `Huffman` namespace.
 
 ## Documentation
   
-To run the algorithm, open an OCaml toplevel and do
+To run the algorithm, open an OCaml toplevel (`ocaml`) and do
 ```ocaml
 #use "run_huffman.ml";;
 ```

@@ -21,11 +21,12 @@ maintainers:
 opam-file-maintainer: palmskog@gmail.com
 
 license:
-  fullname: GNU Lesser General Public License v2.1
+  fullname: GNU Lesser General Public License v2.1 or later
+  identifier: LGPL-2.1-or-later
   shortname: LGPL 2.1
 
 supported_coq_versions:
-  text: Coq 8.7 or greater
+  text: Coq 8.7 or later
   opam: '{(>= "8.7" & < "8.10~") | (= "dev")}'
 
 tested_coq_versions:
@@ -50,7 +51,7 @@ categories:
 documentation: |
   ## Documentation
     
-  To run the algorithm, open an OCaml toplevel and do
+  To run the algorithm, open an OCaml toplevel (`ocaml`) and do
   ```ocaml
   #use "run_huffman.ml";;
   ```
