@@ -30,7 +30,7 @@ From Huffman Require Import Permutation.
 From Huffman Require Import sTactic.
  
 Section UniqueList.
-Variable A : Set.
+Variable A : Type.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
  
 (* A list is unique if there is not twice the same element in the list *)

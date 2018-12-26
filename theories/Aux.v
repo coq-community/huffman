@@ -138,7 +138,7 @@ End LeBool.
    *)
  
 Section fold.
-Variables (A : Set) (B : Set).
+Variables (A : Type) (B : Type).
 Variable f : A -> B -> A.
 Variable g : B -> A -> A.
 Variable h : A -> A.
@@ -158,7 +158,7 @@ rewrite H0; auto.
 Qed.
  
 Theorem fold_left_map :
- forall (C : Set) a l (k : C -> B),
+ forall (C : Type) a l (k : C -> B),
  fold_left f (map k l) a = fold_left (fun a b => f a (k b)) l a.
 intros C a l k; generalize a; elim l; simpl in |- *; auto.
 Qed.
@@ -184,7 +184,7 @@ End fold.
    *)
  
 Section List.
-Variables (A : Set) (B : Set) (C : Set).
+Variables (A : Type) (B : Type) (C : Type).
 Variable f : A -> B.
 (* An induction theorem for list based on length 
    *)
@@ -202,13 +202,13 @@ apply lt_wf.
 Qed.
  
 Definition list_length_induction :
-  forall P : list A -> Set,
+  forall P : list A -> Type,
   (forall l1 : list A,
    (forall l2 : list A, length l2 < length l1 -> P l2) -> P l1) ->
   forall l : list A, P l.
 intros P H l;
  apply
-  well_founded_induction with (R := fun x y : list A => length x < length y);
+  well_founded_induction_type with (R := fun x y : list A => length x < length y);
  auto.
 apply wf_inverse_image with (R := lt); auto.
 apply lt_wf.
@@ -373,7 +373,7 @@ End List.
    *)
  
 Section map2.
-Variables (A : Set) (B : Set) (C : Set).
+Variables (A : Type) (B : Type) (C : Type).
 Variable f : A -> B -> C.
  
 Fixpoint map2 (l1 : list A) : list B -> list C :=
@@ -408,7 +408,7 @@ Arguments map2 [A B C].
    *)
  
 Section First.
-Variable A : Set.
+Variable A : Type.
 (* 
   Take the first elements of a list 
    *)
@@ -551,7 +551,7 @@ End FirstMax.
    *)
  
 Section FindMin.
-Variable A : Set.
+Variable A : Type.
 Variable f : A -> nat.
 (*Search in the list the min with respect to a valutation
     function f 

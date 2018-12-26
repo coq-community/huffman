@@ -26,7 +26,7 @@ From Huffman Require Export Cover.
 From Huffman Require Export WeightTree.
  
 Section CoverMin.
-Variable A : Set.
+Variable A : Type.
 Variable f : A -> nat.
 (* 
   To be a tree of minimum weight for a cover 

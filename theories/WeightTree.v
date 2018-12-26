@@ -26,7 +26,7 @@ From Huffman Require Export Ordered.
 Require Import ArithRing.
  
 Section WeightTree.
-Variable A : Set.
+Variable A : Type.
 Variable f : A -> nat.
 
 Fixpoint sum_leaves (t : btree A) : nat :=
@@ -94,7 +94,7 @@ Arguments weight_tree_list [A].
  *)
 
 Theorem ordered_sum_leaves_eq :
- forall (A : Set) (f : A -> nat) (l1 l2 : list (btree A)),
+ forall (A : Type) (f : A -> nat) (l1 l2 : list (btree A)),
  permutation l1 l2 ->
  ordered (sum_order f) l1 ->
  ordered (sum_order f) l2 -> map (sum_leaves f) l1 = map (sum_leaves f) l2.

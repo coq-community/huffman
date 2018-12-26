@@ -27,7 +27,7 @@ From Huffman Require Export Permutation.
 From Huffman Require Export Aux.
  
 Section ordered.
-Variable A : Set.
+Variable A : Type.
 Variable order : A -> A -> Prop.
 Variable order_trans : forall a b c : A, order a b -> order b c -> order a c.
 (* 
@@ -140,7 +140,7 @@ Arguments ordered [A].
    *)
  
 Theorem ordered_map_inv :
- forall (A B : Set) (order : A -> A -> Prop) (g : B -> A) (l : list B),
+ forall (A B : Type) (order : A -> A -> Prop) (g : B -> A) (l : list B),
  ordered (fun x y => order (g x) (g y)) l -> ordered order (map g l).
 intros A B order g l; elim l; simpl in |- *; auto.
 intros a1 l1; case l1; simpl in |- *; auto.

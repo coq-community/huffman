@@ -27,11 +27,11 @@ From Huffman Require Export Permutation.
 From Huffman Require Export UniqueKey.
  
 Section Weight.
-Variable A : Set.
+Variable A : Type.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
  
 Theorem fold_plus_split :
- forall (B : Set) (l : list B) (c : nat) (f : B -> nat),
+ forall (B : Type) (l : list B) (c : nat) (f : B -> nat),
  c + fold_left (fun (a : nat) (b : B) => a + f b) l 0 =
  fold_left (fun (a : nat) (b : B) => a + f b) l c.
 intros B l; elim l; simpl in |- *; auto.
@@ -42,7 +42,7 @@ rewrite plus_assoc_reverse; auto.
 Qed.
  
 Theorem fold_plus_permutation :
- forall (B : Set) (l1 l2 : list B) (c : nat) (f : B -> nat),
+ forall (B : Type) (l1 l2 : list B) (c : nat) (f : B -> nat),
  permutation l1 l2 ->
  fold_left (fun (a : nat) (b : B) => a + f b) l1 c =
  fold_left (fun (a : nat) (b : B) => a + f b) l2 c.
@@ -152,7 +152,7 @@ Definition restrict_code (m : list A) (c : code A) :
     (frequency_list eqA_dec m).
  
 Theorem ulist_unique_key :
- forall (A B : Set) (l : list (A * B)),
+ forall (A B : Type) (l : list (A * B)),
  ulist (map (fst (B:=_)) l) -> unique_key l.
 intros AA BB l; elim l; simpl in |- *; auto.
 intros a; case a.

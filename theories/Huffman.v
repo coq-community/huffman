@@ -29,7 +29,7 @@ From Huffman Require Import PBTree2BTree.
 From Huffman Require Import Restrict.
  
 Section Huffman.
-Variable A : Set.
+Variable A : Type.
 Variable empty : A.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
 Variable m : list A.

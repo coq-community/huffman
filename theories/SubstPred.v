@@ -26,7 +26,7 @@
 From Huffman Require Import HeightPred.
  
 Section SubstPred.
-Variable A : Set.
+Variable A : Type.
 (* 
    Take two covers an substitute the elements of one by the element
    of the other

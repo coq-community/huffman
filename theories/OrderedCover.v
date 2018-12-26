@@ -26,7 +26,7 @@
 From Huffman Require Export Cover.
  
 Section OrderedCover.
-Variable A : Set.
+Variable A : Type.
 (* 
    An ordered cover is a cover where the positions of the elements in
    the list are fixed 

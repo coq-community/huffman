@@ -31,7 +31,7 @@ From Huffman Require Export UniqueKey.
 From Huffman Require Export PBTree2BTree.
  
 Section Restrict.
-Variable A : Set.
+Variable A : Type.
 Variable empty : A.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
 Variable m : list A.

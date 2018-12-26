@@ -30,7 +30,7 @@ From Huffman Require Import Ordered.
 From Huffman Require Import sTactic.
  
 Section ISortExample.
-Variable A : Set.
+Variable A : Type.
 Variable order : A -> A -> Prop.
 Variable order_fun : A -> A -> bool.
 Hypothesis order_fun_true : forall a b : A, order_fun a b = true -> order a b.

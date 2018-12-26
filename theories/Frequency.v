@@ -30,7 +30,7 @@ From Huffman Require Import UniqueKey.
 From Huffman Require Import Permutation.
  
 Section Frequency.
-Variable A : Set.
+Variable A : Type.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
  
 (* 
