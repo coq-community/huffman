@@ -29,7 +29,7 @@ Require Import ArithRing.
 From Huffman Require Export Ordered.
  
 Section Prod2List.
-Variable A : Set.
+Variable A : Type.
 Variable f : A -> nat.
 (* 
    In the product the sum of the leaves is multiplied by the integer

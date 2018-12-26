@@ -27,7 +27,7 @@ From Huffman Require Export Permutation.
 Require Import ArithRing.
  
 Section Cover.
-Variable A : Set.
+Variable A : Type.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
 Variable empty : A.
 

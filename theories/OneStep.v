@@ -26,7 +26,7 @@ From Huffman Require Export Ordered.
 From Huffman Require Export SameSumLeaves.
  
 Section OneStep.
-Variable A : Set.
+Variable A : Type.
 Variable f : A -> nat.
 (* 
    A step is valid if the two smallest elements of the initial list

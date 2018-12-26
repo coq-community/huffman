@@ -28,7 +28,7 @@ From Huffman Require Export UList.
 From Huffman Require Export sTactic.
  
 Section UniqueKey.
-Variables (A : Set) (B : Set).
+Variables (A : Type) (B : Type).
  
 (*
    An association list has unique keys if the keys appear only once
@@ -154,7 +154,7 @@ Arguments unique_key [A B].
   Uniqueness is compatible with map for injective functions
 *)
 Theorem unique_key_map :
- forall (A B C D : Set) l (f : A * B -> C * D),
+ forall (A B C D : Type) l (f : A * B -> C * D),
  unique_key l ->
  (forall a b, fst (f a) = fst (f b) -> fst a = fst b) -> unique_key (map f l).
 intros A B C D l f H; elim H; simpl in |- *; auto.

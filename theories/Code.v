@@ -34,7 +34,7 @@ Section Code.
 (* 
   Arbitrary set 
    *)
-Variable A : Set.
+Variable A : Type.
 (* 
   Equality is decidable
    *)

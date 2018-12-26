@@ -30,7 +30,7 @@ From Huffman Require Export Ordered.
 From Huffman Require Export Prod2List.
  
 Section HeightPred.
-Variable A : Set.
+Variable A : Type.
 Variable f : A -> nat.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
 (* 

@@ -36,14 +36,14 @@ From Huffman Require Import UniqueKey.
 From Huffman Require Import sTactic.
  
 Section PBTree.
-Variable A : Set.
+Variable A : Type.
 Variable empty : A.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
 (* 
    Partial Binary Tree (no more than 2 sons
    *)
  
-Inductive pbtree : Set :=
+Inductive pbtree : Type :=
   | pbleaf : A -> pbtree
   | pbleft : pbtree -> pbtree
   | pbright : pbtree -> pbtree

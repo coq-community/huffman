@@ -33,14 +33,14 @@ From Huffman Require Export UniqueKey.
 Require Import ArithRing.
  
 Section Tree.
-Variable A : Set.
+Variable A : Type.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
 Variable empty : A.
 (* 
   Definition of binary trees 
    *)
  
-Inductive btree : Set :=
+Inductive btree : Type :=
   | leaf : A -> btree
   | node : btree -> btree -> btree.
 (* 

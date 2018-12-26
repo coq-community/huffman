@@ -32,7 +32,7 @@ From Huffman Require Export SubstPred.
 Require Import ArithRing.
  
 Section Build.
-Variable A : Set.
+Variable A : Type.
 Variable f : A -> nat.
  
 (* 

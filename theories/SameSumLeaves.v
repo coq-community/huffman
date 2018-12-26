@@ -27,7 +27,7 @@ From Huffman Require Export Cover.
 From Huffman Require Export WeightTree.
  
 Section SameSumLeaves.
-Variable A : Set.
+Variable A : Type.
 Variable f : A -> nat.
 (* 
    the sum leaves are the same upto permutation

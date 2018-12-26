@@ -1,6 +1,7 @@
 -Q theories Huffman
 
 -arg -w -arg +default
+-arg -w -arg -auto-template
 
 theories/Aux.v
 theories/Cover.v
