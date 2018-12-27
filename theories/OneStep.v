@@ -6,13 +6,12 @@
 (* This program is distributed in the hope that it will be useful,    *)
 (* but WITHOUT ANY WARRANTY; without even the implied warranty of     *)
 (* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *)
-(* GNU General Public License for more details.                       *)
+(* GNU Lesser General Public License for more details.                *)
 (*                                                                    *)
 (* You should have received a copy of the GNU Lesser General Public   *)
 (* License along with this program; if not, write to the Free         *)
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
-
 
 (**********************************************************************
     Proof of Huffman algorithm: OneStep.v                            
@@ -20,7 +19,8 @@
     Definition of one step of the building process (merging the      
     smallest tree) and its properties                                
                                     Laurent.Thery@inria.fr (2003)    
-  **********************************************************************)
+ **********************************************************************)
+
 From Huffman Require Export WeightTree.
 From Huffman Require Export Ordered.
 From Huffman Require Export SameSumLeaves.
@@ -28,11 +28,11 @@ From Huffman Require Export SameSumLeaves.
 Section OneStep.
 Variable A : Type.
 Variable f : A -> nat.
+
 (* 
-   A step is valid if the two smallest elements of the initial list
-   have been merged
-   *)
- 
+  A step is valid if the two smallest elements of the initial list
+  have been merged
+*)
 Definition one_step (l1 l2 : list (btree A)) : Prop :=
   exists l3 : list (btree A),
     (exists t1 : btree A,
@@ -40,14 +40,13 @@ Definition one_step (l1 l2 : list (btree A)) : Prop :=
           ordered (sum_order f) (t1 :: t2 :: l3) /\
           permutation l1 (t1 :: t2 :: l3) /\
           permutation l2 (node t1 t2 :: l3))).
-(* 
-  Choosing one step or another does not change the weight
-   *)
- 
+
+(* Choosing one step or another does not change the weight *)
 Theorem one_step_weight_tree_list :
  forall l1 l2 l3 : list (btree A),
  one_step l1 l2 ->
  one_step l1 l3 -> weight_tree_list f l2 = weight_tree_list f l3.
+Proof using.
 intros l1 l2 l3 (l4, (t1, (t2, (H1, (H2, H3)))))
  (l5, (t3, (t4, (H4, (H5, H6))))).
 rewrite weight_tree_list_permutation with (1 := H3).
@@ -64,15 +63,14 @@ apply permutation_sym; auto.
 rewrite <- weight_tree_list_permutation with (1 := H2).
 apply weight_tree_list_permutation; auto.
 Qed.
-(* 
-  Choosing one step or another does not change the sum of leaves
-   *)
- 
+
+(* Choosing one step or another does not change the sum of leaves *)
 Theorem one_step_same_sum_leaves :
  forall l1 l2 l3 : list (btree A),
  one_step l1 l2 -> one_step l1 l3 -> same_sum_leaves f l2 l3.
 intros l1 l2 l3 (l4, (t1, (t2, (H1, (H2, H3)))))
  (l5, (t3, (t4, (H4, (H5, H6))))).
+Proof using.
 red in |- *.
 exists (node t1 t2 :: l4); exists (node t3 t4 :: l5); auto; simpl in |- *;
  auto.
@@ -85,10 +83,8 @@ apply ordered_sum_leaves_eq; auto.
 apply permutation_trans with (2 := H5); auto.
 apply permutation_sym; auto.
 Qed.
-(* 
-  Choosing one step or another does not change weight and sum leaves
-   *)
- 
+
+(* Choosing one step or another does not change weight and sum leaves *)
 Theorem one_step_comp :
  forall l1 l2 l3 l4 : list (btree A),
  weight_tree_list f l1 = weight_tree_list f l2 ->
@@ -96,6 +92,7 @@ Theorem one_step_comp :
  one_step l1 l3 ->
  one_step l2 l4 ->
  weight_tree_list f l3 = weight_tree_list f l4 /\ same_sum_leaves f l3 l4.
+Proof using.
 intros l1 l2 l3 l4 H1 (l5, (l6, (H2, (H3, H4))))
  (l7, (t1, (t2, (H5, (H6, H7))))) (l8, (t3, (t4, (H8, (H9, H10))))).
 cut
@@ -135,6 +132,6 @@ apply ordered_map_inv; auto.
 change (ordered le (map (sum_leaves f) (t3 :: t4 :: l8))) in |- *.
 apply ordered_map_inv; auto.
 Qed.
- 
+
 End OneStep.
 Arguments one_step [A].

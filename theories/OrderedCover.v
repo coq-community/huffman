@@ -6,13 +6,12 @@
 (* This program is distributed in the hope that it will be useful,    *)
 (* but WITHOUT ANY WARRANTY; without even the implied warranty of     *)
 (* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *)
-(* GNU General Public License for more details.                       *)
+(* GNU Lesser General Public License for more details.                *)
 (*                                                                    *)
 (* You should have received a copy of the GNU Lesser General Public   *)
 (* License along with this program; if not, write to the Free         *)
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
-
 
 (**********************************************************************
     Proof of Huffman algorithm: OrderedCover.v                       
@@ -23,15 +22,16 @@
                                                                      
                                     Laurent.Thery@inria.fr (2003)    
   **********************************************************************)
+
 From Huffman Require Export Cover.
  
 Section OrderedCover.
 Variable A : Type.
+
 (* 
-   An ordered cover is a cover where the positions of the elements in
-   the list are fixed 
-   *)
- 
+  An ordered cover is a cover where the positions of the elements in
+  the list are fixed
+*)
 Inductive ordered_cover : list (btree A) -> btree A -> Prop :=
   | ordered_cover_one :
       forall (t : btree A) (l : list (btree A)), ordered_cover (t :: nil) t
@@ -40,23 +40,21 @@ Inductive ordered_cover : list (btree A) -> btree A -> Prop :=
       ordered_cover l1 t1 ->
       ordered_cover l2 t2 -> ordered_cover (l1 ++ l2) (node t1 t2).
 Hint Resolve ordered_cover_one ordered_cover_node : core.
-(* 
-  Ordered covers are special cases of covers
-   *)
- 
+
+(* Ordered covers are special cases of covers *)
 Theorem ordered_cover_cover :
  forall (l : list (btree A)) (t : btree A), ordered_cover l t -> cover l t.
 intros l t H; elim H; auto.
 intros t1 t2 l1 l2 l3 H0 H1 H2 H3.
+Proof using.
 apply cover_app; auto.
 Qed.
-(* 
-  It is always possible to get an ordered cover from a cover
-   *)
- 
+
+(* It is always possible to get an ordered cover from a cover *)
 Theorem cover_ordered_cover :
  forall (l1 : list (btree A)) (t : btree A),
  cover l1 t -> exists l2 : _, permutation l1 l2 /\ ordered_cover l2 t.
+Proof using.
 intros l1; elim l1 using list_length_ind.
 intros l0 H t; case t.
 intros a H1; rewrite cover_inv_leaf with (1 := H1).
@@ -78,15 +76,16 @@ intros l5 (HP3, HP4).
 exists (l4 ++ l5); split; auto.
 apply permutation_trans with (1 := HH3); auto.
 Qed.
+
 (* 
-   If the ordered cover is composed of only leaves, they are the
-   exact leaves of the tree
-   *)
- 
+  If the ordered cover is composed of only leaves, they are the
+  exact leaves of the tree
+*) 
 Theorem ulist_ordered_cover :
  forall l1 l2 t,
  ordered_cover l1 t ->
  ulist l2 -> l1 = map (fun x : A => leaf x) l2 -> all_leaves t = l2.
+Proof using.
 intros l1 l2 t H; generalize l2; elim H; clear H l1 l2 t; simpl in |- *; auto.
 intros t l l2; case l2; simpl in |- *; auto.
 intros; discriminate.

@@ -6,13 +6,12 @@
 (* This program is distributed in the hope that it will be useful,    *)
 (* but WITHOUT ANY WARRANTY; without even the implied warranty of     *)
 (* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *)
-(* GNU General Public License for more details.                       *)
+(* GNU Lesser General Public License for more details.                *)
 (*                                                                    *)
 (* You should have received a copy of the GNU Lesser General Public   *)
 (* License along with this program; if not, write to the Free         *)
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
-
 
 (**********************************************************************
     Proof of Huffman algorithm: Extraction.v                         
@@ -23,15 +22,14 @@
     algorithm                                                        
                                                                      
                                     Laurent.Thery@inria.fr (2003)    
-  **********************************************************************)
+ **********************************************************************)
+
 From Huffman Require Import Huffman.
 From Huffman Require Import Code.
 From Huffman Require Import ISort.
-From Coq Require Extraction.
+Require Extraction.
  
 Extraction Inline list_length_induction.
-Extraction
- NoInline code insert isort map frequency_list huffman encode decode.
- 
+Extraction NoInline code insert isort map frequency_list huffman encode decode.
  
 Extraction "huffman.ml" code huffman encode decode.

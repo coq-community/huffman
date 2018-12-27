@@ -6,13 +6,12 @@
 (* This program is distributed in the hope that it will be useful,    *)
 (* but WITHOUT ANY WARRANTY; without even the implied warranty of     *)
 (* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *)
-(* GNU General Public License for more details.                       *)
+(* GNU LessernGeneral Public License for more details.                *)
 (*                                                                    *)
 (* You should have received a copy of the GNU Lesser General Public   *)
 (* License along with this program; if not, write to the Free         *)
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
-
 
 (**********************************************************************
     Proof of Huffman algorithm: Huffman.v                            
@@ -21,7 +20,8 @@
                                                                      
     Definition: huffman                                              
                                     Laurent.Thery@inria.fr (2003)    
-  **********************************************************************)
+ **********************************************************************)
+
 From Huffman Require Import Code.
 From Huffman Require Import BTree.
 From Huffman Require Import Build.
@@ -34,19 +34,16 @@ Variable empty : A.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
 Variable m : list A.
 Hypothesis frequency_more_than_one : 1 < length (frequency_list eqA_dec m).
-(* 
-  The message is not null
-   *)
- 
+
+(* The message is not null *) 
 Theorem not_null_m : m <> nil.
+Proof using A eqA_dec frequency_more_than_one m.
 generalize frequency_more_than_one; case m; simpl in |- *; auto.
 intros H; Contradict H; auto with arith.
 intros; discriminate.
 Qed.
-(* 
-  Every tree that is built is of minimum weight
-   *)
- 
+
+(* Every tree that is built is of minimum weight *)
 Theorem huffman_build_minimun :
  forall (c : code A) (t : btree A),
  unique_prefix c ->
@@ -54,6 +51,7 @@ Theorem huffman_build_minimun :
  build (fun x => number_of_occurrences eqA_dec x m)
    (map (fun x => leaf (fst x)) (frequency_list eqA_dec m)) t ->
  weight eqA_dec m (compute_code t) <= weight eqA_dec m c.
+Proof using A empty eqA_dec frequency_more_than_one m.
 intros c t H1 H2 H3; unfold weight in |- *.
 rewrite restrict_code_encode_length with (c := c).
 apply
@@ -142,10 +140,8 @@ apply frequency_not_null with (1 := frequency_more_than_one); auto.
 apply restrict_unique_prefix; auto.
 apply frequency_not_null with (1 := frequency_more_than_one); auto.
 Qed.
-(* 
-   Auxillary function to compute minimal code
-   *)
- 
+
+(* Auxillary function to compute minimal code *)
 Definition huffman_aux :
   forall l : list (nat * code A),
   l <> nil ->
@@ -303,10 +299,8 @@ rewrite pbbuild_pbnode; auto.
 generalize (H4 (n1, c1)); simpl in |- *; auto with datatypes.
 generalize (H4 (n2, c2)); simpl in |- *; auto with datatypes.
 Defined.
-(* 
-   The huffman algorithm
-   *)
- 
+
+(* The huffman algorithm *)
 Definition huffman :
   {c : code A |
   unique_prefix c /\

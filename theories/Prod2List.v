@@ -6,13 +6,12 @@
 (* This program is distributed in the hope that it will be useful,    *)
 (* but WITHOUT ANY WARRANTY; without even the implied warranty of     *)
 (* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *)
-(* GNU General Public License for more details.                       *)
+(* GNU Lesser General Public License for more details.                *)
 (*                                                                    *)
 (* You should have received a copy of the GNU Lesser General Public   *)
 (* License along with this program; if not, write to the Free         *)
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
-
 
 (**********************************************************************
     Proof of Huffman algorithm: Prod2List.v                          
@@ -23,30 +22,30 @@
     Definition: prod2list                                            
                                                                      
                                     Laurent.Thery@inria.fr (2003)    
-  **********************************************************************)
+ **********************************************************************)
+
 From Huffman Require Export WeightTree.
 Require Import ArithRing.
 From Huffman Require Export Ordered.
- 
+
 Section Prod2List.
 Variable A : Type.
 Variable f : A -> nat.
+
 (* 
-   In the product the sum of the leaves is multiplied by the integer
-   and added to the weight of the tree
-   *)
- 
+ In the product the sum of the leaves is multiplied by the integer
+ and added to the weight of the tree
+*)
 Definition prod2list l1 l2 :=
   fold_left plus
     (map2 (fun a b => a * sum_leaves f b + weight_tree f b) l1 l2) 0.
-(* 
-   The product of the appended list is the sum of the product
-   *)
- 
+
+(* The product of the appended list is the sum of the product *)
 Theorem prod2list_app :
  forall l1 l2 l3 l4,
  length l1 = length l2 ->
  prod2list (l1 ++ l3) (l2 ++ l4) = prod2list l1 l2 + prod2list l3 l4.
+Proof using.
 intros l1 l2 l3 l4 H; unfold prod2list in |- *.
 rewrite map2_app; auto.
 rewrite fold_left_app.
@@ -60,10 +59,8 @@ apply sym_equal; rewrite <- fold_plus_split with (f := fun x : nat => x);
  auto.
 apply plus_comm.
 Qed.
-(* 
-   Permuting two choosen elements lower the product
-   *)
- 
+
+(* Permuting two choosen elements lower the product *)
 Theorem prod2list_le_l :
  forall a b c d l1 l2 l3 l4 l5 l6,
  length l1 = length l4 ->
@@ -73,6 +70,7 @@ Theorem prod2list_le_l :
  a <= b ->
  prod2list (l1 ++ a :: l2 ++ b :: l3) (l4 ++ d :: l5 ++ c :: l6) <=
  prod2list (l1 ++ a :: l2 ++ b :: l3) (l4 ++ c :: l5 ++ d :: l6).
+Proof using.
 intros a b c d l1 l2 l3 l4 l5 l6 H H0 H1 H2 H3;
  change
    (prod2list (l1 ++ (a :: nil) ++ l2 ++ (b :: nil) ++ l3)
@@ -104,10 +102,8 @@ replace
  (a * sum_leaves f c + (b - a) * sum_leaves f c +
   (a * (sum_leaves f d - sum_leaves f c) + 0)); [ auto with arith | ring ].
 Qed.
-(* 
-   Permuting two choosen elements lower the product
-   *)
- 
+
+(* Permuting two choosen elements lower the product *)
 Theorem prod2list_le_r :
  forall a b c d l1 l2 l3 l4 l5 l6,
  length l1 = length l4 ->
@@ -117,6 +113,7 @@ Theorem prod2list_le_r :
  b <= a ->
  prod2list (l1 ++ a :: l2 ++ b :: l3) (l4 ++ d :: l5 ++ c :: l6) <=
  prod2list (l1 ++ a :: l2 ++ b :: l3) (l4 ++ c :: l5 ++ d :: l6).
+Proof using.
 intros a b c d l1 l2 l3 l4 l5 l6 H H0 H1 H2 H3;
  change
    (prod2list (l1 ++ (a :: nil) ++ l2 ++ (b :: nil) ++ l3)
@@ -146,10 +143,8 @@ replace (b * sum_leaves f d + b * (sum_leaves f c - sum_leaves f d)) with
  (b * (sum_leaves f c - sum_leaves f d) + 0 + b * sum_leaves f d);
  [ auto with arith | ring ].
 Qed.
-(* 
-   Permuting two choosen elements with same integer does not change the product
-   *)
- 
+
+(* Permuting two choosen elements with same integer does not change the product *)
 Theorem prod2list_eq :
  forall a b c l1 l2 l3 l4 l5 l6,
  length l1 = length l4 ->
@@ -157,6 +152,7 @@ Theorem prod2list_eq :
  length l3 = length l6 ->
  prod2list (l1 ++ a :: l2 ++ a :: l3) (l4 ++ b :: l5 ++ c :: l6) =
  prod2list (l1 ++ a :: l2 ++ a :: l3) (l4 ++ c :: l5 ++ b :: l6).
+Proof using.
 intros a b c l1 l2 l3 l4 l5 l6 H H0 H1;
  change
    (prod2list (l1 ++ (a :: nil) ++ l2 ++ (a :: nil) ++ l3)
@@ -167,10 +163,8 @@ intros a b c l1 l2 l3 l4 l5 l6 H H0 H1;
 repeat rewrite prod2list_app; auto with arith.
 ring.
 Qed.
-(* 
-   Putting the smallest tree with the smallest integer lower the product
-   *)
- 
+
+(* Putting the smallest tree with the smallest integer lower the product *)
 Theorem prod2list_reorder :
  forall a b b1 l1 l2 l3 l4 l5,
  length l1 = length l3 ->
@@ -186,6 +180,7 @@ Theorem prod2list_reorder :
       permutation (b1 :: l5) (l6 ++ b1 :: l7) /\
       prod2list (l1 ++ a :: l2) (l6 ++ b1 :: l7) <=
       prod2list (l1 ++ a :: l2) (l3 ++ b :: l4)).
+Proof using.
 intros a b b1 l1 l2 l3 l4 l5 H H0 H1 H2 H3 H4.
 cut (In b (b1 :: l5));
  [ simpl in |- *; intros [HH0| HH0]
@@ -241,10 +236,8 @@ unfold sum_order in |- *; intros a0 b0 c H5 H6; apply le_trans with (1 := H5);
  auto.
 apply H2; rewrite HH7; auto with datatypes.
 Qed.
-(* 
-   Putting the smallest tree with the smallest integer lower the product
-   *)
- 
+
+(* Putting the smallest tree with the smallest integer lower the product *) 
 Theorem prod2list_reorder2 :
  forall a b c b1 c1 l1 l2 l3 l4 l5,
  length l1 = length l3 ->
@@ -260,6 +253,7 @@ Theorem prod2list_reorder2 :
       permutation (b1 :: c1 :: l5) (l6 ++ b1 :: c1 :: l7) /\
       prod2list (l1 ++ a :: a :: l2) (l6 ++ b1 :: c1 :: l7) <=
       prod2list (l1 ++ a :: a :: l2) (l3 ++ b :: c :: l4)).
+Proof using.
 intros a b c b1 c1 l1 l2 l3 l4 l5 H H0 H1 H2 H3 H4.
 case (prod2list_reorder a b b1 l1 (a :: l2) l3 (c :: l4) (c1 :: l5));
  simpl in |- *; auto.

@@ -6,7 +6,7 @@
 (* This program is distributed in the hope that it will be useful,    *)
 (* but WITHOUT ANY WARRANTY; without even the implied warranty of     *)
 (* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *)
-(* GNU General Public License for more details.                       *)
+(* GNU Lesser General Public License for more details.                *)
 (*                                                                    *)
 (* You should have received a copy of the GNU Lesser General Public   *)
 (* License along with this program; if not, write to the Free         *)
@@ -20,7 +20,7 @@
 (*    Define the build process iteratively  merging the two smaller    *)
 (*    trees                                                            *)
 (*                                                                     *)
-(*    Definition: build build_fun                                     *)
+(*    Definition: build build_fun                                      *)
 (*                                    Laurent.Thery@inria.fr (2003)    *)
 (***********************************************************************)
 
@@ -30,39 +30,35 @@ From Huffman Require Export CoverMin.
 From Huffman Require Export OrderedCover.
 From Huffman Require Export SubstPred.
 Require Import ArithRing.
- 
+
 Section Build.
 Variable A : Type.
 Variable f : A -> nat.
- 
-(* 
-  Iterative the one step predicate 
-*)
+
+(* Iterative the one step predicate *)
 Inductive build : list (btree A) -> btree A -> Prop :=
   | build_one : forall t : btree A, build (t :: nil) t
   | build_step :
       forall (t : btree A) (l1 l2 : list (btree A)),
       one_step f l1 l2 -> build l2 t -> build l1 t.
  
-(*
-   Building gives a cover 
-*)
+(* Building gives a cover *)
 Theorem build_cover : forall l t, build l t -> cover l t.
+Proof using.
 intros l t H; elim H; clear H l t; auto.
 intros t l1 l2 (l3, (t1, (t2, (HH, (HH1, HH2))))) H0 H1; try assumption.
 apply cover_node with (1 := HH1); auto.
 apply cover_permutation with (2 := HH2); auto.
 Qed.
  
-(* 
-   Building is compatible with the weight
-*)
+(* Building is compatible with the weight *)
 Theorem build_comp :
  forall (l1 l2 : list (btree A)) (t1 t2 : btree A),
  build l1 t1 ->
  build l2 t2 ->
  weight_tree_list f l1 = weight_tree_list f l2 ->
  same_sum_leaves f l1 l2 -> weight_tree f t1 = weight_tree f t2.
+Proof using.
 intros l1 l2 t1 t2 H; generalize l2 t2; elim H; clear H l1 t1 l2 t2.
 intros t l2 t2 H H0 (l3, (l4, (H1, (H2, H3)))).
 generalize H0; inversion H; clear H0.
@@ -96,22 +92,20 @@ case one_step_comp with (3 := H) (4 := H5); auto.
 case one_step_comp with (3 := H) (4 := H5); auto.
 Qed.
  
-(* 
-  Two built trees have same weight 
-*)
+(* Two built trees have same weight *)
 Theorem build_same_weight_tree :
  forall (l : list (btree A)) (t1 t2 : btree A),
  build l t1 -> build l t2 -> weight_tree f t1 = weight_tree f t2.
+Proof using.
 intros l t1 t2 H H0; apply build_comp with (l1 := l) (l2 := l); auto.
 exists l; exists l; simpl in |- *; auto.
 Qed.
  
-(* 
-  Building is compatible with permutation
-*)
+(* Building is compatible with permutation *)
 Theorem build_permutation :
  forall (l1 l2 : list (btree A)) (t : btree A),
  build l1 t -> permutation l1 l2 -> build l2 t.
+Proof using.
 intros l1 l2 t H; generalize l2; elim H; clear H l1 l2 t; auto.
 intros t l2 H; rewrite permutation_one_inv with (1 := H); auto.
 apply build_one.
@@ -123,9 +117,8 @@ exists l3; exists t1; exists t2; repeat (split; auto).
 apply permutation_trans with (2 := HH2); auto.
 apply permutation_sym; auto.
 Qed.
- 
- 
-Let obuildf :
+
+Definition obuildf :
   forall l : list (btree A),
   l <> nil -> ordered (sum_order f) l -> {t : btree A | build l t}.
 intros l; elim l using list_length_induction.
@@ -160,9 +153,8 @@ red in |- *; auto.
 exists l1; exists b; exists b0; (repeat split; auto).
 apply permutation_sym; apply insert_permutation.
 Defined.
-(*
-  a function to buid tree from a cover list merging smaller trees
-*) 
+
+(* a function to buid tree from a cover list merging smaller trees *)
 Definition buildf :
   forall l : list (btree A), l <> nil -> {t : btree A | build l t}.
 intros l Hl; cut (isort (le_sum f) l <> nil).
@@ -177,14 +169,13 @@ intros; apply le_sum_correct2; auto.
 Contradict Hl; apply permutation_nil_inv; auto.
 rewrite <- Hl; auto.
 apply isort_permutation; auto.
-Qed.
- 
-(*
-  Merging smaller trees gets the tree of mimimal weight for the given cover
-*)
+Defined.
+
+(* Merging smaller trees gets the tree of mimimal weight for the given cover *)
 Theorem build_correct :
  forall (l : list (btree A)) (t : btree A),
  l <> nil -> build l t -> cover_min _ f l t.
+Proof using.
 intros l; elim l using list_length_ind.
 intros l0 H t H0 H1.
 case (cover_min_ex _ f) with (1 := H0); auto.
@@ -285,9 +276,7 @@ apply build_cover with (1 := H1).
 rewrite <- H5; apply cover_permutation with (2 := Hl1); auto.
 Qed.
  
-(*
- Final function that tree of minimal weight for the cover
-*)
+(* Final function that tree of minimal weight for the cover *)
 Definition build_fun :
   forall l : list (btree A), l <> nil -> {t : btree A | cover_min _ f l t}.
 intros l Hl; case (buildf l Hl).
