@@ -6,13 +6,12 @@
 (* This program is distributed in the hope that it will be useful,    *)
 (* but WITHOUT ANY WARRANTY; without even the implied warranty of     *)
 (* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *)
-(* GNU General Public License for more details.                       *)
+(* GNU Lesser General Public License for more details.                *)
 (*                                                                    *)
 (* You should have received a copy of the GNU Lesser General Public   *)
 (* License along with this program; if not, write to the Free         *)
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
-
 
 (**********************************************************************
     Proof of Huffman algorithm: SameSumLeaves.v                      
@@ -22,29 +21,27 @@
     Definition: same_sum_leaves                                      
                                                                      
                                     Laurent.Thery@inria.fr (2003)    
-  **********************************************************************)
+ **********************************************************************)
+
 From Huffman Require Export Cover.
 From Huffman Require Export WeightTree.
  
 Section SameSumLeaves.
 Variable A : Type.
 Variable f : A -> nat.
-(* 
-   the sum leaves are the same upto permutation
-   *)
- 
+
+(* the sum leaves are the same upto permutation *)
 Definition same_sum_leaves (l1 l2 : list (btree A)) : Prop :=
   exists l3 : list (btree A),
     (exists l4 : list (btree A),
        permutation l1 l3 /\
        permutation l2 l4 /\ map (sum_leaves f) l3 = map (sum_leaves f) l4).
-(* 
-   if the sum leaves are the same, the list are of same length
-   *)
- 
+
+(* if the sum leaves are the same, the list are of same length *)
 Theorem same_sum_leaves_length :
  forall l1 l2 : list (btree A),
  same_sum_leaves l1 l2 -> length l1 = length l2.
+Proof using.
 intros l1 l2 (l3, (l4, (H0, (H1, H2)))).
 rewrite (permutation_length _ _ _ H0).
 rewrite (permutation_length _ _ _ H1).

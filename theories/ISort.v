@@ -6,13 +6,12 @@
 (* This program is distributed in the hope that it will be useful,    *)
 (* but WITHOUT ANY WARRANTY; without even the implied warranty of     *)
 (* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *)
-(* GNU General Public License for more details.                       *)
+(* GNU Lesser General Public License for more details.                *)
 (*                                                                    *)
 (* You should have received a copy of the GNU Lesser General Public   *)
 (* License along with this program; if not, write to the Free         *)
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
-
 
 (***********************************************************************)
 (*    Proof of Huffman algorithm: ISort.v                              *)
@@ -34,12 +33,9 @@ Variable A : Type.
 Variable order : A -> A -> Prop.
 Variable order_fun : A -> A -> bool.
 Hypothesis order_fun_true : forall a b : A, order_fun a b = true -> order a b.
-Hypothesis
-  order_fun_false : forall a b : A, order_fun a b = false -> order b a.
-(* 
-   Insert an element 
- *)
- 
+Hypothesis order_fun_false : forall a b : A, order_fun a b = false -> order b a.
+
+(* Insert an element *) 
 Fixpoint insert (a : A) (l : list A) {struct l} : list A :=
   match l with
   | nil => a :: nil
@@ -49,14 +45,12 @@ Fixpoint insert (a : A) (l : list A) {struct l} : list A :=
       | false => b :: insert a l1
       end
   end.
- 
-(* 
-  Inserting preserves ordering
- *)
 
+(* Inserting preserves ordering *)
 Theorem insert_ordered :
  forall l : list A,
  ordered order l -> forall a : A, ordered order (insert a l).
+Proof using order_fun_false order_fun_true.
 intros l H'; elim H'; clear H' l; auto.
 simpl in |- *; auto.
 intros a b; simpl in |- *.
@@ -74,12 +68,10 @@ generalize (refl_equal (order_fun a0 b));
  intros Eq1; auto.
 Qed.
 
-(* 
-   Inserting returns a permutation
- *)
- 
+(* Inserting returns a permutation *)
 Theorem insert_permutation :
  forall (L : list A) (a : A), permutation (a :: L) (insert a L).
+Proof using.
 intros L; elim L; simpl in |- *; auto.
 intros b l H' a.
 CaseEq (order_fun a b); intros H1; auto.
@@ -87,37 +79,28 @@ apply permutation_trans with (l2 := b :: a :: l); auto.
 Qed.
 Hint Resolve insert_ordered insert_permutation : core.
 
-(* 
-   Sorting by insertion 
- *)
- 
+(* Sorting by insertion *)
 Fixpoint isort (l : list A) : list A :=
   match l with
   | nil => nil
   | b :: l1 => insert b (isort l1)
   end.
 
-(* 
-   Sorting gives an ordered list
- *)
- 
+(* Sorting gives an ordered list *)
 Theorem isort_ordered : forall l : list A, ordered order (isort l).
+Proof using order_fun_false order_fun_true. 
 intros l; elim l; simpl in |- *; auto.
 Qed.
- 
-(* 
-  The result is a permutation of the original list
- *)
 
+(* The result is a permutation of the original list *)
 Theorem isort_permutation : forall l : list A, permutation l (isort l).
+Proof using.
 intros l; elim l; clear l; simpl in |- *; auto.
 intros a l H'.
 apply permutation_trans with (l2 := a :: isort l); auto.
 Qed.
 Hint Resolve isort_ordered isort_permutation : core.
 
- 
 End ISortExample.
-
 Arguments insert [A].
 Arguments isort [A].

@@ -6,13 +6,12 @@
 (* This program is distributed in the hope that it will be useful,    *)
 (* but WITHOUT ANY WARRANTY; without even the implied warranty of     *)
 (* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *)
-(* GNU General Public License for more details.                       *)
+(* GNU Lesser General Public License for more details.                *)
 (*                                                                    *)
 (* You should have received a copy of the GNU Lesser General Public   *)
 (* License along with this program; if not, write to the Free         *)
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
-
 
 (**********************************************************************
     Proof of Huffman algorithm: HeightPred.v                         
@@ -22,7 +21,8 @@
                                                                      
     Definition: height_pred                                          
                                     Laurent.Thery@inria.fr (2003)    
-  **********************************************************************)
+ **********************************************************************)
+
 From Huffman Require Export OrderedCover.
 From Huffman Require Export WeightTree.
 Require Import ArithRing.
@@ -33,13 +33,12 @@ Section HeightPred.
 Variable A : Type.
 Variable f : A -> nat.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
+
 (* 
   A predicate that associates an initial height, a list of
   height, a cover and a tree
-   *)
- 
-Inductive height_pred :
-nat -> list nat -> list (btree A) -> btree A -> Prop :=
+*)
+Inductive height_pred : nat -> list nat -> list (btree A) -> btree A -> Prop :=
   | height_pred_nil :
       forall (n : nat) (t : btree A), height_pred n (n :: nil) (t :: nil) t
   | height_pred_node :
@@ -49,71 +48,67 @@ nat -> list nat -> list (btree A) -> btree A -> Prop :=
       height_pred (S n) ln2 l2 t2 ->
       height_pred n (ln1 ++ ln2) (l1 ++ l2) (node t1 t2).
 Hint Resolve height_pred_nil height_pred_node : core.
-(* 
-  The cover is an ordered cover
-   *)
- 
+
+(* The cover is an ordered cover *)
 Theorem height_pred_ordered_cover :
  forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t -> ordered_cover l t.
+Proof using.
 intros n ln t l H; elim H; simpl in |- *; auto.
 Qed.
-(* 
-  The height list is never empty
-   *)
- 
+
+(* The height list is never empty *)
 Theorem height_pred_not_nil1 :
  forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t -> ln <> nil.
+Proof using.
 intros n ln t l H; elim H; simpl in |- *; auto.
 intros; discriminate.
 intros n0 ln1 ln2 t1 t2 l1 l2 H0; case ln1; simpl in |- *; auto.
 intros; discriminate.
 Qed.
-(* 
-  The cover list is never empty
-   *)
- 
+
+(* The cover list is never empty *) 
 Theorem height_pred_not_nil2 :
  forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t -> l <> nil.
+Proof using.
 intros n ln t l H; elim H; simpl in |- *; auto.
 intros; discriminate.
 intros n0 ln1 ln2 t1 t2 l1 l2 H0; case l1; simpl in |- *; auto.
 intros; discriminate.
 Qed.
-(* 
-  The height and cover lists have same length
-   *)
- 
+
+(* The height and cover lists have same length *)
 Theorem height_pred_length :
  forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t -> length ln = length l.
+Proof using.
 intros n ln t l H; elim H; simpl in |- *; auto.
 intros; repeat rewrite length_app; auto with arith.
 Qed.
+
 (* 
   The height and cover list gives a simple relation between
   weight_tree, sum_leaves and the product of the two lists
-   *)
- 
+*)
 Theorem height_pred_weight :
  forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t ->
  n * sum_leaves f t + weight_tree f t = prod2list f ln l.
+Proof using.
 intros n ln t l H; elim H; simpl in |- *; auto.
 intros n0 ln1 ln2 t1 t2 l1 l2 H0 H1 H2 H3.
 rewrite prod2list_app; auto with arith.
 rewrite <- H3; rewrite <- H1; ring.
 apply height_pred_length with (1 := H0); auto.
 Qed.
-(* 
-   Ordered covers can be completed with a height list
-   *)
- 
+
+(* Ordered covers can be completed with a height list *)
 Theorem ordered_cover_height_pred :
  forall (n : nat) (t : btree A) (l : list (btree A)),
  ordered_cover l t -> exists ln : list nat, height_pred n ln l t.
+Proof using.
 intros n t l H; generalize n; elim H; clear n t l H.
 intros t l n; exists (n :: nil); auto.
 intros t1 t2 l1 l2 l3 H H0 H1 H2 n.
@@ -121,13 +116,12 @@ case (H0 (S n)); intros ln1 HH1.
 case (H2 (S n)); intros ln2 HH2.
 exists (ln1 ++ ln2); auto.
 Qed.
-(* 
-   Elements in the height list are always larger than the initial height
-   *)
- 
+
+(* Elements in the height list are always larger than the initial height *) 
 Theorem height_pred_larger :
  forall (n n1 : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t -> In n1 ln -> n <= n1.
+Proof using.
 intros n n1 ln t l H; generalize n1; elim H; clear H n ln t l n1;
  auto with arith.
 intros n t n1 [H2| H2]; [ rewrite H2 | case H2 ]; auto.
@@ -135,13 +129,15 @@ intros n ln1 ln2 t1 t2 l1 l2 H H0 H1 H2 n1 H3; apply le_trans with (S n);
  auto with arith.
 case in_app_or with (1 := H3); auto.
 Qed.
-(* In the height list is not a singleton, all its element are
-   strictly larger than the initial height
-   *)
- 
+
+(* 
+  In the height list is not a singleton, all its element are
+  strictly larger than the initial height
+*) 
 Theorem height_pred_larger_strict :
  forall (n n1 : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t -> In n1 ln -> n < n1 \/ ln = n :: nil /\ l = t :: nil.
+Proof using.
 intros n n1 ln t l H; generalize n1; elim H; clear H n ln t l n1; auto.
 intros n ln1 ln2 t1 t2 l1 l2 H H0 H1 H2 n1 H3; left;
  apply lt_le_trans with (S n); auto.
@@ -149,20 +145,19 @@ case in_app_or with (1 := H3).
 intros H4; apply height_pred_larger with (1 := H); auto.
 intros H4; apply height_pred_larger with (1 := H1); auto.
 Qed.
-(* 
-  There always a larger element that the initial height in the heigh list
-   *)
- 
+
+(* There always a larger element that the initial height in the heigh list *)
 Theorem height_pred_larger_ex :
  forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t -> exists n1 : _, In n1 ln /\ n <= n1.
+Proof using.
 intros n ln t l H; elim H; clear H n ln t l.
 intros n t; exists n; auto with datatypes.
 intros n ln1 ln2 t1 t2 l1 l2 H (n1, (HH1, HH2)) H1 H2.
 exists n1; auto with datatypes arith.
 Qed.
  
-Let height_pred_disj_larger_aux :
+Lemma height_pred_disj_larger_aux :
   forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
   height_pred n ln l t ->
   forall ln1 ln2 a,
@@ -170,6 +165,7 @@ Let height_pred_disj_larger_aux :
   (forall n1 : nat, In n1 ln1 -> n1 < a) ->
   (forall n1 : nat, In n1 ln2 -> n1 <= a) ->
   (exists ln3 : _, ln2 = a :: ln3) \/ ln = n :: nil /\ l = t :: nil.
+Proof using.
 intros n ln t l H; elim H; clear H n ln t l.
 intros n t l ln1 ln2 a; case ln1; simpl in |- *; auto.
 intros n ln1 ln2 t1 t2 l1 l2 H H0 H1 H2 ln0 ln3 a H3 H4 H5.
@@ -218,10 +214,8 @@ case height_pred_larger_ex with (1 := H); auto.
 intros n1; rewrite <- HH5; intros (HH6, HH7).
 Contradict HH7; apply lt_not_le; apply H4; rewrite E1; auto with datatypes.
 Qed.
-(* 
-   The first maximum height in the list is immediately repeated once
-   *)
- 
+
+(* The first maximum height in the list is immediately repeated once *)
 Theorem height_pred_disj_larger :
  forall (n a : nat) (ln1 ln2 : list nat) (t : btree A) (l : list (btree A)),
  height_pred n (ln1 ++ a :: ln2) l t ->
@@ -229,6 +223,7 @@ Theorem height_pred_disj_larger :
  (forall n1 : nat, In n1 ln2 -> n1 <= a) ->
  (exists ln3 : _, ln2 = a :: ln3) \/
  (ln1 = nil /\ a = n /\ ln2 = nil) /\ l = t :: nil.
+Proof using.
 intros n a ln1 ln2 t l H H0 H1;
  case
   height_pred_disj_larger_aux
@@ -238,13 +233,14 @@ intros n a ln1 ln2 t l H H0 H1;
  | intros n0 l1; case l1; simpl in |- *; intuition; try discriminate ].
 Qed.
  
-Let height_pred_disj_larger2_aux :
+Lemma height_pred_disj_larger2_aux :
   forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
   height_pred n ln l t ->
   forall ln1 ln2 a,
   ln = ln1 ++ a :: ln2 ->
   (exists n1 : _, In n1 ln1 /\ a <= n1) \/
   (exists n1 : _, In n1 ln2 /\ a <= n1) \/ ln = n :: nil /\ l = t :: nil.
+Proof using.
 intros n ln t l H; elim H; clear H n ln t l.
 intros n t l ln1 ln2 a; case ln1; simpl in |- *; auto.
 intros n ln1 ln2 t1 t2 l1 l2 H H0 H1 H2 ln0 ln3 a H3.
@@ -284,16 +280,15 @@ case height_pred_larger_ex with (1 := H); auto.
 intros n1; rewrite <- HH5; intros (HM1, HM2).
 left; exists n1; split; auto; rewrite E1; auto with datatypes.
 Qed.
-(* 
-   There is no strict maximum in a list
-   *)
- 
+
+(* There is no strict maximum in a list *)
 Theorem height_pred_disj_larger2 :
  forall (n a : nat) (ln1 ln2 : list nat) (t : btree A) (l : list (btree A)),
  height_pred n (ln1 ++ a :: ln2) l t ->
  (exists n1 : _, In n1 ln1 /\ a <= n1) \/
  (exists n1 : _, In n1 ln2 /\ a <= n1) \/
  (ln1 = nil /\ a = n /\ ln2 = nil) /\ l = t :: nil.
+Proof using.
 intros n a ln1 ln2 t l H;
  case
   height_pred_disj_larger2_aux
@@ -316,6 +311,7 @@ Let height_pred_shrink_aux :
   length ln1 = length l1 ->
   l = l1 ++ t1 :: t2 :: l2 ->
   height_pred n (ln1 ++ pred a :: ln2) (l1 ++ node t1 t2 :: l2) t.
+Proof using.
 intros n ln t l H; elim H; clear n ln t l H; auto.
 intros n t l1 l2 ln1 ln2 a b t1 t2; case ln1;
  try (simpl in |- *; intros; discriminate).
@@ -414,10 +410,11 @@ rewrite HH2 in H8; injection H8; auto.
 generalize H6; rewrite HH3; case l0; simpl in |- *; auto; intros;
  discriminate.
 Qed.
-(* A cover can be shrunk at the first maximum of the height while
-   preserving the height list
-   *)
- 
+
+(* 
+  A cover can be shrunk at the first maximum of the height while
+  preserving the height list
+*) 
 Theorem height_pred_shrink :
  forall (n a b : nat) (ln1 ln2 : list nat) (t t1 t2 : btree A)
    (l1 l2 : list (btree A)),
@@ -426,20 +423,22 @@ Theorem height_pred_shrink :
  (forall n1 : nat, In n1 (b :: ln2) -> n1 <= a) ->
  length ln1 = length l1 ->
  height_pred n (ln1 ++ pred a :: ln2) (l1 ++ node t1 t2 :: l2) t.
+Proof using.
 intros n a b ln1 ln2 t t1 t2 l1 l2 H H0 H1 H2;
  apply height_pred_shrink_aux with (1 := H) (b := b); 
  auto.
 Qed.
-(* 
-   Given a tree and its associated code it is possible to build
-   a height list (the length of the codes) and a cover (the leaves)
-   that are in relation
-   *)
- 
+
+(*
+  Given a tree and its associated code it is possible to build
+  a height list (the length of the codes) and a cover (the leaves)
+  that are in relation
+*)
 Theorem height_pred_compute_code :
  forall (n : nat) (t : btree A),
  height_pred n (map (fun x => length (snd x) + n) (compute_code t))
    (map (fun x => leaf (fst x)) (compute_code t)) t.
+Proof using.
 intros n t; generalize n; elim t; clear t n; simpl in |- *; auto.
 intros b H b0 H0 n.
 repeat rewrite map_app.
@@ -462,16 +461,17 @@ intros b1 l; elim l; simpl in |- *; auto.
 intros a; case a; simpl in |- *; auto.
 intros a0 l0 l1 H1; apply f_equal2 with (f := cons (A:=nat)); auto.
 Qed.
+
 (* 
-   A consequence of the previous theorem, the weight of the tree
-   is exactly the encoding of the message of the corresponding code
-   *)
- 
+  A consequence of the previous theorem, the weight of the tree
+  is exactly the encoding of the message of the corresponding code
+*) 
 Theorem weight_tree_compute :
  forall (m : list A) t,
  distinct_leaves t ->
  (forall a : A, f a = number_of_occurrences eqA_dec a m) ->
  length (encode eqA_dec (compute_code t) m) = weight_tree f t.
+Proof using.
 intros m t H0 H.
 rewrite frequency_length; auto.
 apply trans_equal with (0 * sum_leaves f t + weight_tree f t); auto.

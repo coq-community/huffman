@@ -6,13 +6,12 @@
 (* This program is distributed in the hope that it will be useful,    *)
 (* but WITHOUT ANY WARRANTY; without even the implied warranty of     *)
 (* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *)
-(* GNU General Public License for more details.                       *)
+(* GNU Lesser General Public License for more details.                *)
 (*                                                                    *)
 (* You should have received a copy of the GNU Lesser General Public   *)
 (* License along with this program; if not, write to the Free         *)
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
-
 
 (**********************************************************************
     Proof of Huffman algorithm: BTree.v                              
@@ -24,7 +23,8 @@
         number_of_nodes        
                                                                      
                                     Laurent.Thery@inria.fr (2003)    
-  **********************************************************************)
+ **********************************************************************)
+
 From Huffman Require Export Code.
 From Huffman Require Export ISort.
 Require Export Compare_dec.
@@ -36,62 +36,52 @@ Section Tree.
 Variable A : Type.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
 Variable empty : A.
-(* 
-  Definition of binary trees 
-   *)
- 
+
+(* Definition of binary trees *)
 Inductive btree : Type :=
   | leaf : A -> btree
   | node : btree -> btree -> btree.
-(* 
-  Predicate that defines belonging
-   *)
- 
+
+(* Predicate that defines belonging *)
 Inductive inb : btree -> btree -> Prop :=
   | inleaf : forall t : btree, inb t t
   | innodeL : forall t t1 t2 : btree, inb t t1 -> inb t (node t1 t2)
   | innodeR : forall t t1 t2 : btree, inb t t2 -> inb t (node t1 t2).
 Hint Constructors inb : core.
-(* 
-  inb is transitive
-   *)
- 
+
+(* inb is transitive *)
 Theorem inb_trans : forall t1 t2 t3, inb t1 t2 -> inb t2 t3 -> inb t1 t3.
+Proof using.
 intros t1 t2 t3 H H1; generalize t1 H; elim H1; clear H H1 t1 t2 t3; auto.
 Qed.
-(* 
-   A tree as at least a leaf 
-   *)
- 
+
+(* A tree has at least one leaf  *)
 Theorem inb_ex : forall t : btree, exists x : _, inb (leaf x) t.
+Proof using.
 intros t; elim t; simpl in |- *; auto.
 intros a; exists a; auto.
 intros b (a, H) b0 H0; exists a; auto.
 Qed.
-(* 
-   Compute the number of nodes of a tree
-   *)
- 
+
+(* Compute the number of nodes of a tree *) 
 Fixpoint number_of_nodes (b : btree) : nat :=
   match b with
   | leaf _ => 0
   | node b1 b2 => S (number_of_nodes b1 + number_of_nodes b2)
   end.
-(* 
-   Belonging gives smaller trees 
-   *)
- 
+
+(* Belonging gives smaller trees *)
 Theorem number_of_nodes_inb_le :
  forall t1 t2, inb t1 t2 -> number_of_nodes t1 <= number_of_nodes t2.
+Proof using.
 intros t1 t2 H; elim H; clear H t1 t2; simpl in |- *; auto.
 intros t t1 t2 H H0; apply le_trans with (1 := H0); auto with arith.
 intros t t1 t2 H H0; apply le_trans with (1 := H0); auto with arith.
 Qed.
-(* 
-   Belonging is anisymmetric
-   *)
- 
+
+(* Belonging is anisymmetric *)
 Theorem inb_antisym : forall t1 t2 : btree, inb t1 t2 -> inb t2 t1 -> t1 = t2.
+Proof using.
 intros t1 t2 H; elim H; auto.
 intros t t0 t3 H0 H1 H2.
 absurd (number_of_nodes (node t0 t3) <= number_of_nodes t).
@@ -104,10 +94,8 @@ rewrite H1; simpl in |- *; auto with arith.
 apply inb_trans with (2 := H2); auto.
 apply number_of_nodes_inb_le; auto.
 Qed.
-(* 
-   equality on trees is decidable 
-   *)
- 
+
+(* equality on trees is decidable  *)
 Definition btree_dec : forall a b : btree, {a = b} + {a <> b}.
 intros a; elim a.
 intros a1 b; case b.
@@ -123,10 +111,8 @@ left; rewrite H1; rewrite H2; auto.
 right; rewrite H1; Contradict H2; inversion H2; auto.
 right; Contradict H1; inversion H1; auto.
 Defined.
-(* 
-   Belonging is decidable
-   *)
- 
+
+(* Belonging is decidable *)
 Definition inb_dec : forall a p, {inb a p} + {~ inb a p}.
 intros a; elim a; simpl in |- *; auto; clear a.
 intros a p; elim p; simpl in |- *; auto; clear p.
@@ -148,76 +134,65 @@ left; rewrite H5; auto.
 right; red in |- *; intros H6; inversion H6; auto.
 case H5; rewrite H9; rewrite H10; auto.
 Defined.
-(* 
-  Compute all the leaves of the tree
-   *)
- 
+
+(* Compute all the leaves of the tree *)
 Fixpoint all_leaves (t : btree) : list A :=
   match t with
   | leaf a => a :: nil
   | node t1 t2 => all_leaves t1 ++ all_leaves t2
   end.
-(*                        
-  A leaf is in the list of all leaves
-   *)
- 
+
+(* A leaf is in the list of all leaves *)
 Theorem all_leaves_in : forall t a, inb (leaf a) t -> In a (all_leaves t).
+Proof using.
 intros t; elim t; simpl in |- *; auto.
 intros a a0 H; inversion H; auto.
 intros b H b0 H0 a H1; apply in_or_app; inversion H1; auto.
 Qed.
-(* 
-   An element of a list of all leaves is a leaf
-   *)
- 
+
+(* An element of a list of all leaves is a leaf *)
 Theorem all_leaves_inb : forall t a, In a (all_leaves t) -> inb (leaf a) t.
+Proof using.
 intros t; elim t; simpl in |- *; auto.
 intros a a0 [H| H]; [ rewrite H | case H ]; auto.
 intros b H b0 H0 a H1; case in_app_or with (1 := H1); auto.
 Qed.
-(* 
-   The property for a tree to have distinct leaves 
-   *)
- 
+
+(* The property for a tree to have distinct leaves  *)
 Definition distinct_leaves (t : btree) : Prop :=
   forall t0 t1 t2 : btree,
   inb (node t1 t2) t -> inb t0 t1 -> inb t0 t2 -> False.
-(* 
-   A leaf tree has disting leaves 
-   *)
- 
+
+(* A leaf tree has distinct leaves  *)
 Theorem distinct_leaves_leaf : forall a : A, distinct_leaves (leaf a).
+Proof using.
 intros a; red in |- *.
 intros a0 t1 t2 H; inversion H.
 Qed.
 Hint Resolve distinct_leaves_leaf : core.
-(* 
-   An inversion theorem for node 
-   *)
- 
+
+(* An inversion theorem for node *)
 Theorem distinct_leaves_l :
  forall t1 t2 : btree, distinct_leaves (node t1 t2) -> distinct_leaves t1.
+Proof using.
 intros t1 t2 H; red in |- *.
 intros a t0 t3 H0 H1 H2.
 apply (H a t0 t3); auto.
 Qed.
-(* 
-   An inversion theorem for node
-   *)
- 
+
+(* An inversion theorem for node *)
 Theorem distinct_leaves_r :
  forall t1 t2 : btree, distinct_leaves (node t1 t2) -> distinct_leaves t2.
+Proof using.
 intros t1 t2 H; red in |- *.
 intros a t0 t3 H0 H1 H2.
 apply (H a t0 t3); auto.
 Qed.
-(* 
-   If list of all the leaves of the tree is unique then the tree has
-   distinct leaves
-   *)
- 
+
+(* If list of all the leaves of the tree is unique then the tree has distinct leaves *)
 Theorem all_leaves_unique :
  forall t, ulist (all_leaves t) -> distinct_leaves t.
+Proof using.
 intros t; elim t; simpl in |- *; auto.
 intros b H b0 H0 H1; red in |- *.
 intros t0 t1 t2 H2; inversion H2.
@@ -227,13 +202,11 @@ apply ulist_app_inv with (a := a) (1 := H1); auto; apply all_leaves_in;
 apply H; auto; try apply ulist_app_inv_l with (1 := H1).
 apply H0; auto; try apply ulist_app_inv_r with (1 := H1).
 Qed.
-(* 
-   If the tree has distinct leaves then the list of all the leaves 
-   of the tree is unique
-   *)
- 
+
+(* If the tree has distinct leaves then the list of all the leaves of the tree is unique *)
 Theorem all_leaves_ulist :
  forall t, distinct_leaves t -> ulist (all_leaves t).
+Proof using.
 intros t; elim t; simpl in |- *; auto.
 intros b H b0 H0 H1; apply ulist_app; auto.
 apply H; apply distinct_leaves_l with (1 := H1).
@@ -242,20 +215,16 @@ intros a H2 H3; case (H1 (leaf a) b b0); auto.
 apply all_leaves_inb with (1 := H2).
 apply all_leaves_inb with (1 := H3).
 Qed.
-(* 
-   Uniqueleaf is decidable
-   *)
- 
+
+(* Uniqueleaf is decidable *)
 Definition distinct_leaves_dec :
   forall a, {distinct_leaves a} + {~ distinct_leaves a}.
 intros a; case (ulist_dec A eqA_dec (all_leaves a)); intros H.
 left; apply all_leaves_unique; auto.
 right; Contradict H; apply all_leaves_ulist; auto.
 Defined.
-(* 
-   Compute the code associated with a binary tree
-   *)
- 
+
+(* Compute the code associated with a binary tree *)
 Fixpoint compute_code (a : btree) : list (A * list bool) :=
   match a with
   | leaf b => (b, nil) :: nil
@@ -271,11 +240,10 @@ Fixpoint compute_code (a : btree) : list (A * list bool) :=
          | (a1, b1) => (a1, true :: b1)
          end) (compute_code l2)
   end.
-(* 
-   The computed code is never empty
-   *)
- 
+
+(* The computed code is never empty *)
 Theorem length_compute_lt_O : forall t, 0 < length (compute_code t).
+Proof using.
 intros t; elim t; simpl in |- *; auto with arith.
 intros b H b0 H0; rewrite length_app.
 replace 0 with (0 + 0); auto with arith.
@@ -284,13 +252,12 @@ generalize H; elim (compute_code b); simpl in |- *; auto with arith.
 generalize H0; elim (compute_code b0); simpl in |- *; auto with arith.
 Qed.
 Hint Resolve length_compute_lt_O : core.
-(* 
-   If the computed code has a key it was a leaf of the tree
-   *)
- 
+
+(* If the computed code has a key it was a leaf of the tree *)
 Theorem inCompute_inb :
  forall (t : btree) (a : A) (l : list bool),
  In (a, l) (compute_code t) -> inb (leaf a) t.
+Proof using.
 intros t; elim t; simpl in |- *; auto.
 intros a a0 l [H1| H1]; try (case H1; fail).
 injection H1; intros H2 H3; rewrite H3; auto.
@@ -305,12 +272,11 @@ intros (a1, l1) (Ha1, Hl1); auto.
 apply innodeR; apply (H0 a l1).
 injection Hl1; intros Hl2 Hl3; rewrite Hl3; auto.
 Qed.
-(* 
-   For every leaf in the tree there is an associated key in the code 
-   *)
- 
+
+(* For every leaf in the tree there is an associated key in the code *)
 Theorem inb_compute_ex :
  forall a p, inb (leaf a) p -> exists l : _, In (a, l) (compute_code p).
+Proof using.
 intros a p; elim p; simpl in |- *; auto.
 intros a0 H; inversion H.
 exists (nil (A:=bool)); auto.
@@ -338,26 +304,24 @@ change
                     end) (compute_code p1))) in |- *; 
  apply in_map; auto.
 Qed.
-(* 
-  The computed code is in the alphabet of its leaves
-   *)
- 
+
+(* The computed code is in the alphabet of its leaves *)
 Theorem in_alphabet_compute_code :
  forall m t,
  (forall a : A, In a m -> inb (leaf a) t) -> in_alphabet m (compute_code t).
+Proof using.
 intros m; elim m; simpl in |- *; auto.
 intros a l H t H0; cut (inb (leaf a) t); auto; intros H1.
 case inb_compute_ex with (1 := H1).
 intros l1 Hl1; apply in_alphabet_cons with (ca := l1); auto.
 Qed.
-(* 
-  Two associations in the list with same prefix have same key
-   *)
- 
+
+(* Two associations in the list with same prefix have same key *)
 Theorem btree_unique_prefix1 :
  forall (t : btree) (a1 a2 : A) (lb1 lb2 : list bool),
  In (a1, lb1) (compute_code t) ->
  In (a2, lb2) (compute_code t) -> is_prefix lb1 lb2 -> a1 = a2.
+Proof using.
 intros t; elim t; simpl in |- *.
 intros leaf1 a1 a2 lb1 lb2 H1 H2.
 case H1; intros H3; [ injection H3 | case H3 ].
@@ -403,12 +367,11 @@ intros x; case x.
 intros a l (H7, H8); injection H8.
 intros R1 R2 R3; rewrite R1; rewrite R3; auto.
 Qed.
-(* 
-  If a tree has distinc leaves its computed tree has unique keys 
-   *)
- 
+
+(* If a tree has distinc leaves its computed tree has unique keys *)
 Theorem btree_unique_prefix2 :
  forall t : btree, distinct_leaves t -> unique_key (compute_code t).
+Proof using.
 intros t; elim t; simpl in |- *; auto.
 intros b H b0 H0 H1.
 apply unique_key_app; auto.
@@ -427,12 +390,11 @@ apply inCompute_inb with (1 := Ha2).
 injection Hl1; intros HH1 HH2; rewrite HH2.
 apply inCompute_inb with (1 := Ha1).
 Qed.
-(* 
-   If a tree has distinct leaves its code is prefix
-   *)
- 
+
+(* If a tree has distinct leaves its code is prefix *)
 Theorem btree_unique_prefix :
  forall t : btree, distinct_leaves t -> unique_prefix (compute_code t).
+Proof using.
 intros t H1; split; try exact (btree_unique_prefix1 t);
  apply btree_unique_prefix2; auto.
 Qed.
