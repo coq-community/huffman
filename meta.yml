@@ -23,7 +23,6 @@ opam-file-maintainer: palmskog@gmail.com
 license:
   fullname: GNU Lesser General Public License v2.1 or later
   identifier: LGPL-2.1-or-later
-  shortname: LGPL 2.1
 
 supported_coq_versions:
   text: Coq 8.7 or later
