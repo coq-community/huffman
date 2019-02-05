@@ -27,8 +27,8 @@
 From Huffman Require Import Huffman.
 From Huffman Require Import Code.
 From Huffman Require Import ISort.
-Require Extraction.
- 
+From Coq Require Extraction.
+
 Extraction Inline list_length_induction.
 Extraction NoInline code insert isort map frequency_list huffman encode decode.
  
