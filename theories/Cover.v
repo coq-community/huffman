@@ -59,6 +59,7 @@ Qed.
 (* A trivial way to cover a node *)
 Theorem cover_cons_l :
  forall t1 t2 l1, cover l1 t1 -> cover (t2 :: l1) (node t2 t1).
+Proof using.
 intros t1 t2 l1 H; elim H; clear t1 l1 H; simpl in |- *; auto.
 intros t; apply cover_node with (l2 := nil (A:=btree A)) (t1 := t2) (t2 := t);
  auto.
@@ -120,7 +121,7 @@ Proof using.
 intros l t1 t2 H H0; apply cover_in_inb_inb with (1 := H) (2 := H0); auto.
 Qed.
  
-Let cover_inv_leaf_aux :
+Theorem cover_inv_leaf_aux :
   forall t l, cover l t -> forall a : A, t = leaf a -> l = leaf a :: nil.
 Proof using.
 intros t l H; elim H; simpl in |- *; auto.
@@ -299,6 +300,7 @@ Qed.
 (* A cover of a given length is in the local list *)
 Theorem cover_all_cover_aux :
  forall (n : nat) l t, n = length l -> cover l t -> In t (all_cover_aux l n).
+Proof using.
 intros n; elim n; simpl in |- *; auto.
 intros l; case l; simpl in |- *; auto.
 intros t H H0; inversion H0.

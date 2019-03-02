@@ -301,7 +301,7 @@ intros H0 H4 H5; repeat right; auto.
 intros n0 l0; case l0; simpl in |- *; intros; discriminate.
 Qed.
  
-Let height_pred_shrink_aux :
+Theorem height_pred_shrink_aux :
   forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
   height_pred n ln l t ->
   forall l1 l2 ln1 ln2 a b t1 t2,
