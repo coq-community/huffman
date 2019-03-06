@@ -17,12 +17,9 @@
 [gitter-shield]: https://img.shields.io/badge/chat-on%20gitter-%23c1272d.svg
 [gitter-link]: https://gitter.im/coq-community/Lobby
 
-This projects contains a proof of correctness of the Huffman coding
-algorithm, as described in the paper
-[A Method for the Construction of Minimum-Redundancy Codes][paper],
-Proc. IRE, pp. 1098-1101, September 1952.
-
-[paper]: http://compression.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf
+This projects contains a Coq proof of the correctness of the Huffman coding algorithm,
+as described in David A. Huffman's paper A Method for the Construction of Minimum-Redundancy
+Codes, Proc. IRE, pp. 1098-1101, September 1952.
 
 
 
@@ -30,7 +27,7 @@ Proc. IRE, pp. 1098-1101, September 1952.
 
 - Author(s):
   - Laurent Théry (initial)
-- Coq-community maintainer(s):
+- Maintainer(s):
   - Karl Palmskog ([**@palmskog**](https://github.com/palmskog))
 - License: [GNU Lesser General Public License v2.1 or later](LICENSE)
 - Compatible Coq versions: Coq 8.7 or later
@@ -85,4 +82,8 @@ ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html
 
 In particular, a note in PDF format describes the formalization:
 ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/Note.pdf
+
+See also the [paper on the algorithm][paper].
+
+[paper]: http://compression.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf
 
