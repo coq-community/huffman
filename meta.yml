@@ -1,14 +1,14 @@
 ---
 fullname: Huffman
 shortname: huffman
+organization: coq-community
+
+synopsis: A Coq proof of the correctness of the Huffman coding algorithm
 
 description: |
-  This projects contains a proof of correctness of the Huffman coding
-  algorithm, as described in the paper
-  [A Method for the Construction of Minimum-Redundancy Codes][paper],
-  Proc. IRE, pp. 1098-1101, September 1952.
-
-  [paper]: http://compression.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf
+  This projects contains a Coq proof of the correctness of the Huffman coding algorithm,
+  as described in David A. Huffman's paper A Method for the Construction of Minimum-Redundancy
+  Codes, Proc. IRE, pp. 1098-1101, September 1952.
 
 authors:
 - name: Laurent Théry
@@ -29,7 +29,7 @@ supported_coq_versions:
   opam: '{(>= "8.7" & < "8.10~") | (= "dev")}'
 
 tested_coq_versions:
-- version_or_url: https://github.com/coq/coq/tarball/master
+- version_or_url: https://github.com/coq/coq-on-cachix/tarball/master
 - version_or_url: 8.9
 - version_or_url: 8.8
 - version_or_url: 8.7
@@ -75,4 +75,8 @@ documentation: |
   
   In particular, a note in PDF format describes the formalization:
   ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/Note.pdf
+
+  See also the [paper on the algorithm][paper].
+
+  [paper]: http://compression.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf
 ---
