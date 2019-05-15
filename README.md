@@ -17,6 +17,7 @@
 [gitter-shield]: https://img.shields.io/badge/chat-on%20gitter-%23c1272d.svg
 [gitter-link]: https://gitter.im/coq-community/Lobby
 
+
 This projects contains a Coq proof of the correctness of the Huffman coding algorithm,
 as described in David A. Huffman's paper A Method for the Construction of Minimum-Redundancy
 Codes, Proc. IRE, pp. 1098-1101, September 1952.
@@ -27,16 +28,16 @@ Codes, Proc. IRE, pp. 1098-1101, September 1952.
 
 - Author(s):
   - Laurent Théry (initial)
-- Maintainer(s):
+- Coq-community maintainer(s):
   - Karl Palmskog ([**@palmskog**](https://github.com/palmskog))
 - License: [GNU Lesser General Public License v2.1 or later](LICENSE)
-- Compatible Coq versions: Coq 8.7 or later
-- Additional dependencies: none
+- Compatible Coq versions: 8.7 or later
+- Additional Coq dependencies: none
 
 ## Building and installation instructions
 
-The easiest way to install the latest released version is via
-[OPAM](https://opam.ocaml.org/doc/Install.html):
+The easiest way to install the latest released version of Huffman
+is via [OPAM](https://opam.ocaml.org/doc/Install.html):
 
 ```shell
 opam repo add coq-released https://coq.inria.fr/opam/released
@@ -54,6 +55,7 @@ make install
 
 After installation, the included modules are available under
 the `Huffman` namespace.
+
 
 ## Documentation
   
