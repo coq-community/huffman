@@ -2,6 +2,7 @@
 fullname: Huffman
 shortname: huffman
 organization: coq-community
+community: true
 
 synopsis: A Coq proof of the correctness of the Huffman coding algorithm
 
@@ -25,16 +26,17 @@ license:
   identifier: LGPL-2.1-or-later
 
 supported_coq_versions:
-  text: Coq 8.7 or later
-  opam: '{(>= "8.7" & < "8.10~") | (= "dev")}'
+  text: 8.7 or later
+  opam: '{(>= "8.7" & < "8.11~") | (= "dev")}'
 
-tested_coq_versions:
+tested_coq_nix_versions:
 - version_or_url: https://github.com/coq/coq-on-cachix/tarball/master
 - version_or_url: 8.9
 - version_or_url: 8.8
 - version_or_url: 8.7
 
-tested_coq_opam_version: dev
+tested_coq_opam_versions:
+- version: dev
 
 namespace: Huffman
 
