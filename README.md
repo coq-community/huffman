@@ -79,14 +79,13 @@ To decode a string:
 decode code c;;
 ```
 
-Some more information on the development is available:
-ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html
+A [technical report][report] describes the formalization.
 
-A [technical report][report] describes the formalization
+Some more information on the development is also available:
+ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html
 
 See also the [paper on the algorithm][paper].
 
-[report]:
-https://hal.archives-ouvertes.fr/hal-02149909
-
+[report]: https://hal.archives-ouvertes.fr/hal-02149909
 [paper]: http://compression.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf
+

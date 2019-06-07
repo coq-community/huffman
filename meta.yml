@@ -51,17 +51,17 @@ categories:
 
 documentation: |
   ## Documentation
-    
+
   To run the algorithm, open an OCaml toplevel (`ocaml`) and do
   ```ocaml
   #use "run_huffman.ml";;
   ```
-  
+
   To get the code that gives the frequency string:  
   ```ocaml
   let code = huffman "abbcccddddeeeee";;
   ```
-  
+
   To code a string:
   ```ocaml
   let c = encode code "abcde";;
@@ -72,13 +72,13 @@ documentation: |
   decode code c;;
   ```
 
-  Some more information on the development is available:
+  A [technical report][report] describes the formalization.
+
+  Some more information on the development is also available:
   ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html
-  
-  In particular, a note in PDF format describes the formalization:
-  ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/Note.pdf
 
   See also the [paper on the algorithm][paper].
 
+  [report]: https://hal.archives-ouvertes.fr/hal-02149909
   [paper]: http://compression.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf
 ---
