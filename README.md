@@ -58,7 +58,7 @@ the `Huffman` namespace.
 
 
 ## Documentation
-  
+
 To run the algorithm, open an OCaml toplevel (`ocaml`) and do
 ```ocaml
 #use "run_huffman.ml";;
@@ -82,10 +82,11 @@ decode code c;;
 Some more information on the development is available:
 ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html
 
-In particular, a note in PDF format describes the formalization:
-ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/Note.pdf
+A [technical report][report] describes the formalization
 
 See also the [paper on the algorithm][paper].
 
-[paper]: http://compression.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf
+[report]:
+https://hal.archives-ouvertes.fr/hal-02149909
 
+[paper]: http://compression.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf
