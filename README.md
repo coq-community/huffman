@@ -57,7 +57,12 @@ make install
 
 ## Documentation
 
-To run the algorithm, open an OCaml toplevel (`ocaml`) and do
+To run the extracted algorithm, build the project and then run
+```
+make run_huffman.ml
+```
+
+Next, open an OCaml toplevel (e.g., `ocaml`) and do
 ```ocaml
 #use "run_huffman.ml";;
 ```
