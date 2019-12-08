@@ -9,3 +9,5 @@ run_huffman.ml
 *.glob
 *.vo
 *.vio
+*.vok
+*.vos

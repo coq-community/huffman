@@ -1,5 +1,6 @@
 opam-version: "2.0"
 maintainer: "palmskog@gmail.com"
+version: "dev"
 
 homepage: "https://github.com/coq-community/huffman"
 dev-repo: "git+https://github.com/coq-community/huffman.git"
@@ -10,14 +11,13 @@ synopsis: "A Coq proof of the correctness of the Huffman coding algorithm"
 description: """
 This projects contains a Coq proof of the correctness of the Huffman coding algorithm,
 as described in David A. Huffman's paper A Method for the Construction of Minimum-Redundancy
-Codes, Proc. IRE, pp. 1098-1101, September 1952.
-"""
+Codes, Proc. IRE, pp. 1098-1101, September 1952."""
 
 build: [make "-j%{jobs}%"]
 install: [make "install"]
 depends: [
   "ocaml"
-  "coq" {(>= "8.7" & < "8.11~") | (= "dev")}
+  "coq" {(>= "8.7" & < "8.12~") | (= "dev")}
 ]
 
 tags: [

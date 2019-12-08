@@ -22,8 +22,6 @@ This projects contains a Coq proof of the correctness of the Huffman coding algo
 as described in David A. Huffman's paper A Method for the Construction of Minimum-Redundancy
 Codes, Proc. IRE, pp. 1098-1101, September 1952.
 
-
-
 ## Meta
 
 - Author(s):
@@ -33,6 +31,9 @@ Codes, Proc. IRE, pp. 1098-1101, September 1952.
 - License: [GNU Lesser General Public License v2.1 or later](LICENSE)
 - Compatible Coq versions: 8.7 or later
 - Additional Coq dependencies: none
+- Coq namespace: `Huffman`
+- Related publication(s):
+  - [Formalising Huffman's algorithm](https://hal.archives-ouvertes.fr/hal-02149909) 
 
 ## Building and installation instructions
 
@@ -53,13 +54,15 @@ make   # or make -j <number-of-cores-on-your-machine>
 make install
 ```
 
-After installation, the included modules are available under
-the `Huffman` namespace.
-
 
 ## Documentation
 
-To run the algorithm, open an OCaml toplevel (`ocaml`) and do
+To run the extracted algorithm, build the project and then run
+```
+make run_huffman.ml
+```
+
+Next, open an OCaml toplevel (e.g., `ocaml`) and do
 ```ocaml
 #use "run_huffman.ml";;
 ```
@@ -79,13 +82,9 @@ To decode a string:
 decode code c;;
 ```
 
-A [technical report][report] describes the formalization.
-
 Some more information on the development is also available:
 ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html
 
 See also the [paper on the algorithm][paper].
 
-[report]: https://hal.archives-ouvertes.fr/hal-02149909
 [paper]: http://compression.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf
-
