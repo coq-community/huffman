@@ -121,6 +121,7 @@ Qed.
 Definition obuildf :
   forall l : list (btree A),
   l <> nil -> ordered (sum_order f) l -> {t : btree A | build l t}.
+Proof.
 intros l; elim l using list_length_induction.
 intros l1; case l1; clear l1.
 intros H H0; case H0; auto.
@@ -157,6 +158,7 @@ Defined.
 (* a function to buid tree from a cover list merging smaller trees *)
 Definition buildf :
   forall l : list (btree A), l <> nil -> {t : btree A | build l t}.
+Proof.
 intros l Hl; cut (isort (le_sum f) l <> nil).
 intros H1; cut (ordered (sum_order f) (isort (le_sum f) l)).
 intros H2; case (obuildf (isort (le_sum f) l) H1 H2).
@@ -279,10 +281,11 @@ Qed.
 (* Final function that tree of minimal weight for the cover *)
 Definition build_fun :
   forall l : list (btree A), l <> nil -> {t : btree A | cover_min _ f l t}.
+Proof.
 intros l Hl; case (buildf l Hl).
 intros x b; exists x.
 apply build_correct; auto.
 Defined.
- 
+
 End Build.
 Arguments build [A].

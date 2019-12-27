@@ -28,23 +28,23 @@ Require Import List.
 Require Import Arith.
 From Huffman Require Import Permutation.
 From Huffman Require Import sTactic.
- 
+
 Section UniqueList.
 Variable A : Type.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
- 
+
 (* A list is unique if there is not twice the same element in the list *)
 Inductive ulist : list A -> Prop :=
   | ulist_nil : ulist nil
   | ulist_cons : forall a l, ~ In a l -> ulist l -> ulist (a :: l).
 Hint Constructors ulist : core.
- 
+
 (* Inversion theorem *)
 Theorem ulist_inv : forall a l, ulist (a :: l) -> ulist l.
 Proof using.  
 intros a l H; inversion H; auto.
 Qed.
- 
+
 (* The append of two unique list is unique if the list are distinct *)
 Theorem ulist_app :
  forall l1 l2,
@@ -60,7 +60,7 @@ apply H; auto.
 apply ulist_inv with (1 := H0); auto.
 intros a0 H3 H4; apply (H2 a0); auto.
 Qed.
- 
+
 (* Inversion theorem the appended list *)
 Theorem ulist_app_inv :
  forall l1 l2 (a : A), ulist (l1 ++ l2) -> In a l1 -> In a l2 -> False.
@@ -72,7 +72,7 @@ case H5; rewrite H1; auto with datatypes.
 apply (H l2 a0); auto.
 apply ulist_inv with (1 := H0); auto.
 Qed.
- 
+
 (* Inversion theorem the appended list *)
 Theorem ulist_app_inv_l : forall l1 l2 : list A, ulist (l1 ++ l2) -> ulist l1.
 Proof using.
@@ -81,23 +81,24 @@ intros a l H l2 H0; inversion H0; apply ulist_cons; auto.
 Contradict H3; auto with datatypes.
 apply H with l2; auto.
 Qed.
- 
+
 (* Inversion theorem the appended list *)
 Theorem ulist_app_inv_r : forall l1 l2 : list A, ulist (l1 ++ l2) -> ulist l2.
 Proof using.
 intros l1; elim l1; simpl in |- *; auto.
 intros a l H l2 H0; inversion H0; auto.
 Qed.
- 
+
 (* Uniqueness is decidable *)
 Definition ulist_dec : forall l, {ulist l} + {~ ulist l}.
+Proof.
 intros l; elim l; auto.
 intros a l1 [H| H]; auto.
 case (In_dec eqA_dec a l1); intros H2; auto.
 right; red in |- *; intros H1; inversion H1; auto.
 right; Contradict H; apply ulist_inv with (1 := H).
 Defined.
- 
+
 (* Uniqueness is compatible with permutation *) 
 Theorem ulist_perm :
  forall l1 l2 : list A, permutation l1 l2 -> ulist l1 -> ulist l2.
@@ -119,7 +120,7 @@ Contradict H2; simpl in |- *; auto.
 inversion H0; auto.
 inversion H3; auto.
 Qed.
- 
+
 End UniqueList.
 Arguments ulist [A].
 Hint Constructors ulist : core.

@@ -87,6 +87,7 @@ Definition code_dec :
   forall (c : code) a,
   {(exists l : list bool, In (a, l) c)} +
   {(forall l : list bool, ~ In (a, l) c)}.
+Proof.
 intros c a; elim c; simpl in |- *; auto.
 intros (a1, l1) l H; case (eqA_dec a1 a); intros H1.
 left; exists l1; rewrite H1; auto.
@@ -100,6 +101,7 @@ Defined.
 (* Checking if a code is in an alphabet is decidable *)
 Definition in_alphabet_dec :
   forall m c, {in_alphabet m c} + {~ in_alphabet m c}.
+Proof.
 intros m; elim m; simpl in |- *; auto.
 intros a l H c; case (H c); intros H1.
 case (code_dec c a); intros H2.

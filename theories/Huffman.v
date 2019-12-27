@@ -158,6 +158,7 @@ Definition huffman_aux :
   build (fun x => number_of_occurrences eqA_dec x m)
     (map (fun x => to_btree (pbbuild empty (snd x))) l)
     (to_btree (pbbuild empty c))}.
+Proof.
 intros l; elim l using list_length_induction; clear l.
 intros l; case l.
 intros H H0; case H0; auto.
@@ -308,6 +309,7 @@ Definition huffman :
   (forall c1 : code A,
    unique_prefix c1 ->
    in_alphabet m c1 -> weight eqA_dec m c <= weight eqA_dec m c1)}.
+Proof.
 case
  (huffman_aux
     (isort (fun x y => le_bool (fst x) (fst y))

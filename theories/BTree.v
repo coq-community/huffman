@@ -97,6 +97,7 @@ Qed.
 
 (* equality on trees is decidable  *)
 Definition btree_dec : forall a b : btree, {a = b} + {a <> b}.
+Proof.
 intros a; elim a.
 intros a1 b; case b.
 intros b1; case (eqA_dec a1 b1).
@@ -114,6 +115,7 @@ Defined.
 
 (* Belonging is decidable *)
 Definition inb_dec : forall a p, {inb a p} + {~ inb a p}.
+Proof.
 intros a; elim a; simpl in |- *; auto; clear a.
 intros a p; elim p; simpl in |- *; auto; clear p.
 intros a1; case (eqA_dec a a1); intros Ha.
@@ -219,6 +221,7 @@ Qed.
 (* Uniqueleaf is decidable *)
 Definition distinct_leaves_dec :
   forall a, {distinct_leaves a} + {~ distinct_leaves a}.
+Proof.
 intros a; case (ulist_dec A eqA_dec (all_leaves a)); intros H.
 left; apply all_leaves_unique; auto.
 right; Contradict H; apply all_leaves_ulist; auto.

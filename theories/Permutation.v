@@ -386,6 +386,7 @@ Qed.
 Definition permutation_dec :
   (forall a b : A, {a = b} + {a <> b}) ->
   forall l1 l2 : list A, {permutation l1 l2} + {~ permutation l1 l2}.
+Proof.
 intros H l1 l2.
 case (In_dec (list_eq_dec H) l1 (all_permutations l2)).
 intros i; left; apply all_permutations_permutation; auto.
