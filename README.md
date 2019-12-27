@@ -34,6 +34,7 @@ Codes, Proc. IRE, pp. 1098-1101, September 1952.
 - Coq namespace: `Huffman`
 - Related publication(s):
   - [Formalising Huffman's algorithm](https://hal.archives-ouvertes.fr/hal-02149909) 
+  - [A Method for the Construction of Minimum-Redundancy Codes](http://compression.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf) doi:[10.1109/JRPROC.1952.273898](https://doi.org/10.1109/JRPROC.1952.273898)
 
 ## Building and installation instructions
 
@@ -82,9 +83,9 @@ To decode a string:
 decode code c;;
 ```
 
-Some more information on the development is also available:
-ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html
+See also the [technical report][techreport] describing the formalization
+and the coqdoc presentation of the source files on the
+[project website][website].
 
-See also the [paper on the algorithm][paper].
-
-[paper]: http://compression.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf
+[techreport]: https://hal.archives-ouvertes.fr/hal-02149909
+[website]: https://coq-community.github.io/huffman/

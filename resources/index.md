@@ -34,6 +34,7 @@ The [coqdoc presentation](toc.html) of the source files from the latest release 
 Other related publications, if any, are listed below.
 
 - [Formalising Huffman's algorithm](https://hal.archives-ouvertes.fr/hal-02149909) 
+- [A Method for the Construction of Minimum-Redundancy Codes](http://compression.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf) doi:[10.1109/JRPROC.1952.273898](https://doi.org/10.1109/JRPROC.1952.273898)
 
 ## Help and contact
 

@@ -15,6 +15,9 @@ description: |-
 publications:
 - pub_url: https://hal.archives-ouvertes.fr/hal-02149909
   pub_title: Formalising Huffman's algorithm
+- pub_url: http://compression.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf
+  pub_title: A Method for the Construction of Minimum-Redundancy Codes
+  pub_doi: 10.1109/JRPROC.1952.273898
 
 authors:
 - name: Laurent Théry
@@ -86,10 +89,10 @@ documentation: |-
   decode code c;;
   ```
 
-  Some more information on the development is also available:
-  ftp://ftp-sop.inria.fr/marelle/Laurent.Thery/Huffman/index.html
+  See also the [technical report][techreport] describing the formalization
+  and the coqdoc presentation of the source files on the
+  [project website][website].
 
-  See also the [paper on the algorithm][paper].
-
-  [paper]: http://compression.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf
+  [techreport]: https://hal.archives-ouvertes.fr/hal-02149909
+  [website]: https://coq-community.github.io/huffman/
 ---
