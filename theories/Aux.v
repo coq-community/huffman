@@ -85,6 +85,7 @@ Hint Resolve le_minus: arith.
 Section EqBool.
  
 Definition eq_bool_dec : forall a b : bool, {a = b} + {a <> b}.
+Proof.
 intros a b; case a; case b; simpl in |- *; auto.
 right; red in |- *; intros; discriminate.
 Defined.
@@ -211,6 +212,7 @@ Definition list_length_induction :
   (forall l1 : list A,
    (forall l2 : list A, length l2 < length l1 -> P l2) -> P l1) ->
   forall l : list A, P l.
+Proof.
 intros P H l;
  apply
   well_founded_induction_type with (R := fun x y : list A => length x < length y);

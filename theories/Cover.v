@@ -328,6 +328,7 @@ Qed.
 Definition cover_dec :
   (forall a b : A, {a = b} + {a <> b}) ->
   forall l t, {cover l t} + {~ cover l t}.
+Proof.
 intros H l t; case (In_dec (btree_dec _ H) t (all_cover l)).
 intros H1; left; apply all_cover_cover; auto.
 intros H1; right; Contradict H1; apply cover_all_cover; auto.

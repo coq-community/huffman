@@ -67,6 +67,7 @@ Hint Constructors inpb : core.
 
 (* Equality on partial trees is decidable *) 
 Definition pbtree_dec : forall a b : pbtree, {a = b} + {a <> b}.
+Proof.
 intros a; elim a; simpl in |- *; auto.
 intros a0 b; case b; try (intros; right; red in |- *; intros; discriminate).
 intros a1; case (eqA_dec a0 a1); intros H1.
@@ -91,6 +92,7 @@ Defined.
 
 (* Belonging is decidable *) 
 Definition inpb_dec : forall a b, {inpb a b} + {~ inpb a b}.
+Proof.
 intros a b; elim b.
 intros a0; case a;
  try (intros; right; red in |- *; intros HH; inversion HH; auto; fail).
