@@ -15,7 +15,7 @@ header-includes:
 
 ## About
 
-Welcome to the Huffman project website!
+Welcome to the Huffman project website! This project is part of [coq-community](https://github.com/coq-community/manifesto).
 
 This projects contains a Coq proof of the correctness of the Huffman coding algorithm,
 as described in David A. Huffman's paper A Method for the Construction of Minimum-Redundancy
@@ -31,15 +31,16 @@ The current stable release of Huffman can be [downloaded from GitHub](https://gi
 
 The [coqdoc presentation](toc.html) of the source files from the latest release can be browsed online.
 
-Other documentation, if any, is listed below.
+Other related publications, if any, are listed below.
 
 - [Formalising Huffman's algorithm](https://hal.archives-ouvertes.fr/hal-02149909) 
 
 ## Help and contact
 
+- Report issues on [GitHub](https://github.com/coq-community/huffman/issues)
 - Chat with us on [Gitter](https://gitter.im/coq-community/Lobby)
 - Discuss with us on Coq's [Discourse](https://coq.discourse.group) forum
 
 ## Authors and contributors
 
-- Laurent Théry (initial)
+- Laurent Théry
