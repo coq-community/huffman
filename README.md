@@ -4,6 +4,7 @@
 [![Contributing][contributing-shield]][contributing-link]
 [![Code of Conduct][conduct-shield]][conduct-link]
 [![Gitter][gitter-shield]][gitter-link]
+[![coqdoc][coqdoc-shield]][coqdoc-link]
 
 [travis-shield]: https://travis-ci.com/coq-community/huffman.svg?branch=master
 [travis-link]: https://travis-ci.com/coq-community/huffman/builds
@@ -16,6 +17,9 @@
 
 [gitter-shield]: https://img.shields.io/badge/chat-on%20gitter-%23c1272d.svg
 [gitter-link]: https://gitter.im/coq-community/Lobby
+
+[coqdoc-shield]: https://img.shields.io/badge/docs-coqdoc-blue.svg
+[coqdoc-link]: https://coq-community.github.io/huffman/toc.html
 
 
 This projects contains a Coq proof of the correctness of the Huffman coding algorithm,
@@ -58,6 +62,9 @@ make install
 
 ## Documentation
 
+For more information about the project, see the [technical report][techreport]
+describing the formalization.
+
 To run the extracted algorithm, build the project and then run
 ```
 make run_huffman.ml
@@ -83,9 +90,4 @@ To decode a string:
 decode code c;;
 ```
 
-See also the [technical report][techreport] describing the formalization
-and the coqdoc presentation of the source files on the
-[project website][website].
-
 [techreport]: https://hal.archives-ouvertes.fr/hal-02149909
-[website]: https://coq-community.github.io/huffman/
