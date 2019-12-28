@@ -63,7 +63,8 @@ make install
 ## Documentation
 
 For more information about the project, see the [technical report][techreport]
-describing the formalization.
+describing the formalization. See also the [coqdoc presentation][coqdoc] of the
+Coq source files.
 
 To run the extracted algorithm, build the project and then run
 ```
@@ -91,3 +92,4 @@ decode code c;;
 ```
 
 [techreport]: https://hal.archives-ouvertes.fr/hal-02149909
+[coqdoc]: https://coq-community.github.io/huffman/toc.html
