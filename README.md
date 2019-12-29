@@ -66,6 +66,8 @@ For more information about the project, see the [technical report][techreport]
 describing the formalization. See also the [coqdoc presentation][coqdoc] of the
 Coq source files.
 
+### Running extracted code
+
 To run the extracted algorithm, build the project and then run
 ```
 make run_huffman.ml

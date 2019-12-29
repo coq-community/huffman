@@ -5,6 +5,7 @@ version: "dev"
 homepage: "https://github.com/coq-community/huffman"
 dev-repo: "git+https://github.com/coq-community/huffman.git"
 bug-reports: "https://github.com/coq-community/huffman/issues"
+doc: "https://coq-community.github.io/huffman/"
 license: "LGPL-2.1-or-later"
 
 synopsis: "A Coq proof of the correctness of the Huffman coding algorithm"
