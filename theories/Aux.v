@@ -81,17 +81,6 @@ Qed.
 End Minus.
 Hint Resolve le_minus: arith.
 
-(* Equality test on boolean *)
-Section EqBool.
- 
-Definition eq_bool_dec : forall a b : bool, {a = b} + {a <> b}.
-Proof.
-intros a b; case a; case b; simpl in |- *; auto.
-right; red in |- *; intros; discriminate.
-Defined.
- 
-End EqBool.
-
 (*A function to compare naturals *)
 Section LeBool.
  

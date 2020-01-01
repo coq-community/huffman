@@ -26,6 +26,7 @@
                                     Laurent.Thery@inria.fr (2003)    
  **********************************************************************)
 
+Require Bool.Bool.
 From Huffman Require Export Aux.
 From Huffman Require Export Permutation.
 From Huffman Require Export UniqueKey.
@@ -400,7 +401,7 @@ Fixpoint find_val (a : list bool) (l : code) {struct l} : option A :=
   match l with
   | nil => None
   | (b, c) :: l1 =>
-      match list_eq_dec eq_bool_dec a c with
+      match list_eq_dec Bool.bool_dec a c with
       | left _ => Some b
       | right _ => find_val a l1
       end
@@ -414,7 +415,7 @@ Proof using.
 intros c a l; elim c; simpl in |- *; auto.
 intros; discriminate.
 intros a0; case a0.
-intros a1 l0 l1; case (list_eq_dec eq_bool_dec l l0); auto.
+intros a1 l0 l1; case (list_eq_dec Bool.bool_dec l l0); auto.
 intros e H H0; injection H0.
 intros e1; left; apply f_equal2 with (f := pair (A:=A) (B:=list bool)); auto.
 Qed.
@@ -427,7 +428,7 @@ Proof using.
 intros c a l; generalize a l; elim c; clear a l c; simpl in |- *; auto.
 intros a l H H0; case H0.
 intros a; case a.
-intros a0 l l0 H a1 l1 H0 H1; case (list_eq_dec eq_bool_dec l1 l).
+intros a0 l l0 H a1 l1 H0 H1; case (list_eq_dec Bool.bool_dec l1 l).
 intros H2; apply f_equal with (f := Some (A:=A)).
 case H1; intros H3.
 injection H3; auto.
@@ -448,7 +449,7 @@ Theorem not_null_find_val :
 Proof using.
 intros c; elim c; simpl; auto.
 intros a; case a.
-intros a1 l; case (list_eq_dec eq_bool_dec nil l); auto.
+intros a1 l; case (list_eq_dec Bool.bool_dec nil l); auto.
 intros e l0 H H0; case (H0 a1); rewrite e; simpl in |- *; auto.
 intros n l0 H H0; apply H.
 unfold not_null in |- *; intros a2; red in |- *; intros H1.
