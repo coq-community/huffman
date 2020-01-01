@@ -202,9 +202,9 @@ generalize HM2 HM3; case l3; try (simpl in |- *; intros; discriminate);
 intros t5 l3 HM2 HM3; rewrite HM3 in Ht3; rewrite HM3 in IL;
  rewrite HM3 in Hm1; rewrite HM3 in Hl1; clear HM3 l1.
 cut
- (exists b1 : _,
-    (exists c1 : _,
-       (exists l4 : _,
+ (exists b1,
+    (exists c1,
+       (exists l4,
           permutation (l2 ++ t4 :: t5 :: l3) (b1 :: c1 :: l4) /\
           ordered (sum_order f) (b1 :: c1 :: l4)))).
 intros (b1, (c1, (l4, (HC1, HC2)))).

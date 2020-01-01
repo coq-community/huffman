@@ -149,7 +149,7 @@ Qed.
 (* There always a larger element that the initial height in the heigh list *)
 Theorem height_pred_larger_ex :
  forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
- height_pred n ln l t -> exists n1 : _, In n1 ln /\ n <= n1.
+ height_pred n ln l t -> exists n1, In n1 ln /\ n <= n1.
 Proof using.
 intros n ln t l H; elim H; clear H n ln t l.
 intros n t; exists n; auto with datatypes.
@@ -164,7 +164,7 @@ Lemma height_pred_disj_larger_aux :
   ln = ln1 ++ a :: ln2 ->
   (forall n1 : nat, In n1 ln1 -> n1 < a) ->
   (forall n1 : nat, In n1 ln2 -> n1 <= a) ->
-  (exists ln3 : _, ln2 = a :: ln3) \/ ln = n :: nil /\ l = t :: nil.
+  (exists ln3, ln2 = a :: ln3) \/ ln = n :: nil /\ l = t :: nil.
 Proof using.
 intros n ln t l H; elim H; clear H n ln t l.
 intros n t l ln1 ln2 a; case ln1; simpl in |- *; auto.
@@ -221,7 +221,7 @@ Theorem height_pred_disj_larger :
  height_pred n (ln1 ++ a :: ln2) l t ->
  (forall n1 : nat, In n1 ln1 -> n1 < a) ->
  (forall n1 : nat, In n1 ln2 -> n1 <= a) ->
- (exists ln3 : _, ln2 = a :: ln3) \/
+ (exists ln3, ln2 = a :: ln3) \/
  (ln1 = nil /\ a = n /\ ln2 = nil) /\ l = t :: nil.
 Proof using.
 intros n a ln1 ln2 t l H H0 H1;
@@ -238,8 +238,8 @@ Lemma height_pred_disj_larger2_aux :
   height_pred n ln l t ->
   forall ln1 ln2 a,
   ln = ln1 ++ a :: ln2 ->
-  (exists n1 : _, In n1 ln1 /\ a <= n1) \/
-  (exists n1 : _, In n1 ln2 /\ a <= n1) \/ ln = n :: nil /\ l = t :: nil.
+  (exists n1, In n1 ln1 /\ a <= n1) \/
+  (exists n1, In n1 ln2 /\ a <= n1) \/ ln = n :: nil /\ l = t :: nil.
 Proof using.
 intros n ln t l H; elim H; clear H n ln t l.
 intros n t l ln1 ln2 a; case ln1; simpl in |- *; auto.
@@ -285,8 +285,8 @@ Qed.
 Theorem height_pred_disj_larger2 :
  forall (n a : nat) (ln1 ln2 : list nat) (t : btree A) (l : list (btree A)),
  height_pred n (ln1 ++ a :: ln2) l t ->
- (exists n1 : _, In n1 ln1 /\ a <= n1) \/
- (exists n1 : _, In n1 ln2 /\ a <= n1) \/
+ (exists n1, In n1 ln1 /\ a <= n1) \/
+ (exists n1, In n1 ln2 /\ a <= n1) \/
  (ln1 = nil /\ a = n /\ ln2 = nil) /\ l = t :: nil.
 Proof using.
 intros n a ln1 ln2 t l H;

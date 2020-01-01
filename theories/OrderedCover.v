@@ -53,7 +53,7 @@ Qed.
 (* It is always possible to get an ordered cover from a cover *)
 Theorem cover_ordered_cover :
  forall (l1 : list (btree A)) (t : btree A),
- cover l1 t -> exists l2 : _, permutation l1 l2 /\ ordered_cover l2 t.
+ cover l1 t -> exists l2, permutation l1 l2 /\ ordered_cover l2 t.
 Proof using.
 intros l1; elim l1 using list_length_ind.
 intros l0 H t; case t.

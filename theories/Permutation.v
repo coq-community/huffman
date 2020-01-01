@@ -420,7 +420,7 @@ Hint Resolve permutation_map : core.
 Lemma permutation_map_ex_aux :
   forall (A B : Type) (f : A -> B) l1 l2 l3,
   permutation l1 l2 ->
-  l1 = map f l3 -> exists l4 : _, permutation l4 l3 /\ l2 = map f l4.
+  l1 = map f l3 -> exists l4, permutation l4 l3 /\ l2 = map f l4.
 Proof using.
 intros A1 B1 f l1 l2 l3 H; generalize l3; elim H; clear H l1 l2 l3.
 intros l3; case l3; simpl in |- *; auto.
@@ -450,7 +450,7 @@ Qed.
 Theorem permutation_map_ex :
  forall (A B : Type) (f : A -> B) l1 l2,
  permutation (map f l1) l2 ->
- exists l3 : _, permutation l3 l1 /\ l2 = map f l3.
+ exists l3, permutation l3 l1 /\ l2 = map f l3.
 Proof using.  
 intros A0 B f l1 l2 H; apply permutation_map_ex_aux with (l1 := map f l1);
  auto.

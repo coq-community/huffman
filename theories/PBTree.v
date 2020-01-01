@@ -49,7 +49,7 @@ Inductive pbtree : Type :=
 
 (* Predictate for belonging *)
 Theorem pbleaf_or_not :
- forall p, (exists a : _, p = pbleaf a) \/ (forall a : A, p <> pbleaf a).
+ forall p, (exists a, p = pbleaf a) \/ (forall a : A, p <> pbleaf a).
 Proof using.
 intros p; case p; simpl in |- *;
  try (intros; right; red in |- *; intros; discriminate).
@@ -122,7 +122,7 @@ intros t1 t2 t3 H H1; generalize t1 H; elim H1; clear H H1 t1 t2 t3; auto.
 Qed.
 
 (* A partial tree has always a leaf *)
-Theorem inpb_ex : forall t : pbtree, exists x : _, inpb (pbleaf x) t.
+Theorem inpb_ex : forall t : pbtree, exists x, inpb (pbleaf x) t.
 Proof using.
 intros t; elim t; simpl in |- *; auto.
 intros a; exists a; auto.
@@ -277,7 +277,7 @@ Qed.
 
 (* Leaves in the tree are keys in the code *) 
 Theorem inpb_compute_ex :
- forall a p, inpb (pbleaf a) p -> exists l : _, In (a, l) (compute_pbcode p).
+ forall a p, inpb (pbleaf a) p -> exists l, In (a, l) (compute_pbcode p).
 Proof using.
 intros a p; elim p; simpl in |- *; auto.
 intros a0 H; inversion H.
@@ -1110,7 +1110,7 @@ Qed.
 (* Leaves in a built tree are elements of the codes *) 
 Theorem inpb_pbbuild_inv :
  forall a c,
- c <> nil -> inpb (pbleaf a) (pbbuild c) -> exists l : _, In (a, l) c.
+ c <> nil -> inpb (pbleaf a) (pbbuild c) -> exists l, In (a, l) c.
 Proof using.
 intros a c; generalize a; elim c; simpl in |- *; auto.
 intros a0 H; elim H; auto.

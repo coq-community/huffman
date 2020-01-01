@@ -173,8 +173,8 @@ Theorem prod2list_reorder :
  (forall b, In b l2 -> b <= a) ->
  permutation (l3 ++ b :: l4) (b1 :: l5) ->
  ordered (sum_order f) (b1 :: l5) ->
- exists l6 : _,
-   (exists l7 : _,
+ exists l6,
+   (exists l7,
       length l1 = length l6 /\
       length l2 = length l7 /\
       permutation (b1 :: l5) (l6 ++ b1 :: l7) /\
@@ -246,8 +246,8 @@ Theorem prod2list_reorder2 :
  (forall b, In b l2 -> b <= a) ->
  permutation (l3 ++ b :: c :: l4) (b1 :: c1 :: l5) ->
  ordered (sum_order f) (b1 :: c1 :: l5) ->
- exists l6 : _,
-   (exists l7 : _,
+ exists l6,
+   (exists l7,
       length l1 = length l6 /\
       length l2 = length l7 /\
       permutation (b1 :: c1 :: l5) (l6 ++ b1 :: c1 :: l7) /\

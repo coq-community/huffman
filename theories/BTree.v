@@ -56,7 +56,7 @@ intros t1 t2 t3 H H1; generalize t1 H; elim H1; clear H H1 t1 t2 t3; auto.
 Qed.
 
 (* A tree has at least one leaf  *)
-Theorem inb_ex : forall t : btree, exists x : _, inb (leaf x) t.
+Theorem inb_ex : forall t : btree, exists x, inb (leaf x) t.
 Proof using.
 intros t; elim t; simpl in |- *; auto.
 intros a; exists a; auto.
@@ -278,7 +278,7 @@ Qed.
 
 (* For every leaf in the tree there is an associated key in the code *)
 Theorem inb_compute_ex :
- forall a p, inb (leaf a) p -> exists l : _, In (a, l) (compute_code p).
+ forall a p, inb (leaf a) p -> exists l, In (a, l) (compute_code p).
 Proof using.
 intros a p; elim p; simpl in |- *; auto.
 intros a0 H; inversion H.

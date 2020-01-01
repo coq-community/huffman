@@ -151,8 +151,8 @@ Lemma cover_inv_app_aux :
   cover l t ->
   t = node t1 t2 ->
   l = node t1 t2 :: nil \/
-  (exists l1 : _,
-     (exists l2 : _, (cover l1 t1 /\ cover l2 t2) /\ permutation l (l1 ++ l2))).
+  (exists l1,
+     (exists l2, (cover l1 t1 /\ cover l2 t2) /\ permutation l (l1 ++ l2))).
 Proof using.
 intros t t1 t2 l H; elim H.
 intros t0 Ht0; rewrite Ht0; auto with datatypes.
@@ -212,8 +212,8 @@ Theorem cover_inv_app :
  forall t1 t2 l,
  cover l (node t1 t2) ->
  l = node t1 t2 :: nil \/
- (exists l1 : _,
-    (exists l2 : _, (cover l1 t1 /\ cover l2 t2) /\ permutation l (l1 ++ l2))).
+ (exists l1,
+    (exists l2, (cover l1 t1 /\ cover l2 t2) /\ permutation l (l1 ++ l2))).
 Proof using.
 intros t1 t2 l H; apply cover_inv_app_aux with (t := node t1 t2); auto.
 Qed.

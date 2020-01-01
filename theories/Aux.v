@@ -259,7 +259,7 @@ Theorem app_inv_app :
  forall l1 l2 l3 l4 a,
  l1 ++ l2 = l3 ++ a :: l4 ->
  (exists l5 : list A, l1 = l3 ++ a :: l5) \/
- (exists l5 : _, l2 = l5 ++ a :: l4).
+ (exists l5, l2 = l5 ++ a :: l4).
 Proof using.
 intros l1; elim l1; simpl in |- *; auto.
 intros l2 l3 l4 a H; right; exists l3; auto.
@@ -276,7 +276,7 @@ Theorem app_inv_app2 :
  forall l1 l2 l3 l4 a b,
  l1 ++ l2 = l3 ++ a :: b :: l4 ->
  (exists l5 : list A, l1 = l3 ++ a :: b :: l5) \/
- (exists l5 : _, l2 = l5 ++ a :: b :: l4) \/
+ (exists l5, l2 = l5 ++ a :: b :: l4) \/
  l1 = l3 ++ a :: nil /\ l2 = b :: l4.
 Proof using.
 intros l1; elim l1; simpl in |- *; auto.
@@ -299,8 +299,8 @@ Qed.
 Theorem same_length_ex :
  forall (a : A) l1 l2 l3,
  length (l1 ++ a :: l2) = length l3 ->
- exists l4 : _,
-   (exists l5 : _,
+ exists l4,
+   (exists l5,
       (exists b : B,
          length l1 = length l4 /\ length l2 = length l5 /\ l3 = l4 ++ b :: l5)).
 Proof using.
@@ -329,7 +329,7 @@ Qed.
  
 Theorem in_map_fst_inv :
  forall a (l : list (B * C)),
- In a (map (fst (B:=_)) l) -> exists c : _, In (a, c) l.
+ In a (map (fst (B:=_)) l) -> exists c, In (a, c) l.
 Proof using.
 intros a l; elim l; simpl in |- *; auto.
 intros H; case H.
@@ -362,7 +362,7 @@ Qed.
  
 Theorem in_flat_map_ex :
  forall (l : list B) (f : B -> list C) a,
- In a (flat_map f l) -> exists b : _, In b l /\ In a (f b).
+ In a (flat_map f l) -> exists b, In b l /\ In a (f b).
 Proof using.
 intros l g; elim l; simpl in |- *; auto.
 intros a H; case H.
