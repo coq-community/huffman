@@ -36,7 +36,7 @@ Variable m : list A.
 Hypothesis frequency_more_than_one : 1 < length (frequency_list eqA_dec m).
 
 (* The message is not null *) 
-Theorem not_null_m : m <> nil.
+Theorem not_null_m : m <> [].
 Proof using A eqA_dec frequency_more_than_one m.
 generalize frequency_more_than_one; case m; simpl in |- *; auto.
 intros H; Contradict H; auto with arith.
@@ -144,7 +144,7 @@ Qed.
 (* Auxillary function to compute minimal code *)
 Definition huffman_aux :
   forall l : list (nat * code A),
-  l <> nil ->
+  l <> [] ->
   ordered (fun x y => fst x <= fst y) l ->
   (forall a,
    In a l -> compute_code (to_btree (pbbuild empty (snd a))) = snd a) ->
@@ -152,7 +152,7 @@ Definition huffman_aux :
    In a l ->
    sum_leaves (fun x => number_of_occurrences eqA_dec x m)
      (to_btree (pbbuild empty (snd a))) = fst a) ->
-  (forall a, In a l -> snd a <> nil) ->
+  (forall a, In a l -> snd a <> []) ->
   {c : code A |
   compute_code (to_btree (pbbuild empty c)) = c /\
   build (fun x => number_of_occurrences eqA_dec x m)
@@ -191,7 +191,7 @@ red in |- *; intros H5;
  absurd
   ((n1 + n2,
    map (fun x : A * list bool => (fst x, false :: snd x)) c1 ++
-   map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l1 = nil).
+   map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l1 = []).
 intros; discriminate.
 apply permutation_nil_inv; auto.
 unfold code in H5; rewrite <- H5; apply insert_permutation.
@@ -313,22 +313,22 @@ Proof.
 case
  (huffman_aux
     (isort (fun x y => le_bool (fst x) (fst y))
-       (map (fun x => (snd x, (fst x, nil) :: nil))
+       (map (fun x => (snd x, (fst x, []) :: []))
           (frequency_list eqA_dec m)))).
 generalize frequency_more_than_one; case (frequency_list eqA_dec m);
  simpl in |- *; auto.
 intros H; Contradict H; auto with arith.
 intros p l frequency_more_than_one_bis H.
-absurd (In (A:=nat * code A) (snd p, (fst p, nil) :: nil) nil).
+absurd (In (A:=nat * code A) (snd p, (fst p, []) :: []) []).
 simpl in |- *; intros H1; case H1.
 rewrite <- H;
  apply
   permutation_in
    with
-     ((snd p, (fst p, nil) :: nil)
+     ((snd p, (fst p, []) :: [])
       :: isort
            (fun x y : nat * list (A * list bool) => le_bool (fst x) (fst y))
-           (map (fun x : A * nat => (snd x, (fst x, nil) :: nil)) l));
+           (map (fun x : A * nat => (snd x, (fst x, []) :: [])) l));
  auto with datatypes.
 apply insert_permutation.
 apply isort_ordered; auto.
@@ -337,7 +337,7 @@ intros a b H0; apply le_bool_correct4; auto.
 intros a H0;
  cut
   (In a
-     (map (fun x : A * nat => (snd x, (fst x, nil) :: nil))
+     (map (fun x : A * nat => (snd x, (fst x, []) :: []))
         (frequency_list eqA_dec m))).
 intros H1; case in_map_inv with (1 := H1); auto.
 intros x; case x; simpl in |- *; auto.
@@ -347,7 +347,7 @@ apply permutation_sym; apply isort_permutation; auto.
 intros a H0;
  cut
   (In a
-     (map (fun x : A * nat => (snd x, (fst x, nil) :: nil))
+     (map (fun x : A * nat => (snd x, (fst x, []) :: []))
         (frequency_list eqA_dec m))).
 intros H1; case in_map_inv with (1 := H1); auto.
 intros x; case x; simpl in |- *; auto.
@@ -360,7 +360,7 @@ apply permutation_sym; apply isort_permutation; auto.
 intros a H0;
  cut
   (In a
-     (map (fun x : A * nat => (snd x, (fst x, nil) :: nil))
+     (map (fun x : A * nat => (snd x, (fst x, []) :: []))
         (frequency_list eqA_dec m))).
 intros H1; case in_map_inv with (1 := H1); auto.
 intros x; case x; simpl in |- *; auto.
@@ -420,7 +420,7 @@ apply
  permutation_trans
   with
     (map (fun x : nat * code A => to_btree (pbbuild empty (snd x)))
-       (map (fun x : A * nat => (snd x, (fst x, nil) :: nil))
+       (map (fun x : A * nat => (snd x, (fst x, []) :: []))
           (frequency_list eqA_dec m))).
 apply permutation_map; apply permutation_sym; apply isort_permutation.
 elim (frequency_list eqA_dec m); simpl in |- *; auto.

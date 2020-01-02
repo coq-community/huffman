@@ -34,7 +34,7 @@ Variable A : Type.
 *)
 Inductive ordered_cover : list (btree A) -> btree A -> Prop :=
   | ordered_cover_one :
-      forall (t : btree A) (l : list (btree A)), ordered_cover (t :: nil) t
+      forall (t : btree A) (l : list (btree A)), ordered_cover (t :: []) t
   | ordered_cover_node :
       forall (t1 t2 : btree A) (l1 l2 l3 : list (btree A)),
       ordered_cover l1 t1 ->
@@ -58,7 +58,7 @@ Proof using.
 intros l1; elim l1 using list_length_ind.
 intros l0 H t; case t.
 intros a H1; rewrite cover_inv_leaf with (1 := H1).
-exists (leaf a :: nil); auto.
+exists (leaf a :: []); auto.
 intros t1 t2 H1; case cover_inv_app with (1 := H1).
 intros H2; exists l0; split; auto; rewrite H2; auto.
 intros (l2, (l3, ((HH1, HH2), HH3))).
@@ -115,7 +115,7 @@ intros a1 l7 H6; apply f_equal2 with (f := cons (A:=A)); auto.
 injection H6; auto.
 injection H6; auto.
 generalize H4; generalize l2 l0; elim l1; simpl in |- *; auto.
-intros l4 l5 H5; split; [ exists (nil (A:=A)) | exists l5 ]; auto.
+intros l4 l5 H5; split; [ exists [] | exists l5 ]; auto.
 intros a0 l H5 l4 l5; case l5; simpl in |- *; auto.
 intros; discriminate.
 intros a1 l6 H6; case (H5 l4 l6); auto.
@@ -125,7 +125,7 @@ intros (l7, HH5) (l8, HH6); split; [ exists (a1 :: l7) | exists l8 ];
 apply f_equal2 with (f := cons (A:=btree A)); auto.
 injection H6; auto.
 Qed.
- 
+
 End OrderedCover.
 Arguments ordered_cover [A].
 Hint Resolve ordered_cover_one ordered_cover_node : core.

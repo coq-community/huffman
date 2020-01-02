@@ -37,7 +37,7 @@ Variable f : A -> nat.
 
 (* Iterative the one step predicate *)
 Inductive build : list (btree A) -> btree A -> Prop :=
-  | build_one : forall t : btree A, build (t :: nil) t
+  | build_one : forall t : btree A, build (t :: []) t
   | build_step :
       forall (t : btree A) (l1 l2 : list (btree A)),
       one_step f l1 l2 -> build l2 t -> build l1 t.
@@ -120,7 +120,7 @@ Qed.
 
 Definition obuildf :
   forall l : list (btree A),
-  l <> nil -> ordered (sum_order f) l -> {t : btree A | build l t}.
+  l <> [] -> ordered (sum_order f) l -> {t : btree A | build l t}.
 Proof.
 intros l; elim l using list_length_induction.
 intros l1; case l1; clear l1.
@@ -157,9 +157,9 @@ Defined.
 
 (* a function to buid tree from a cover list merging smaller trees *)
 Definition buildf :
-  forall l : list (btree A), l <> nil -> {t : btree A | build l t}.
+  forall l : list (btree A), l <> [] -> {t : btree A | build l t}.
 Proof.
-intros l Hl; cut (isort (le_sum f) l <> nil).
+intros l Hl; cut (isort (le_sum f) l <> []).
 intros H1; cut (ordered (sum_order f) (isort (le_sum f) l)).
 intros H2; case (obuildf (isort (le_sum f) l) H1 H2).
 intros t H3; exists t; auto.
@@ -168,7 +168,7 @@ apply permutation_sym; apply isort_permutation; auto.
 apply isort_ordered; auto.
 intros; apply le_sum_correct1; auto.
 intros; apply le_sum_correct2; auto.
-Contradict Hl; apply permutation_nil_inv; auto.
+contradict Hl; apply permutation_nil_inv; auto.
 rewrite <- Hl; auto.
 apply isort_permutation; auto.
 Defined.
@@ -176,7 +176,7 @@ Defined.
 (* Merging smaller trees gets the tree of mimimal weight for the given cover *)
 Theorem build_correct :
  forall (l : list (btree A)) (t : btree A),
- l <> nil -> build l t -> cover_min _ f l t.
+ l <> [] -> build l t -> cover_min _ f l t.
 Proof using.
 intros l; elim l using list_length_ind.
 intros l0 H t H0 H1.
@@ -260,11 +260,11 @@ generalize (isort_permutation _ (le_sum f) (l2 ++ t4 :: t5 :: l3));
      (le_sum_correct2 _ f) (l2 ++ t4 :: t5 :: l3)).
 case (isort (le_sum f) (l2 ++ t4 :: t5 :: l3)); auto.
 intros H2 H3.
-absurd (l2 ++ t4 :: t5 :: l3 = nil); auto.
+absurd (l2 ++ t4 :: t5 :: l3 = []); auto.
 case l2; simpl in |- *; intros; discriminate.
 apply permutation_nil_inv with (1 := H3).
 intros b l4; case l4.
-intros H2 H3; absurd (l2 ++ t4 :: t5 :: l3 = b :: nil).
+intros H2 H3; absurd (l2 ++ t4 :: t5 :: l3 = b :: []).
 case l2; simpl in |- *; try (intros; discriminate).
 intros b0 l5; case l5; try (intros; discriminate).
 apply permutation_one_inv with (1 := permutation_sym _ _ _ H3).
@@ -280,7 +280,7 @@ Qed.
  
 (* Final function that tree of minimal weight for the cover *)
 Definition build_fun :
-  forall l : list (btree A), l <> nil -> {t : btree A | cover_min _ f l t}.
+  forall l : list (btree A), l <> [] -> {t : btree A | cover_min _ f l t}.
 Proof.
 intros l Hl; case (buildf l Hl).
 intros x b; exists x.

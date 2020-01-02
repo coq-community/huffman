@@ -33,7 +33,7 @@ Inductive subst_pred :
 list (btree A) -> list (btree A) -> btree A -> btree A -> Prop :=
   | subst_pred_id :
       forall (t1 t2 : btree A) (l1 l2 : list (btree A)),
-      subst_pred (t1 :: nil) (t2 :: nil) t1 t2
+      subst_pred (t1 :: []) (t2 :: []) t1 t2
   | subst_pred_node :
       forall (t1 t2 t3 t4 : btree A) (l1 l2 l3 l4 l5 l6 : list (btree A)),
       subst_pred l1 l2 t1 t2 ->

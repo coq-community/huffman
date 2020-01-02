@@ -31,7 +31,7 @@ Variables (A : Type) (B : Type).
  
 (* An association list has unique keys if the keys appear only once *)
 Inductive unique_key : list (A * B) -> Prop :=
-  | unique_key_nil : unique_key nil
+  | unique_key_nil : unique_key []
   | unique_key_cons :
       forall (a : A) (b : B) l,
       (forall b : B, ~ In (a, b) l) ->

@@ -38,7 +38,7 @@ Hypothesis order_fun_false : forall a b : A, order_fun a b = false -> order b a.
 (* Insert an element *) 
 Fixpoint insert (a : A) (l : list A) {struct l} : list A :=
   match l with
-  | nil => a :: nil
+  | [] => a :: []
   | b :: l1 =>
       match order_fun a b with
       | true => a :: l
@@ -82,7 +82,7 @@ Hint Resolve insert_ordered insert_permutation : core.
 (* Sorting by insertion *)
 Fixpoint isort (l : list A) : list A :=
   match l with
-  | nil => nil
+  | [] => []
   | b :: l1 => insert b (isort l1)
   end.
 

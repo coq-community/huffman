@@ -140,7 +140,7 @@ Defined.
 (* Compute all the leaves of the tree *)
 Fixpoint all_leaves (t : btree) : list A :=
   match t with
-  | leaf a => a :: nil
+  | leaf a => a :: []
   | node t1 t2 => all_leaves t1 ++ all_leaves t2
   end.
 
@@ -230,7 +230,7 @@ Defined.
 (* Compute the code associated with a binary tree *)
 Fixpoint compute_code (a : btree) : list (A * list bool) :=
   match a with
-  | leaf b => (b, nil) :: nil
+  | leaf b => (b, []) :: []
   | node l1 l2 =>
       map
         (fun v : A * list bool =>
@@ -282,7 +282,7 @@ Theorem inb_compute_ex :
 Proof using.
 intros a p; elim p; simpl in |- *; auto.
 intros a0 H; inversion H.
-exists (nil (A:=bool)); auto.
+exists []; auto.
 intros p0 H p1 H0 H1; inversion H1.
 case H; auto.
 intros x Hx; exists (false :: x).

@@ -13,7 +13,6 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-
 (**********************************************************************
     Proof of Huffman algorithm: Aux.v                                
                                                                      
@@ -28,6 +27,7 @@
  **********************************************************************)
 
 Require Export List.
+Export ListNotations.
 Require Export Arith.
 From Huffman Require Export sTactic.
 Require Import Inverse_Image.
@@ -217,7 +217,7 @@ Proof using.
 intros a l; elim l; clear l; simpl in |- *; auto.
 intros H; case H.
 intros a1 l H [H1| H1]; auto.
-exists (nil (A:=A)); exists l; simpl in |- *; auto.
+exists []; exists l; simpl in |- *; auto.
 apply f_equal2 with (f := cons (A:=A)); auto.
 case H; auto; intros l1 (l2, Hl2); exists (a1 :: l1); exists l2;
  simpl in |- *; auto.
@@ -277,7 +277,7 @@ Theorem app_inv_app2 :
  l1 ++ l2 = l3 ++ a :: b :: l4 ->
  (exists l5 : list A, l1 = l3 ++ a :: b :: l5) \/
  (exists l5, l2 = l5 ++ a :: b :: l4) \/
- l1 = l3 ++ a :: nil /\ l2 = b :: l4.
+ l1 = l3 ++ a :: [] /\ l2 = b :: l4.
 Proof using.
 intros l1; elim l1; simpl in |- *; auto.
 intros l2 l3 l4 a b H; right; left; exists l3; auto.
@@ -306,7 +306,7 @@ Theorem same_length_ex :
 Proof using.
 intros a l1; elim l1; simpl in |- *; auto.
 intros l2 l3; case l3; simpl in |- *; try (intros; discriminate).
-intros b l H; exists (nil (A:=B)); exists l; exists b; repeat (split; auto).
+intros b l H; exists []; exists l; exists b; repeat (split; auto).
 intros a0 l H l2 l3; case l3; simpl in |- *; try (intros; discriminate).
 intros b l0 H0.
 case (H l2 l0); auto.
@@ -382,10 +382,10 @@ Variable f : A -> B -> C.
 Fixpoint map2 (l1 : list A) : list B -> list C :=
   fun l2 =>
   match l1 with
-  | nil => nil
+  | [] => []
   | a :: l3 =>
       match l2 with
-      | nil => nil
+      | [] => []
       | b :: l4 => f a b :: map2 l3 l4
       end
   end.
@@ -416,9 +416,9 @@ Variable A : Type.
 Fixpoint first_n (l : list A) (n : nat) {struct n} :
  list A :=
   match n with
-  | O => nil
+  | O => []
   | S n1 => match l with
-            | nil => nil
+            | [] => []
             | a :: l1 => a :: first_n l1 n1
             end
   end.
@@ -467,7 +467,7 @@ Fixpoint skip_n (l : list A) (n : nat) {struct n} :
   match n with
   | O => l
   | S n1 => match l with
-            | nil => nil
+            | [] => []
             | a :: l1 => skip_n l1 n1
             end
   end.
@@ -498,7 +498,7 @@ intros n; elim n; simpl in |- *; auto with arith.
 intros n0 H l1; case l1; simpl in |- *; auto.
 Qed.
 
-Theorem skip_n_id : forall l : list A, skip_n l (length l) = nil.
+Theorem skip_n_id : forall l : list A, skip_n l (length l) = [].
 Proof using.
 intros l; elim l; simpl in |- *; auto.
 Qed.
@@ -520,7 +520,7 @@ Section FirstMax.
  
 Theorem exist_first_max :
  forall l : list nat,
- l <> nil ->
+ l <> [] ->
  exists a : nat,
    (exists l1 : list nat,
       (exists l2 : list nat,
@@ -530,7 +530,7 @@ Proof using.
 intros l; elim l; simpl in |- *; auto.
 intros H; case H; auto.
 intros a l0; case l0.
-intros H H0; exists a; exists (nil (A:=nat)); exists (nil (A:=nat));
+intros H H0; exists a; exists []; exists [];
  repeat (split; simpl in |- *; auto with datatypes).
 intros n1 H1; case H1.
 intros n1 H1; case H1.
@@ -538,7 +538,7 @@ intros n l1 H H0; case H; clear H; auto.
 red in |- *; intros H1; discriminate; auto.
 intros a1 (l2, (l3, (HH1, (HH2, HH3)))).
 case (le_or_lt a1 a); intros HH4; auto.
-exists a; exists (nil (A:=nat)); exists (n :: l1);
+exists a; exists []; exists (n :: l1);
  repeat (split; auto with datatypes).
 intros n1 H1; case H1.
 rewrite HH1.
@@ -562,7 +562,7 @@ Variable f : A -> nat.
 (* Search in the list for the min with respect to a valuation function f *)
 Fixpoint find_min (l : list A) : option (nat * A) :=
   match l with
-  | nil => None
+  | [] => None
   | a :: l1 =>
       match find_min l1 with
       | None => Some (f a, a)
@@ -578,7 +578,7 @@ Fixpoint find_min (l : list A) : option (nat * A) :=
 Theorem find_min_correct :
  forall l : list A,
  match find_min l with
- | None => l = nil
+ | None => l = []
  | Some (a, b) => (In b l /\ a = f b) /\ (forall c : A, In c l -> f b <= f c)
  end.
 Proof using.
@@ -601,7 +601,7 @@ Qed.
 (* Search in the list for the max with respect to a valuation function f *)
 Fixpoint find_max (l : list A) : option (nat * A) :=
   match l with
-  | nil => None
+  | [] => None
   | a :: l1 =>
       match find_max l1 with
       | None => Some (f a, a)
@@ -617,7 +617,7 @@ Fixpoint find_max (l : list A) : option (nat * A) :=
 Theorem find_max_correct :
  forall l : list A,
  match find_max l with
- | None => l = nil
+ | None => l = []
  | Some (a, b) => (In b l /\ a = f b) /\ (forall c : A, In c l -> f c <= f b)
  end.
 Proof using.

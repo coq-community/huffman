@@ -35,7 +35,7 @@ Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
 
 (* A list is unique if there is not twice the same element in the list *)
 Inductive ulist : list A -> Prop :=
-  | ulist_nil : ulist nil
+  | ulist_nil : ulist []
   | ulist_cons : forall a l, ~ In a l -> ulist l -> ulist (a :: l).
 Hint Constructors ulist : core.
 

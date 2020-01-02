@@ -40,7 +40,7 @@ Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
 *)
 Inductive height_pred : nat -> list nat -> list (btree A) -> btree A -> Prop :=
   | height_pred_nil :
-      forall (n : nat) (t : btree A), height_pred n (n :: nil) (t :: nil) t
+      forall (n : nat) (t : btree A), height_pred n (n :: []) (t :: []) t
   | height_pred_node :
       forall (n : nat) (ln1 ln2 : list nat) (t1 t2 : btree A)
         (l1 l2 : list (btree A)),
@@ -60,7 +60,7 @@ Qed.
 (* The height list is never empty *)
 Theorem height_pred_not_nil1 :
  forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
- height_pred n ln l t -> ln <> nil.
+ height_pred n ln l t -> ln <> [].
 Proof using.
 intros n ln t l H; elim H; simpl in |- *; auto.
 intros; discriminate.
@@ -71,7 +71,7 @@ Qed.
 (* The cover list is never empty *) 
 Theorem height_pred_not_nil2 :
  forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
- height_pred n ln l t -> l <> nil.
+ height_pred n ln l t -> l <> [].
 Proof using.
 intros n ln t l H; elim H; simpl in |- *; auto.
 intros; discriminate.
@@ -110,7 +110,7 @@ Theorem ordered_cover_height_pred :
  ordered_cover l t -> exists ln : list nat, height_pred n ln l t.
 Proof using.
 intros n t l H; generalize n; elim H; clear n t l H.
-intros t l n; exists (n :: nil); auto.
+intros t l n; exists (n :: []); auto.
 intros t1 t2 l1 l2 l3 H H0 H1 H2 n.
 case (H0 (S n)); intros ln1 HH1.
 case (H2 (S n)); intros ln2 HH2.
@@ -136,7 +136,7 @@ Qed.
 *) 
 Theorem height_pred_larger_strict :
  forall (n n1 : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
- height_pred n ln l t -> In n1 ln -> n < n1 \/ ln = n :: nil /\ l = t :: nil.
+ height_pred n ln l t -> In n1 ln -> n < n1 \/ ln = n :: [] /\ l = t :: [].
 Proof using.
 intros n n1 ln t l H; generalize n1; elim H; clear H n ln t l n1; auto.
 intros n ln1 ln2 t1 t2 l1 l2 H H0 H1 H2 n1 H3; left;
@@ -164,7 +164,7 @@ Lemma height_pred_disj_larger_aux :
   ln = ln1 ++ a :: ln2 ->
   (forall n1 : nat, In n1 ln1 -> n1 < a) ->
   (forall n1 : nat, In n1 ln2 -> n1 <= a) ->
-  (exists ln3, ln2 = a :: ln3) \/ ln = n :: nil /\ l = t :: nil.
+  (exists ln3, ln2 = a :: ln3) \/ ln = n :: [] /\ l = t :: [].
 Proof using.
 intros n ln t l H; elim H; clear H n ln t l.
 intros n t l ln1 ln2 a; case ln1; simpl in |- *; auto.
@@ -173,7 +173,7 @@ case app_inv_app with (1 := H3).
 intros (ln4, H7); auto.
 cut (ln3 = ln4 ++ ln2);
  [ intros E1
- | apply app_inv_head with (l1 := ln0 ++ a :: nil); repeat rewrite app_ass;
+ | apply app_inv_head with (l1 := ln0 ++ a :: []); repeat rewrite app_ass;
     simpl in |- *; rewrite <- H3; rewrite H7; rewrite app_ass; 
     auto ].
 case H0 with (1 := H7); auto; clear H0 H2.
@@ -181,7 +181,7 @@ intros n1 H8; apply H5; rewrite E1; auto with datatypes.
 intros (ln5, HH); left; exists (ln5 ++ ln2).
 apply trans_equal with (1 := E1); rewrite HH; auto.
 intros (HH1, HH2).
-cut (ln0 = nil /\ ln4 = nil /\ a = S n);
+cut (ln0 = [] /\ ln4 = [] /\ a = S n);
  [ intros (HH3, (HH4, HH5))
  | generalize HH1; rewrite H7; case ln0; simpl in |- *;
     [ case ln4; try (intros; discriminate); (intros HH6; injection HH6; auto)
@@ -194,7 +194,7 @@ intros n0 ln5 E1 H1; case height_pred_larger_strict with (n1 := n0) (1 := H1);
  simpl in |- *; auto with datatypes.
 intros HH6; Contradict HH6; apply le_not_lt; rewrite <- HH5; apply H5;
  rewrite E1; auto with datatypes.
-intros (H8, H9); left; exists (nil (A:=nat)); injection H8.
+intros (H8, H9); left; exists []; injection H8.
 intros HH7 HH8; rewrite HH5; rewrite <- HH8; rewrite <- HH7; rewrite E1;
  rewrite HH4; auto.
 intros (ln4, H7); auto.
@@ -205,7 +205,7 @@ cut (ln0 = ln1 ++ ln4);
 case H2 with (1 := H7); auto.
 intros n1 H6; apply H4; rewrite E1; auto with datatypes.
 intros (HH1, HH2).
-cut (ln3 = nil /\ ln4 = nil /\ a = S n);
+cut (ln3 = [] /\ ln4 = [] /\ a = S n);
  [ intros (HH3, (HH4, HH5))
  | generalize HH1; rewrite H7; case ln4; simpl in |- *;
     [ case ln3; try (intros; discriminate); (intros HH6; injection HH6; auto)
@@ -222,7 +222,7 @@ Theorem height_pred_disj_larger :
  (forall n1 : nat, In n1 ln1 -> n1 < a) ->
  (forall n1 : nat, In n1 ln2 -> n1 <= a) ->
  (exists ln3, ln2 = a :: ln3) \/
- (ln1 = nil /\ a = n /\ ln2 = nil) /\ l = t :: nil.
+ (ln1 = [] /\ a = n /\ ln2 = []) /\ l = t :: [].
 Proof using.
 intros n a ln1 ln2 t l H H0 H1;
  case
@@ -239,7 +239,7 @@ Lemma height_pred_disj_larger2_aux :
   forall ln1 ln2 a,
   ln = ln1 ++ a :: ln2 ->
   (exists n1, In n1 ln1 /\ a <= n1) \/
-  (exists n1, In n1 ln2 /\ a <= n1) \/ ln = n :: nil /\ l = t :: nil.
+  (exists n1, In n1 ln2 /\ a <= n1) \/ ln = n :: [] /\ l = t :: [].
 Proof using.
 intros n ln t l H; elim H; clear H n ln t l.
 intros n t l ln1 ln2 a; case ln1; simpl in |- *; auto.
@@ -248,13 +248,13 @@ case app_inv_app with (1 := H3).
 intros (ln4, H4); auto.
 cut (ln3 = ln4 ++ ln2);
  [ intros E1
- | apply app_inv_head with (l1 := ln0 ++ a :: nil); repeat rewrite app_ass;
+ | apply app_inv_head with (l1 := ln0 ++ a :: []); repeat rewrite app_ass;
     simpl in |- *; rewrite <- H3; rewrite H4; rewrite app_ass; 
     auto ].
 case H0 with (1 := H4); auto; intros [(n1, (HH1, HH2))| (HH1, HH2)]; auto;
  clear H0 H2.
 right; left; exists n1; split; auto; rewrite E1; auto with datatypes.
-cut (ln0 = nil /\ ln4 = nil /\ a = S n);
+cut (ln0 = [] /\ ln4 = [] /\ a = S n);
  [ intros (HH3, (HH4, HH5))
  | generalize HH1; rewrite H4; case ln0; simpl in |- *;
     [ case ln4; try (intros; discriminate); (intros HH6; injection HH6; auto)
@@ -271,7 +271,7 @@ case H2 with (1 := H4); auto; clear H0 H2.
 intros (n1, (HH1, HH2)); left; exists n1; split; auto; rewrite E1;
  auto with datatypes.
 intros [HH1| (HH1, HH2)]; auto.
-cut (ln3 = nil /\ ln4 = nil /\ a = S n);
+cut (ln3 = [] /\ ln4 = [] /\ a = S n);
  [ intros (HH3, (HH4, HH5))
  | generalize HH1; rewrite H4; case ln4; simpl in |- *;
     [ case ln3; try (intros; discriminate); (intros HH6; injection HH6; auto)
@@ -287,7 +287,7 @@ Theorem height_pred_disj_larger2 :
  height_pred n (ln1 ++ a :: ln2) l t ->
  (exists n1, In n1 ln1 /\ a <= n1) \/
  (exists n1, In n1 ln2 /\ a <= n1) \/
- (ln1 = nil /\ a = n /\ ln2 = nil) /\ l = t :: nil.
+ (ln1 = [] /\ a = n /\ ln2 = []) /\ l = t :: [].
 Proof using.
 intros n a ln1 ln2 t l H;
  case
@@ -324,7 +324,7 @@ cut (length ln2 = length l2);
  [ intros Eq3 | apply height_pred_length with (1 := H1) ].
 cut (length ln3 = length l3);
  [ intros Eq4
- | apply plus_reg_l with (length (ln0 ++ a :: b :: nil));
+ | apply plus_reg_l with (length (ln0 ++ a :: b :: []));
     rewrite <- length_app; rewrite app_ass; simpl in |- *; 
     rewrite <- H3; repeat rewrite length_app; simpl in |- *; 
     rewrite Eq2; rewrite Eq3; rewrite <- length_app; 
@@ -335,7 +335,7 @@ case app_inv_app2 with (1 := H3); auto.
 intros (ln4, Hp1).
 cut (ln3 = ln4 ++ ln2);
  [ intros E1
- | apply app_inv_head with (l1 := ln0 ++ a :: b :: nil);
+ | apply app_inv_head with (l1 := ln0 ++ a :: b :: []);
     repeat rewrite app_ass; simpl in |- *; rewrite <- H3; 
     rewrite Hp1; repeat rewrite app_ass; auto ].
 replace (ln0 ++ pred a :: ln3) with ((ln0 ++ pred a :: ln4) ++ ln2);
@@ -398,8 +398,8 @@ rewrite HH2; auto with datatypes.
 rewrite <- HH4; intros HH7; Contradict HH7; apply le_not_lt;
  auto with arith datatypes.
 intros (H8, H9); rewrite HH4; rewrite HH3; simpl in |- *.
-cut (l0 = nil); [ intros HM1; rewrite HM1 | idtac ].
-cut (ln3 = nil); [ intros HM2; rewrite HM2 | idtac ].
+cut (l0 = []); [ intros HM1; rewrite HM1 | idtac ].
+cut (ln3 = []); [ intros HM2; rewrite HM2 | idtac ].
 replace l3 with (nil (A:=btree A)); simpl in |- *; auto.
 rewrite HH6 in H7; rewrite H9 in H7; rewrite HM1 in H7; simpl in H7;
  injection H7.
@@ -498,7 +498,7 @@ intros a l H1; apply f_equal2 with (f := cons (A:=nat)); auto with arith.
 ring.
 apply btree_unique_prefix2; auto.
 Qed.
- 
+
 End HeightPred.
 Arguments height_pred [A].
 Hint Resolve height_pred_nil height_pred_node : core.

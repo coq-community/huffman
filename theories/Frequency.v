@@ -35,7 +35,7 @@ Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
 (* Create a list of a given length with a given element  *)
 Fixpoint id_list (a : A) (n : nat) {struct n} : list A :=
   match n with
-  | O => nil
+  | O => []
   | S n1 => a :: id_list a n1
   end.
 
@@ -43,7 +43,7 @@ Fixpoint id_list (a : A) (n : nat) {struct n} : list A :=
 Fixpoint add_frequency_list (a : A) (l : list (A * nat)) {struct l} :
  list (A * nat) :=
   match l with
-  | nil => (a, 1) :: nil
+  | [] => (a, 1) :: []
   | (b, n) :: l1 =>
       match eqA_dec a b with
       | left _ => (a, S n) :: l1
@@ -70,14 +70,14 @@ intros e;
   permutation_trans
    with
      (id_list a n ++
-      (b :: nil) ++ flat_map (fun p => id_list (fst p) (snd p)) l);
+      (b :: []) ++ flat_map (fun p => id_list (fst p) (snd p)) l);
  [ idtac | simpl in |- *; auto ].
 change
   (permutation
-     ((b :: nil) ++
+     ((b :: []) ++
       id_list a n ++ flat_map (fun p => id_list (fst p) (snd p)) l)
      (id_list a n ++
-      (b :: nil) ++ flat_map (fun p => id_list (fst p) (snd p)) l)) 
+      (b :: []) ++ flat_map (fun p => id_list (fst p) (snd p)) l)) 
  in |- *.
 repeat rewrite <- app_ass; auto.
 Qed.
@@ -160,7 +160,7 @@ Qed.
 (* Create a frequency list from a message *)
 Fixpoint frequency_list (l : list A) : list (A * nat) :=
   match l with
-  | nil => nil
+  | [] => []
   | a :: l1 => add_frequency_list a (frequency_list l1)
   end.
 
@@ -224,7 +224,7 @@ Qed.
 (* Compute the number of occurrences of an element in a message *)
 Fixpoint number_of_occurrences (a : A) (l : list A) {struct l} : nat :=
   match l with
-  | nil => 0
+  | [] => 0
   | b :: l1 =>
       match eqA_dec a b with
       | left _ => S (number_of_occurrences a l1)
@@ -248,7 +248,7 @@ Theorem number_of_occurrences_permutation_ex :
    permutation m (id_list a (number_of_occurrences a m) ++ m1) /\ ~ In a m1.
 Proof using.
 intros m; elim m; simpl in |- *; auto.
-intros a; exists (nil (A:=A)); split; auto with datatypes.
+intros a; exists []; split; auto with datatypes.
 intros a l H a0.
 case (eqA_dec a0 a); simpl in |- *; intros H1.
 case (H a0); intros m1 (H2, H3).

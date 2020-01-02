@@ -139,7 +139,7 @@ intros a0 l H; apply f_equal2 with (f := cons (A:=A)); auto.
 Qed.
 
 (* If the message is not null, so is the restriction *)
-Theorem restrict_not_null : forall c, m <> nil -> restrict_code m c <> nil.
+Theorem restrict_not_null : forall c, m <> [] -> restrict_code m c <> [].
 Proof using.
 case m; simpl in |- *; auto.
 unfold restrict_code in |- *.
@@ -147,7 +147,7 @@ intros a0 l c H H1.
 absurd
  (In
     ((fun x : A * nat => (fst x, find_code eqA_dec (fst x) c))
-       (a0, number_of_occurrences eqA_dec a0 (a0 :: l))) nil);
+       (a0, number_of_occurrences eqA_dec a0 (a0 :: l))) []);
  auto with datatypes.
 rewrite <- H1.
 apply
@@ -164,7 +164,7 @@ Theorem restrict_code_pbbuild :
  not_null c ->
  unique_prefix c ->
  in_alphabet m c ->
- m <> nil ->
+ m <> [] ->
  permutation (map fst (frequency_list eqA_dec m))
    (all_pbleaves (pbbuild empty (restrict_code m c))).
 Proof using.

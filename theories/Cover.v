@@ -36,7 +36,7 @@ Variable empty : A.
   list delimit a frontier in the tree
 *)
 Inductive cover : list (btree A) -> btree A -> Prop :=
-  | cover_one : forall t, cover (t :: nil) t
+  | cover_one : forall t, cover (t :: []) t
   | cover_node :
       forall l1 l2 t1 t2 t3,
       permutation l1 (t1 :: t2 :: l2) ->
@@ -61,7 +61,7 @@ Theorem cover_cons_l :
  forall t1 t2 l1, cover l1 t1 -> cover (t2 :: l1) (node t2 t1).
 Proof using.
 intros t1 t2 l1 H; elim H; clear t1 l1 H; simpl in |- *; auto.
-intros t; apply cover_node with (l2 := nil (A:=btree A)) (t1 := t2) (t2 := t);
+intros t; apply cover_node with (l2 := []) (t1 := t2) (t2 := t);
  auto.
 intros l1 l2 t1 t0 t3 H H0 H1.
 apply cover_node with (l2 := t2 :: l2) (t1 := t1) (t2 := t0); auto.
@@ -71,7 +71,7 @@ apply cover_permutation with (1 := H1); auto.
 Qed.
 
 (* A cover cannot be empty *)
-Theorem cover_not_nil : forall l t, cover l t -> l <> nil.
+Theorem cover_not_nil : forall l t, cover l t -> l <> [].
 Proof using.
 intros l t H; case H; simpl in |- *; auto.
 intros t0; discriminate.
@@ -83,7 +83,7 @@ Qed.
 
 (* A non empty list is a cover of something *) 
 Theorem one_cover_ex :
- forall l : list (btree A), l <> nil -> exists t : btree A, cover l t.
+ forall l : list (btree A), l <> [] -> exists t : btree A, cover l t.
 Proof using.
 intros l; elim l; simpl in |- *; auto.
 intros H; case H; auto.
@@ -122,7 +122,7 @@ intros l t1 t2 H H0; apply cover_in_inb_inb with (1 := H) (2 := H0); auto.
 Qed.
  
 Theorem cover_inv_leaf_aux :
-  forall t l, cover l t -> forall a : A, t = leaf a -> l = leaf a :: nil.
+  forall t l, cover l t -> forall a : A, t = leaf a -> l = leaf a :: [].
 Proof using.
 intros t l H; elim H; simpl in |- *; auto.
 intros t0 a H0; apply f_equal2 with (f := cons (A:=btree A)); auto.
@@ -132,16 +132,16 @@ Qed.
 
 (* Covers of a leaf are singleton lists *)
 Theorem cover_inv_leaf :
- forall (a : A) l, cover l (leaf a) -> l = leaf a :: nil.
+ forall (a : A) l, cover l (leaf a) -> l = leaf a :: [].
 Proof using.
 intros a l H; (apply cover_inv_leaf_aux with (t := leaf a); auto).
 Qed.
 
 (* Singleton cover are composed of the tree *)
-Theorem cover_one_inv : forall t1 t2, cover (t1 :: nil) t2 -> t1 = t2.
+Theorem cover_one_inv : forall t1 t2, cover (t1 :: []) t2 -> t1 = t2.
 Proof using.
 intros t1 t2 H; inversion H; auto.
-absurd (length (t1 :: nil) = length (t0 :: t3 :: l2)).
+absurd (length (t1 :: []) = length (t0 :: t3 :: l2)).
 simpl in |- *; intros; discriminate.
 apply permutation_length with (1 := H0); auto.
 Qed.
@@ -150,7 +150,7 @@ Lemma cover_inv_app_aux :
   forall t t1 t2 l,
   cover l t ->
   t = node t1 t2 ->
-  l = node t1 t2 :: nil \/
+  l = node t1 t2 :: [] \/
   (exists l1,
      (exists l2, (cover l1 t1 /\ cover l2 t2) /\ permutation l (l1 ++ l2))).
 Proof using.
@@ -159,7 +159,7 @@ intros t0 Ht0; rewrite Ht0; auto with datatypes.
 intros l1 l2 t0 t3 t4 H0 H1 H2 H3; right.
 case H2; auto.
 intros H4.
-exists (t1 :: nil); exists (t2 :: nil); simpl in |- *; repeat (split; auto).
+exists (t1 :: []); exists (t2 :: []); simpl in |- *; repeat (split; auto).
 injection H4; intros H5 H6 H7; rewrite <- H5; rewrite <- H6; rewrite <- H7;
  auto.
 clear H2 H3; intros (l3, (l4, ((Hl1, Hl2), Hl3))).
@@ -211,7 +211,7 @@ Qed.
 Theorem cover_inv_app :
  forall t1 t2 l,
  cover l (node t1 t2) ->
- l = node t1 t2 :: nil \/
+ l = node t1 t2 :: [] \/
  (exists l1,
     (exists l2, (cover l1 t1 /\ cover l2 t2) /\ permutation l (l1 ++ l2))).
 Proof using.
@@ -251,13 +251,13 @@ Qed.
 (* A local function to compute all covers of a certain length *)
 Fixpoint all_cover_aux (l : list (btree A)) (n : nat) {struct n} : list (btree A) :=
   match n with
-  | O => nil
+  | O => []
   | S n1 =>
       flat_map
         (fun l1 =>
          match l1 with
-         | nil => nil
-         | a :: nil => a :: nil
+         | [] => []
+         | a :: [] => a :: []
          | a :: b :: l2 => all_cover_aux (node a b :: l2) n1
          end) (all_permutations l)
   end.
