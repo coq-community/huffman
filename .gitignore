@@ -3,6 +3,7 @@ Makefile.coq.conf
 huffman.ml
 huffman.mli
 run_huffman.ml
+_build
 *~
 *.d
 *.aux
