@@ -84,7 +84,7 @@ rewrite firstn_le_length_eq; auto;
  (rewrite <- H3; rewrite app_length; auto with arith).
 intros t4 HH1.
 case (H2 (skipn (length l1) l0)); auto.
-rewrite skipn_length; auto;
+rewrite skipn_length_minus; auto;
  (rewrite <- H3; rewrite app_length; rewrite minus_plus; auto with arith).
 intros t5 HH2.
 exists (node t4 t5); auto.
@@ -108,7 +108,7 @@ rewrite firstn_le_length_eq; auto;
  (rewrite <- H3; rewrite app_length; auto with arith).
 intros t4 (HH1, HH2).
 case (H2 (skipn (length l1) l0)); auto.
-rewrite skipn_length; auto;
+rewrite skipn_length_minus; auto;
  (rewrite <- H3; rewrite app_length; rewrite minus_plus; auto with arith).
 intros t5 (HH3, HH4).
 exists (node t4 t5); rewrite <- (firstn_skipn (length l1) l0); auto.
