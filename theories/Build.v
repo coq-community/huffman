@@ -67,9 +67,9 @@ case H4.
 intros l5 (t3, (t4, (H8, (H9, H10)))).
 absurd (length l2 = length (t3 :: t4 :: l5)).
 rewrite permutation_length with (1 := H2).
-rewrite <- length_map with (f := sum_leaves f) (l := l4).
+rewrite <- map_length with (f := sum_leaves f) (l := l4).
 rewrite <- H3.
-rewrite length_map with (f := sum_leaves f).
+rewrite map_length with (f := sum_leaves f).
 rewrite permutation_length with (1 := permutation_sym _ _ _ H1).
 simpl in |- *; red in |- *; intros; discriminate.
 apply permutation_length with (1 := H9).
@@ -81,9 +81,9 @@ case H4.
 intros l6 (l7, (H11, (H12, H13))).
 absurd (length l1 = length (t3 :: t4 :: l5)).
 rewrite permutation_length with (1 := H11).
-rewrite <- length_map with (f := sum_leaves f) (l := l6).
+rewrite <- map_length with (f := sum_leaves f) (l := l6).
 rewrite H13.
-rewrite length_map with (f := sum_leaves f).
+rewrite map_length with (f := sum_leaves f).
 rewrite permutation_length with (1 := permutation_sym _ _ _ H12).
 rewrite <- H5; simpl in |- *; red in |- *; intros; discriminate.
 apply permutation_length with (1 := H9).
@@ -216,7 +216,7 @@ intros b H2; apply lt_le_weak; auto with arith.
 intros l5 (l6, (HB1, (HB2, (HB3, HB4)))).
 case height_pred_subst_pred with (1 := Ht3) (l2 := l5 ++ b1 :: c1 :: l6);
  auto.
-rewrite <- IL; repeat rewrite length_app; simpl in |- *; auto.
+rewrite <- IL; repeat rewrite app_length; simpl in |- *; auto.
 intros t6 (HD1, HD2).
 case (buildf (l5 ++ node b1 c1 :: l6)); auto.
 case l5; simpl in |- *; intros; discriminate.
@@ -225,7 +225,7 @@ case H with (3 := HD3); auto with arith.
 rewrite permutation_length with (1 := Hl1).
 rewrite permutation_length with (1 := HC1).
 rewrite permutation_length with (1 := HB3).
-repeat rewrite length_app; simpl in |- *; auto with arith.
+repeat rewrite app_length; simpl in |- *; auto with arith.
 case l5; simpl in |- *; intros; discriminate.
 intros HD4 HD5.
 split; auto.

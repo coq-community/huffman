@@ -63,7 +63,7 @@ Theorem subst_pred_length :
  subst_pred l1 l2 t1 t2 -> length l1 = length l2.
 Proof using.
 intros t1 t2 l1 l2 H; elim H; auto.
-intros t0 t3 t4 t5 l0 l3 l4 l5 l6 l7 H0 H1 H2 H3; repeat rewrite length_app; auto.
+intros t0 t3 t4 t5 l0 l3 l4 l5 l6 l7 H0 H1 H2 H3; repeat rewrite app_length; auto.
 Qed.
 
 (* An ordered cover can  be completed in a substitution *)
@@ -79,16 +79,16 @@ intros b l0; case l0; simpl in |- *; auto.
 intros H; exists b; auto.
 intros; discriminate.
 intros t1 t2 l1 l2 l3 H H0 H1 H2 l0 H3.
-case (H0 (first_n l0 (length l1))); auto.
-rewrite first_n_length; auto;
- (rewrite <- H3; rewrite length_app; auto with arith).
+case (H0 (firstn (length l1) l0)); auto.
+rewrite firstn_le_length_eq; auto;
+ (rewrite <- H3; rewrite app_length; auto with arith).
 intros t4 HH1.
-case (H2 (skip_n l0 (length l1))); auto.
-rewrite skip_n_length; auto;
- (rewrite <- H3; rewrite length_app; rewrite minus_plus; auto with arith).
+case (H2 (skipn (length l1) l0)); auto.
+rewrite skipn_length; auto;
+ (rewrite <- H3; rewrite app_length; rewrite minus_plus; auto with arith).
 intros t5 HH2.
 exists (node t4 t5); auto.
-rewrite <- (first_n_skip_n_app _ (length l1) l0); auto.
+rewrite <- (firstn_skipn (length l1) l0); auto.
 Qed.
 
 (* A height predicate can be completed in a substitution *) 
@@ -103,15 +103,15 @@ intros n t l2; case l2.
 simpl in |- *; intros; discriminate.
 intros b l0; case l0; intros; try discriminate; exists b; auto.
 intros n ln1 ln2 t1 t2 l1 l2 H H0 H1 H2 l0 H3.
-case (H0 (first_n l0 (length l1))); auto.
-rewrite first_n_length; auto;
- (rewrite <- H3; rewrite length_app; auto with arith).
+case (H0 (firstn (length l1) l0)); auto.
+rewrite firstn_le_length_eq; auto;
+ (rewrite <- H3; rewrite app_length; auto with arith).
 intros t4 (HH1, HH2).
-case (H2 (skip_n l0 (length l1))); auto.
-rewrite skip_n_length; auto;
- (rewrite <- H3; rewrite length_app; rewrite minus_plus; auto with arith).
+case (H2 (skipn (length l1) l0)); auto.
+rewrite skipn_length; auto;
+ (rewrite <- H3; rewrite app_length; rewrite minus_plus; auto with arith).
 intros t5 (HH3, HH4).
-exists (node t4 t5); rewrite <- (first_n_skip_n_app _ (length l1) l0); auto.
+exists (node t4 t5); rewrite <- (firstn_skipn (length l1) l0); auto.
 Qed.
  
 End SubstPred.

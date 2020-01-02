@@ -64,13 +64,13 @@ intros H2; exists l0; split; auto; rewrite H2; auto.
 intros (l2, (l3, ((HH1, HH2), HH3))).
 case H with (2 := HH1); auto.
 rewrite permutation_length with (1 := HH3).
-generalize HH2; rewrite length_app; case l3; simpl in |- *; auto with arith.
+generalize HH2; rewrite app_length; case l3; simpl in |- *; auto with arith.
 intros HH4; case cover_not_nil with (1 := HH4); auto.
 intros; rewrite plus_comm; simpl in |- *; auto with arith.
 intros l4 (HP1, HP2).
 case H with (2 := HH2); auto.
 rewrite permutation_length with (1 := HH3).
-generalize HH1; rewrite length_app; case l2; simpl in |- *; auto with arith.
+generalize HH1; rewrite app_length; case l2; simpl in |- *; auto with arith.
 intros HH4; case cover_not_nil with (1 := HH4); auto.
 intros l5 (HP3, HP4).
 exists (l4 ++ l5); split; auto.

@@ -196,7 +196,7 @@ case in_app_or with (1 := HH1); intros HH2.
 case in_ex_app with (1 := HH2).
 intros l6 (l7, HH3); exists (l6 ++ b :: l7); exists l4; repeat (split; auto).
 apply trans_equal with (1 := H).
-rewrite HH3; repeat rewrite length_app; simpl in |- *; auto with arith.
+rewrite HH3; repeat rewrite app_length; simpl in |- *; auto with arith.
 apply permutation_sym; apply permutation_trans with (2 := H3); auto.
 rewrite HH3.
 repeat rewrite app_ass.
@@ -220,7 +220,7 @@ pattern b1 at 2 in |- *; rewrite <- HH3; apply permutation_sym; auto.
 case in_ex_app with (1 := HH3).
 intros l6 (l7, HH4); exists l3; exists (l6 ++ b :: l7); repeat (split; auto).
 apply trans_equal with (1 := H0).
-rewrite HH4; repeat rewrite length_app; simpl in |- *; auto with arith.
+rewrite HH4; repeat rewrite app_length; simpl in |- *; auto with arith.
 apply permutation_sym; apply permutation_trans with (2 := H3); auto.
 rewrite HH4.
 simpl in |- *; apply permutation_transposition.

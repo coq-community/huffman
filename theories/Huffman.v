@@ -130,7 +130,7 @@ rewrite
 generalize
  (to_btree_smaller _ eqA_dec (pbbuild empty (restrict_code eqA_dec m c))).
 intros H4; pattern m at 2 4 in |- *; elim m; simpl in |- *; auto.
-intros a0 l H5; repeat rewrite length_app.
+intros a0 l H5; repeat rewrite app_length.
 apply plus_le_compat; auto.
 apply permutation_sym; apply pbbuild_compute_perm.
 apply restrict_not_null with (eqA_dec := eqA_dec); auto.

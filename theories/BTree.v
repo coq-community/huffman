@@ -248,7 +248,7 @@ Fixpoint compute_code (a : btree) : list (A * list bool) :=
 Theorem length_compute_lt_O : forall t, 0 < length (compute_code t).
 Proof using.
 intros t; elim t; simpl in |- *; auto with arith.
-intros b H b0 H0; rewrite length_app.
+intros b H b0 H0; rewrite app_length.
 replace 0 with (0 + 0); auto with arith.
 apply plus_lt_compat.
 generalize H; elim (compute_code b); simpl in |- *; auto with arith.

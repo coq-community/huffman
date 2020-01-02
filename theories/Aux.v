@@ -136,12 +136,6 @@ Variable g : B -> A -> A.
 Variable h : A -> A.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
  
-Theorem fold_left_app :
- forall a l1 l2, fold_left f (l1 ++ l2) a = fold_left f l2 (fold_left f l1 a).
-Proof using.
-intros a l1; generalize a; elim l1; simpl in |- *; auto; clear a l1.
-Qed.
- 
 Theorem fold_left_eta :
  forall l a f1,
  (forall a b, In b l -> f a b = f1 a b) -> fold_left f l a = fold_left f1 l a.
@@ -156,14 +150,6 @@ Theorem fold_left_map :
  fold_left f (map k l) a = fold_left (fun a b => f a (k b)) l a.
 Proof using.
 intros C a l k; generalize a; elim l; simpl in |- *; auto.
-Qed.
- 
-Theorem fold_right_app :
- forall a l1 l2,
- fold_right g a (l1 ++ l2) = fold_right g (fold_right g a l2) l1.
-Proof using.
-intros a l1; generalize a; elim l1; simpl in |- *; auto; clear a l1.
-intros a l H a0 l2; rewrite H; auto.
 Qed.
  
 Theorem fold_left_init :
@@ -223,13 +209,6 @@ case H; auto; intros l1 (l2, Hl2); exists (a1 :: l1); exists l2;
  simpl in |- *; auto.
 apply f_equal2 with (f := cons (A:=A)); auto.
 Qed.
-
-(* Properties of app *)
-Theorem length_app :
- forall l1 l2 : list A, length (l1 ++ l2) = length l1 + length l2.
-Proof using.
-intros l1; elim l1; simpl in |- *; auto.
-Qed.
  
 Theorem app_inv_head :
  forall l1 l2 l3 : list A, l1 ++ l2 = l1 ++ l3 -> l2 = l3.
@@ -244,11 +223,11 @@ Proof using.
 intros l1 l2; generalize l1; elim l2; clear l1 l2; simpl in |- *; auto.
 intros l1 l3; case l3; auto.
 intros b l H; absurd (length ((b :: l) ++ l1) <= length l1).
-simpl in |- *; rewrite length_app; auto with arith.
+simpl in |- *; rewrite app_length; auto with arith.
 rewrite <- H; auto with arith.
 intros a l H l1 l3; case l3.
 simpl in |- *; intros H1; absurd (length (a :: l ++ l1) <= length l1).
-simpl in |- *; rewrite length_app; auto with arith.
+simpl in |- *; rewrite app_length; auto with arith.
 rewrite H1; auto with arith.
 simpl in |- *; intros b l0 H0; injection H0.
 intros H1 H2; apply f_equal2 with (f := cons (A:=A)); auto.
@@ -337,17 +316,6 @@ intros a0 l0 H [H0| H0]; auto.
 exists (snd a0); left; rewrite <- H0; case a0; simpl in |- *; auto.
 case H; auto; intros l1 Hl1; exists l1; auto.
 Qed.
- 
-Theorem length_map : forall l, length (map f l) = length l.
-Proof using.
-intros l; elim l; simpl in |- *; auto.
-Qed.
- 
-Theorem map_app : forall l1 l2, map f (l1 ++ l2) = map f l1 ++ map f l2.
-Proof using.
-intros l; elim l; simpl in |- *; auto.
-intros a l0 H l2; apply f_equal2 with (f := cons (A:=B)); auto.
-Qed.
 
 (* Properties of flat_map *)
 Theorem in_flat_map :
@@ -412,69 +380,41 @@ Arguments map2 [A B C].
 Section First.
 Variable A : Type.
 
-(* Take the first elements of a list *)
-Fixpoint first_n (l : list A) (n : nat) {struct n} :
- list A :=
-  match n with
-  | O => []
-  | S n1 => match l with
-            | [] => []
-            | a :: l1 => a :: first_n l1 n1
-            end
-  end.
-
 (* Properties of first_n *)
-Theorem first_n_app1 :
+Theorem firstn_le_app1 :
  forall (n : nat) (l1 l2 : list A),
- length l1 <= n -> first_n (l1 ++ l2) n = l1 ++ first_n l2 (n - length l1).
+ length l1 <= n -> firstn n (l1 ++ l2) = l1 ++ firstn (n - length l1) l2.
 Proof using.
 intros n; elim n; simpl in |- *; auto.
 intros l1; case l1; simpl in |- *; auto.
-intros b l l2 H; Contradict H; auto with arith.
+intros b l l2 H; contradict H; auto with arith.
 intros n0 H l1; case l1; simpl in |- *; auto with arith.
 intros b l l2 H0; rewrite H; auto with arith.
 Qed.
  
-Theorem first_n_app2 :
+Theorem firstn_le_app2 :
  forall (n : nat) (l1 l2 : list A),
- n <= length l1 -> first_n (l1 ++ l2) n = first_n l1 n.
+ n <= length l1 -> firstn n (l1 ++ l2) = firstn n l1.
 Proof using.
 intros n; elim n; simpl in |- *; auto.
 intros n0 H l1 l2; case l1; simpl in |- *.
-intros H1; Contradict H1; auto with arith.
+intros H1; contradict H1; auto with arith.
 intros a l H0; (apply f_equal2 with (f := cons (A:=A)); auto).
 apply H; apply le_S_n; auto.
 Qed.
- 
-Theorem first_n_length :
- forall (n : nat) (l1 : list A), n <= length l1 -> length (first_n l1 n) = n.
+
+Theorem firstn_le_length_eq :
+ forall (n : nat) (l1 : list A), n <= length l1 -> length (firstn n l1) = n.
 Proof using.
 intros n l1; generalize n; elim l1; clear n l1; simpl in |- *; auto.
 intros n; case n; simpl in |- *; auto.
-intros n1 H1; Contradict H1; auto with arith.
+intros n1 H1; contradict H1; auto with arith.
 intros a l H n; case n; simpl in |- *; auto with arith.
 Qed.
- 
-Theorem first_n_id : forall l : list A, first_n l (length l) = l.
-Proof using.
-intros l; elim l; simpl in |- *; auto.
-intros a l0 H; apply f_equal2 with (f := cons (A:=A)); auto.
-Qed.
 
-(* Skip the first elements of a list *)
-Fixpoint skip_n (l : list A) (n : nat) {struct n} : 
- list A :=
-  match n with
-  | O => l
-  | S n1 => match l with
-            | [] => []
-            | a :: l1 => skip_n l1 n1
-            end
-  end.
- 
-Theorem skip_n_app1 :
+Theorem skipn_le_app1 :
  forall (n : nat) (l1 l2 : list A),
- length l1 <= n -> skip_n (l1 ++ l2) n = skip_n l2 (n - length l1).
+ length l1 <= n -> skipn n (l1 ++ l2) = skipn (n - length l1) l2.
 Proof using.
 intros n; elim n; simpl in |- *; auto.
 intros l1; case l1; simpl in |- *; auto.
@@ -482,38 +422,16 @@ intros b l l2 H; Contradict H; auto with arith.
 intros n0 H l1; case l1; simpl in |- *; auto with arith.
 Qed.
  
-Theorem skip_n_app2 :
+Theorem skipn_le_app2 :
  forall (n : nat) (l1 l2 : list A),
- n <= length l1 -> skip_n (l1 ++ l2) n = skip_n l1 n ++ l2.
+ n <= length l1 -> skipn n (l1 ++ l2) = skipn n l1 ++ l2.
 Proof using.
 intros n; elim n; simpl in |- *; auto.
 intros n0 H l1; case l1; simpl in |- *; auto with arith.
 intros l2 H1; Contradict H1; auto with arith.
 Qed.
  
-Theorem skip_n_length :
- forall (n : nat) (l1 : list A), length (skip_n l1 n) = length l1 - n.
-Proof using.
-intros n; elim n; simpl in |- *; auto with arith.
-intros n0 H l1; case l1; simpl in |- *; auto.
-Qed.
-
-Theorem skip_n_id : forall l : list A, skip_n l (length l) = [].
-Proof using.
-intros l; elim l; simpl in |- *; auto.
-Qed.
- 
-Theorem first_n_skip_n_app :
- forall (n : nat) (l : list A), first_n l n ++ skip_n l n = l.
-Proof using.
-intros n; elim n; simpl in |- *; auto.
-intros n0 H l; case l; simpl in |- *; auto.
-intros a l0; apply f_equal2 with (f := cons (A:=A)); auto.
-Qed.
- 
 End First.
-Arguments first_n [A].
-Arguments skip_n [A].
 
 (* Existence of a first max *)
 Section FirstMax.

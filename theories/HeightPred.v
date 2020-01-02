@@ -85,7 +85,7 @@ Theorem height_pred_length :
  height_pred n ln l t -> length ln = length l.
 Proof using.
 intros n ln t l H; elim H; simpl in |- *; auto.
-intros; repeat rewrite length_app; auto with arith.
+intros; repeat rewrite app_length; auto with arith.
 Qed.
 
 (* 
@@ -325,11 +325,11 @@ cut (length ln2 = length l2);
 cut (length ln3 = length l3);
  [ intros Eq4
  | apply plus_reg_l with (length (ln0 ++ a :: b :: []));
-    rewrite <- length_app; rewrite app_ass; simpl in |- *; 
-    rewrite <- H3; repeat rewrite length_app; simpl in |- *; 
-    rewrite Eq2; rewrite Eq3; rewrite <- length_app; 
-    rewrite H7; repeat rewrite length_app; simpl in |- *;
-    repeat rewrite (fun x y => plus_comm x (S y)); 
+    rewrite <- app_length; rewrite app_ass; simpl in |- *;
+    rewrite <- H3; repeat rewrite app_length; simpl in |- *;
+    rewrite Eq2; rewrite Eq3; rewrite <- app_length;
+    rewrite H7; repeat rewrite app_length; simpl in |- *;
+    repeat rewrite (fun x y => plus_comm x (S y));
     simpl in |- *; rewrite plus_comm; auto ].
 case app_inv_app2 with (1 := H3); auto.
 intros (ln4, Hp1).
@@ -340,10 +340,10 @@ cut (ln3 = ln4 ++ ln2);
     rewrite Hp1; repeat rewrite app_ass; auto ].
 replace (ln0 ++ pred a :: ln3) with ((ln0 ++ pred a :: ln4) ++ ln2);
  [ idtac | rewrite app_ass; rewrite E1; auto ].
-cut (l3 = first_n l3 (length ln4) ++ l2).
+cut (l3 = firstn (length ln4) l3 ++ l2).
 intros HH;
  replace (l0 ++ node t0 t3 :: l3) with
-  ((l0 ++ node t0 t3 :: first_n l3 (length ln4)) ++ l2);
+  ((l0 ++ node t0 t3 :: firstn (length ln4) l3) ++ l2);
  [ idtac | pattern l3 at 2 in |- *; rewrite HH; rewrite app_ass; auto ].
 apply height_pred_node; auto.
 apply H0 with (1 := Hp1); auto.
@@ -354,40 +354,40 @@ apply app_inv_tail with (l1 := l2).
 repeat rewrite app_ass; apply trans_equal with (1 := H7); auto.
 pattern l3 at 1 in |- *; rewrite HH; auto.
 apply sym_equal;
- apply trans_equal with (2 := first_n_skip_n_app _ (length ln4) l3).
+ apply trans_equal with (2 := firstn_skipn (length ln4) l3).
 apply f_equal2 with (f := app (A:=btree A)); auto.
-apply trans_equal with (skip_n l2 (length l1 - length l1)).
+apply trans_equal with (skipn (length l1 - length l1) l2).
 rewrite <- minus_n_n; simpl in |- *; auto.
-rewrite <- skip_n_app1; auto.
+rewrite <- skipn_le_app1; auto.
 rewrite H7.
 rewrite <- Eq2; rewrite Hp1.
-rewrite skip_n_app1.
-rewrite length_app.
+rewrite skipn_le_app1.
+rewrite app_length.
 rewrite H6; rewrite minus_plus; simpl in |- *; auto.
-rewrite <- H6; rewrite length_app; simpl in |- *; auto with arith.
+rewrite <- H6; rewrite app_length; simpl in |- *; auto with arith.
 intros [(ln4, HH)| (HH1, HH2)].
 cut (ln0 = ln1 ++ ln4);
  [ intros E1
  | apply app_inv_tail with (l1 := a :: b :: ln3); rewrite <- H3; rewrite HH;
     rewrite app_ass; auto ].
-cut (l0 = l1 ++ skip_n l0 (length l1)).
+cut (l0 = l1 ++ skipn (length l1) l0).
 intros Eq1; rewrite Eq1; rewrite E1; repeat rewrite app_ass.
 apply height_pred_node; auto.
 apply H2 with (b := b); auto.
 intros n1 H8; apply H4; (rewrite E1; auto with datatypes).
-rewrite skip_n_length; rewrite <- Eq2; rewrite <- H6;
- rewrite <- skip_n_length; rewrite E1; rewrite skip_n_app2; 
- auto; rewrite skip_n_id; simpl in |- *; auto.
+rewrite skipn_length; rewrite <- Eq2; rewrite <- H6;
+ rewrite <- skipn_length; rewrite E1; rewrite skipn_le_app2;
+ auto; rewrite skipn_all; simpl in |- *; auto.
 apply app_inv_head with (l1 := l1).
 rewrite <- app_ass; rewrite <- Eq1; auto.
 apply sym_equal;
- apply trans_equal with (2 := first_n_skip_n_app _ (length l1) l0).
+ apply trans_equal with (2 := firstn_skipn (length l1) l0).
 apply f_equal2 with (f := app (A:=btree A)); auto.
-apply trans_equal with (first_n (l1 ++ l2) (length l1)).
-rewrite first_n_app1; auto; rewrite <- minus_n_n; simpl in |- *;
+apply trans_equal with (firstn (length l1) (l1 ++ l2)).
+rewrite firstn_le_app1; auto; rewrite <- minus_n_n; simpl in |- *;
  auto with datatypes.
-rewrite H7; rewrite first_n_app2; auto.
-rewrite <- H6; rewrite <- Eq2; rewrite E1; rewrite length_app;
+rewrite H7; rewrite firstn_le_app2; auto.
+rewrite <- H6; rewrite <- Eq2; rewrite E1; rewrite app_length;
  auto with arith.
 rewrite HH1 in H; case height_pred_disj_larger2 with (1 := H); simpl in |- *;
  auto.
