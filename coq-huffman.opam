@@ -8,7 +8,7 @@ bug-reports: "https://github.com/coq-community/huffman/issues"
 doc: "https://coq-community.github.io/huffman/"
 license: "LGPL-2.1-or-later"
 
-synopsis: "A Coq proof of the correctness of the Huffman coding algorithm"
+synopsis: "Coq proof of the correctness of the Huffman coding algorithm"
 description: """
 This projects contains a Coq proof of the correctness of the Huffman coding algorithm,
 as described in David A. Huffman's paper A Method for the Construction of Minimum-Redundancy
