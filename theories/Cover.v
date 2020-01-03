@@ -28,7 +28,6 @@ Require Import ArithRing.
  
 Section Cover.
 Variable A : Type.
-Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
 Variable empty : A.
 
 (* 
@@ -309,7 +308,7 @@ generalize (permutation_nil_inv _ _ (permutation_sym _ _ _ H1)); intros;
 intros; discriminate.
 intros n0 H l t H0 H1; inversion H1.
 simpl in |- *; auto.
-apply in_flat_map with (t1 :: t2 :: l2); auto.
+apply in_flat_map_in with (t1 :: t2 :: l2); auto.
 apply H; auto.
 apply eq_add_S; apply trans_equal with (1 := H0).
 apply trans_equal with (length (t1 :: t2 :: l2)); auto.

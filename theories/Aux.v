@@ -129,12 +129,12 @@ Qed.
 End LeBool.
 
 (* Properties of the fold operator *)
-Section fold.
+Section Fold.
+
 Variables (A : Type) (B : Type).
 Variable f : A -> B -> A.
 Variable g : B -> A -> A.
 Variable h : A -> A.
-Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
  
 Theorem fold_left_eta :
  forall l a f1,
@@ -161,10 +161,11 @@ intros a l H0 a0.
 rewrite <- H; auto.
 Qed.
  
-End fold.
+End Fold.
 
 (* Some properties of list operators: app, map, ... *)
 Section List.
+
 Variables (A : Type) (B : Type) (C : Type).
 Variable f : A -> B.
 
@@ -195,7 +196,7 @@ intros P H l;
 apply wf_inverse_image with (R := lt); auto.
 apply lt_wf.
 Defined.
- 
+
 Theorem in_ex_app :
  forall (a : A) (l : list A),
  In a l -> exists l1 : list A, (exists l2 : list A, l = l1 ++ a :: l2).
@@ -208,30 +209,6 @@ apply f_equal2 with (f := cons (A:=A)); auto.
 case H; auto; intros l1 (l2, Hl2); exists (a1 :: l1); exists l2;
  simpl in |- *; auto.
 apply f_equal2 with (f := cons (A:=A)); auto.
-Qed.
- 
-Theorem app_inv_head :
- forall l1 l2 l3 : list A, l1 ++ l2 = l1 ++ l3 -> l2 = l3.
-Proof using.
-intros l1; elim l1; simpl in |- *; auto.
-intros a l H l2 l3 H0; apply H; injection H0; auto.
-Qed.
- 
-Theorem app_inv_tail :
- forall l1 l2 l3 : list A, l2 ++ l1 = l3 ++ l1 -> l2 = l3.
-Proof using.
-intros l1 l2; generalize l1; elim l2; clear l1 l2; simpl in |- *; auto.
-intros l1 l3; case l3; auto.
-intros b l H; absurd (length ((b :: l) ++ l1) <= length l1).
-simpl in |- *; rewrite app_length; auto with arith.
-rewrite <- H; auto with arith.
-intros a l H l1 l3; case l3.
-simpl in |- *; intros H1; absurd (length (a :: l ++ l1) <= length l1).
-simpl in |- *; rewrite app_length; auto with arith.
-rewrite H1; auto with arith.
-simpl in |- *; intros b l0 H0; injection H0.
-intros H1 H2; apply f_equal2 with (f := cons (A:=A)); auto.
-apply H with (1 := H1); auto.
 Qed.
  
 Theorem app_inv_app :
@@ -318,26 +295,18 @@ case H; auto; intros l1 Hl1; exists l1; auto.
 Qed.
 
 (* Properties of flat_map *)
-Theorem in_flat_map :
+Theorem in_flat_map_in :
  forall (l : list B) (f : B -> list C) a b,
  In a (f b) -> In b l -> In a (flat_map f l).
 Proof using.
-intros l g; elim l; simpl in |- *; auto.
-intros a l0 H a0 b H0 [H1| H1]; apply in_or_app; auto.
-left; rewrite H1; auto.
-right; apply H with (b := b); auto.
+intros; apply in_flat_map; exists b; split; auto.
 Qed.
  
 Theorem in_flat_map_ex :
  forall (l : list B) (f : B -> list C) a,
  In a (flat_map f l) -> exists b, In b l /\ In a (f b).
 Proof using.
-intros l g; elim l; simpl in |- *; auto.
-intros a H; case H.
-intros a l0 H a0 H0; case in_app_or with (1 := H0); simpl in |- *; auto.
-intros H1; exists a; auto.
-intros H1; case H with (1 := H1).
-intros b (H2, H3); exists b; simpl in |- *; auto.
+intros; apply in_flat_map; auto.
 Qed.
  
 End List.

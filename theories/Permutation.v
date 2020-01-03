@@ -24,7 +24,6 @@
                                     Laurent.Thery@inria.fr (2003)    
  **********************************************************************)
 
-Require Export List.
 From Huffman Require Export Aux.
  
 Section permutation.
@@ -361,7 +360,7 @@ clear l1; intros a1 l1 l2 H1 H2.
 case (split_one_in_ex a1 l2); auto.
 apply permutation_in with (1 := H2); auto with datatypes.
 intros x H0.
-apply in_flat_map with (b := (a1, x)); auto.
+apply in_flat_map_in with (b := (a1, x)); auto.
 apply in_map; simpl in |- *.
 apply H; auto.
 apply eq_add_S.
