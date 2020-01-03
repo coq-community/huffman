@@ -49,7 +49,7 @@ Inductive pbtree : Type :=
 
 (* Predictate for belonging *)
 Theorem pbleaf_or_not :
- forall p, (exists a : _, p = pbleaf a) \/ (forall a : A, p <> pbleaf a).
+ forall p, (exists a, p = pbleaf a) \/ (forall a : A, p <> pbleaf a).
 Proof using.
 intros p; case p; simpl in |- *;
  try (intros; right; red in |- *; intros; discriminate).
@@ -122,7 +122,7 @@ intros t1 t2 t3 H H1; generalize t1 H; elim H1; clear H H1 t1 t2 t3; auto.
 Qed.
 
 (* A partial tree has always a leaf *)
-Theorem inpb_ex : forall t : pbtree, exists x : _, inpb (pbleaf x) t.
+Theorem inpb_ex : forall t : pbtree, exists x, inpb (pbleaf x) t.
 Proof using.
 intros t; elim t; simpl in |- *; auto.
 intros a; exists a; auto.
@@ -212,7 +212,7 @@ Hint Resolve distinct_pbleaves_pbleft distinct_pbleaves_pbright : core.
 (* Transform a tree in a code *) 
 Fixpoint compute_pbcode (a : pbtree) : code A :=
   match a with
-  | pbleaf b => (b, nil) :: nil
+  | pbleaf b => (b, []) :: []
   | pbleft l1 =>
       map
         (fun v : A * list bool =>
@@ -239,7 +239,7 @@ Fixpoint compute_pbcode (a : pbtree) : code A :=
   end.
 
 (* Computed code are not empty *) 
-Theorem compute_pbcode_not_null : forall p, compute_pbcode p <> nil.
+Theorem compute_pbcode_not_null : forall p, compute_pbcode p <> [].
 Proof using.
 intros p; elim p; simpl in |- *; auto;
  try (intros p0; case (compute_pbcode p0); simpl in |- *; auto); 
@@ -277,11 +277,11 @@ Qed.
 
 (* Leaves in the tree are keys in the code *) 
 Theorem inpb_compute_ex :
- forall a p, inpb (pbleaf a) p -> exists l : _, In (a, l) (compute_pbcode p).
+ forall a p, inpb (pbleaf a) p -> exists l, In (a, l) (compute_pbcode p).
 Proof using.
 intros a p; elim p; simpl in |- *; auto.
 intros a0 H; inversion H.
-exists (nil (A:=bool)); auto.
+exists []; auto.
 intros p0 H H0; case H; auto.
 inversion H0; auto.
 intros x1; elim (compute_pbcode p0); simpl in |- *; auto.
@@ -455,7 +455,7 @@ Hint Constructors pbfree : core.
 (* Add an element in a tree at a given position (list of bool) *)
 Fixpoint pbadd (a : A) (t : pbtree) (l : list bool) {struct l} : pbtree :=
   match l with
-  | nil => pbleaf a
+  | [] => pbleaf a
   | false :: l1 =>
       match t with
       | pbnode t1 t2 => pbnode (pbadd a t1 l1) t2
@@ -474,7 +474,7 @@ Fixpoint pbadd (a : A) (t : pbtree) (l : list bool) {struct l} : pbtree :=
 
 (* Adding to  a leaf replace it *)
 Theorem pbadd_prop1 :
- forall a1 a2 l1, compute_pbcode (pbadd a1 (pbleaf a2) l1) = (a1, l1) :: nil.
+ forall a1 a2 l1, compute_pbcode (pbadd a1 (pbleaf a2) l1) = (a1, l1) :: [].
 Proof using.
 intros a1 a2 l1; generalize a1 a2; elim l1; simpl in |- *; auto;
  clear a1 a2 l1.
@@ -496,7 +496,7 @@ intros b l a1; rewrite pbadd_prop1; simpl in |- *; auto.
 apply
  permutation_trans
   with
-    (((a1, true :: l) :: nil) ++
+    (((a1, true :: l) :: []) ++
      map (fun v => match v with
                    | (a0, b1) => (a0, false :: b1)
                    end) (compute_pbcode b)); auto.
@@ -742,7 +742,7 @@ Qed.
 (* Compute all the leaves *)
 Fixpoint all_pbleaves (t : pbtree) : list A :=
   match t with
-  | pbleaf a => a :: nil
+  | pbleaf a => a :: []
   | pbleft t1 => all_pbleaves t1
   | pbright t1 => all_pbleaves t1
   | pbnode t1 t2 => all_pbleaves t1 ++ all_pbleaves t2
@@ -829,7 +829,7 @@ Qed.
 
 (* Adding in a leaf just creates a singleton list *)
 Theorem all_pbleaves_pbleaf :
- forall l a1 a2, all_pbleaves (pbadd a1 (pbleaf a2) l) = a1 :: nil.
+ forall l a1 a2, all_pbleaves (pbadd a1 (pbleaf a2) l) = a1 :: [].
 Proof using.
 intros l; elim l; simpl in |- *; auto.
 intros b; case b; simpl in |- *; auto.
@@ -892,7 +892,7 @@ Qed.
 (* Adding always on the left creates a left tree *)
 Theorem fold_pbadd_prop_left :
  forall l a,
- l <> nil ->
+ l <> [] ->
  fold_right (fun a (c : pbtree) => pbadd (fst a) c (snd a)) 
    (pbleaf a)
    (map (fun v => match v with
@@ -913,7 +913,7 @@ Qed.
 (* Adding always on the right  creates a right tree *)
 Theorem fold_pbadd_prop_right :
  forall l a,
- l <> nil ->
+ l <> [] ->
  fold_right (fun a (c : pbtree) => pbadd (fst a) c (snd a)) 
    (pbleaf a)
    (map (fun v => match v with
@@ -934,7 +934,7 @@ Qed.
 (* Adding always on the right on a left tree  creates a node tree *) 
 Theorem fold_pbadd_prop_node :
  forall l a,
- l <> nil ->
+ l <> [] ->
  fold_right (fun a (c : pbtree) => pbadd (fst a) c (snd a)) 
    (pbright a)
    (map (fun v => match v with
@@ -963,7 +963,7 @@ Definition pbbuild (l : code A) : pbtree :=
 *)
 Theorem pbfree_pbbuild_prop1 :
  forall a l1 l2,
- l2 <> nil -> unique_prefix ((a, l1) :: l2) -> pbfree l1 (pbbuild l2).
+ l2 <> [] -> unique_prefix ((a, l1) :: l2) -> pbfree l1 (pbbuild l2).
 Proof using.
 intros a l1 l2; generalize a l1; elim l2; clear a l1 l2; simpl in |- *; auto.
 intros a l1 H; elim H; auto.
@@ -1041,7 +1041,7 @@ Qed.
 *) 
 Theorem pbbuild_compute_perm :
  forall c,
- c <> nil -> unique_prefix c -> permutation (compute_pbcode (pbbuild c)) c.
+ c <> [] -> unique_prefix c -> permutation (compute_pbcode (pbbuild c)) c.
 Proof using.
 intros c; elim c; simpl in |- *; auto.
 intros H; case H; auto.
@@ -1096,7 +1096,7 @@ Qed.
 *)
 Theorem all_pbleaves_pbbuild :
  forall c,
- c <> nil ->
+ c <> [] ->
  unique_prefix c ->
  permutation (map (fst (B:=_)) c) (all_pbleaves (pbbuild c)).
 Proof using.
@@ -1110,7 +1110,7 @@ Qed.
 (* Leaves in a built tree are elements of the codes *) 
 Theorem inpb_pbbuild_inv :
  forall a c,
- c <> nil -> inpb (pbleaf a) (pbbuild c) -> exists l : _, In (a, l) c.
+ c <> [] -> inpb (pbleaf a) (pbbuild c) -> exists l, In (a, l) c.
 Proof using.
 intros a c; generalize a; elim c; simpl in |- *; auto.
 intros a0 H; elim H; auto.
@@ -1183,7 +1183,7 @@ Qed.
 *)
 Theorem pbbuild_true_pbright :
  forall c,
- c <> nil ->
+ c <> [] ->
  pbbuild (map (fun x => (fst x, true :: snd x)) c) = pbright (pbbuild c).
 Proof using.
 intros c; elim c; simpl in |- *; auto.
@@ -1201,8 +1201,8 @@ Qed.
 *)
 Theorem pbbuild_pbnode :
  forall c1 c2,
- c1 <> nil ->
- c2 <> nil ->
+ c1 <> [] ->
+ c2 <> [] ->
  pbbuild
    (map (fun x => (fst x, false :: snd x)) c1 ++
     map (fun x => (fst x, true :: snd x)) c2) =

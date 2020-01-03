@@ -26,6 +26,7 @@
                                     Laurent.Thery@inria.fr (2003)    
  **********************************************************************)
 
+Require Bool.Bool.
 From Huffman Require Export Aux.
 From Huffman Require Export Permutation.
 From Huffman Require Export UniqueKey.
@@ -56,7 +57,7 @@ intros a H1; case (H0 a); auto.
 Qed.
 
 (* Every code is in the alphabet of an empty message *)
-Theorem in_alphabet_nil : forall c, in_alphabet nil c.
+Theorem in_alphabet_nil : forall c, in_alphabet [] c.
 Proof using.
 intros c a H; inversion H.
 Qed.
@@ -116,7 +117,7 @@ intros x H2; exists x; auto.
 Defined.
 
 (* The empty list is associated to none of element of A in the code *)
-Definition not_null (c : code) := forall a : A, ~ In (a, nil) c.
+Definition not_null (c : code) := forall a : A, ~ In (a, []) c.
 
 (* Inversion theorem *)
 Theorem not_null_inv :
@@ -129,7 +130,7 @@ Qed.
 (* Adding a non-empty element preserves the property of non-emptyness *)
 Theorem not_null_cons :
  forall a b (l : list (A * list bool)),
- b <> nil -> not_null l -> not_null ((a, b) :: l).
+ b <> [] -> not_null l -> not_null ((a, b) :: l).
 Proof using.
 intros a b l H H0; red in |- *.
 intros a1; simpl in |- *; red in |- *; intros [H1| H1]; auto.
@@ -169,7 +170,7 @@ Hint Resolve not_null_map : core.
 
 (* Define the property of list of booleans to be a prefix of another *)
 Inductive is_prefix : list bool -> list bool -> Prop :=
-  | prefixNull : forall l, is_prefix nil l
+  | prefixNull : forall l, is_prefix [] l
   | prefixCons :
       forall (b : bool) l1 l2,
       is_prefix l1 l2 -> is_prefix (b :: l1) (b :: l2).
@@ -189,7 +190,7 @@ Definition unique_prefix (l : code) :=
   unique_key l.
 
 (* The empty code is unique prefix *)
-Theorem unique_prefix_nil : unique_prefix nil.
+Theorem unique_prefix_nil : unique_prefix [].
 Proof using.
 split; auto.
 intros a1 a2 lb1 lb2 H; inversion H; auto.
@@ -224,7 +225,7 @@ Qed.
 (* A prefix code with a  least two distinct elements is not_null *)
 Theorem unique_prefix_not_null :
  forall (c : code) (a b : A),
- a <> b -> in_alphabet (a :: b :: nil) c -> unique_prefix c -> not_null c.
+ a <> b -> in_alphabet (a :: b :: []) c -> unique_prefix c -> not_null c.
 Proof using.
 intros c a b H H0 H1.
 unfold not_null in |- *; intros a1; red in |- *; intros Ha1.
@@ -255,7 +256,7 @@ Qed.
 *)
 Fixpoint find_code (a : A) (l : code) {struct l} : list bool :=
   match l with
-  | nil => nil
+  | [] => []
   | (b, c) :: l1 =>
       match eqA_dec a b with
       | left _ => c
@@ -299,7 +300,7 @@ Qed.
 
 (* There is not more than what is in the code *)
 Theorem not_in_find_code :
- forall a l, (forall p, ~ In (a, p) l) -> find_code a l = nil.
+ forall a l, (forall p, ~ In (a, p) l) -> find_code a l = [].
 Proof using.
 intros a l; elim l; simpl in |- *; auto.
 intros (a1, l1) l0 H H0.
@@ -314,7 +315,7 @@ Theorem find_code_app :
  not_null l1 ->
  find_code a (l1 ++ l2) =
  match find_code a l1 with
- | nil => find_code a l2
+ | [] => find_code a l2
  | b1 :: l3 => b1 :: l3
  end.
 Proof using.
@@ -383,7 +384,7 @@ Theorem not_in_find_map :
    (map
       (fun v : A * list bool => match v with
                                 | (a1, b1) => (a1, b :: b1)
-                                end) p) = nil.
+                                end) p) = [].
 Proof using.
 intros p; elim p; simpl in |- *; auto.
 intros (a1, l1) l H a0 b H0; case (eqA_dec a0 a1); auto.
@@ -398,9 +399,9 @@ Qed.
 *)
 Fixpoint find_val (a : list bool) (l : code) {struct l} : option A :=
   match l with
-  | nil => None
+  | [] => None
   | (b, c) :: l1 =>
-      match list_eq_dec eq_bool_dec a c with
+      match list_eq_dec Bool.bool_dec a c with
       | left _ => Some b
       | right _ => find_val a l1
       end
@@ -414,7 +415,7 @@ Proof using.
 intros c a l; elim c; simpl in |- *; auto.
 intros; discriminate.
 intros a0; case a0.
-intros a1 l0 l1; case (list_eq_dec eq_bool_dec l l0); auto.
+intros a1 l0 l1; case (list_eq_dec Bool.bool_dec l l0); auto.
 intros e H H0; injection H0.
 intros e1; left; apply f_equal2 with (f := pair (A:=A) (B:=list bool)); auto.
 Qed.
@@ -427,7 +428,7 @@ Proof using.
 intros c a l; generalize a l; elim c; clear a l c; simpl in |- *; auto.
 intros a l H H0; case H0.
 intros a; case a.
-intros a0 l l0 H a1 l1 H0 H1; case (list_eq_dec eq_bool_dec l1 l).
+intros a0 l l0 H a1 l1 H0 H1; case (list_eq_dec Bool.bool_dec l1 l).
 intros H2; apply f_equal with (f := Some (A:=A)).
 case H1; intros H3.
 injection H3; auto.
@@ -444,11 +445,11 @@ Opaque list_eq_dec.
 
 (* The value of an empty list cannot be found in a non empty code *)
 Theorem not_null_find_val :
- forall c : code, not_null c -> find_val nil c = None.
+ forall c : code, not_null c -> find_val [] c = None.
 Proof using.
 intros c; elim c; simpl; auto.
 intros a; case a.
-intros a1 l; case (list_eq_dec eq_bool_dec nil l); auto.
+intros a1 l; case (list_eq_dec Bool.bool_dec [] l); auto.
 intros e l0 H H0; case (H0 a1); rewrite e; simpl in |- *; auto.
 intros n l0 H H0; apply H.
 unfold not_null in |- *; intros a2; red in |- *; intros H1.
@@ -458,7 +459,7 @@ Qed.
 (* Encoding is done by iteratively applying find_code *)
 Fixpoint encode (c : code) (m : list A) {struct m} : list bool :=
   match m with
-  | nil => nil
+  | [] => []
   | a :: b => find_code a c ++ encode c b
   end.
 
@@ -509,14 +510,14 @@ Qed.
 *)
 Fixpoint decode_aux (c : code) (head m : list bool) {struct m} : list A :=
   match m with
-  | nil => match find_val head c with
-           | Some a => a :: nil
-           | None => nil
+  | [] => match find_val head c with
+           | Some a => a :: []
+           | None => []
            end
   | a :: m1 =>
       match find_val head c with
-      | Some a1 => a1 :: decode_aux c (a :: nil) m1
-      | None => decode_aux c (head ++ a :: nil) m1
+      | Some a1 => a1 :: decode_aux c (a :: []) m1
+      | None => decode_aux c (head ++ a :: []) m1
       end
   end.
 
@@ -527,7 +528,7 @@ Theorem decode_aux_correct :
  not_null c ->
  forall (m1 m2 head : list bool) (a : A),
  find_val (head ++ m1) c = Some a ->
- decode_aux c head (m1 ++ m2) = a :: decode_aux c nil m2.
+ decode_aux c head (m1 ++ m2) = a :: decode_aux c [] m2.
 Proof using.
 intros c Hc1 Hc2 m1; elim m1; simpl in |- *; auto.
 intros m2; case m2; simpl in |- *; auto.
@@ -538,7 +539,7 @@ intros b l head a; rewrite <- app_nil_end.
 intros H1; rewrite H1; auto.
 rewrite not_null_find_val; auto.
 intros a l Rec m2 head a1 H2.
-rewrite <- Rec with (head := head ++ a :: nil).
+rewrite <- Rec with (head := head ++ a :: []).
 generalize (fun a => find_val_correct1 c a head).
 case (find_val head c); auto.
 intros a0 H; (cut (In (a0, head) c); [ intros Hin1 | auto ]).
@@ -560,7 +561,7 @@ Qed.
 
 (* Decode is just decode_aux with an empty head *)
 Definition decode (c : list (A * list bool)) (m : list bool) :=
-  decode_aux c nil m.
+  decode_aux c [] m.
 
 (* Decoding is correct *)
 Theorem decode_correct :

@@ -45,7 +45,7 @@ Proof using.
 intros l1 l2 (l3, (l4, (H0, (H1, H2)))).
 rewrite (permutation_length _ _ _ H0).
 rewrite (permutation_length _ _ _ H1).
-repeat rewrite <- (length_map _ _ (sum_leaves f)); auto.
+repeat rewrite <- (map_length (sum_leaves f)); auto.
 apply f_equal with (f := length (A:=nat)); auto.
 Qed.
  

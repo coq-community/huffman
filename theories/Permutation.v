@@ -24,7 +24,6 @@
                                     Laurent.Thery@inria.fr (2003)    
  **********************************************************************)
 
-Require Export List.
 From Huffman Require Export Aux.
  
 Section permutation.
@@ -32,7 +31,7 @@ Variable A : Type.
 
 (* Definition of permutations as sequences of adjacent transpositions *) 
 Inductive permutation : list A -> list A -> Prop :=
-  | permutation_nil : permutation nil nil
+  | permutation_nil : permutation [] []
   | permutation_skip :
       forall (a : A) (l1 l2 : list A),
       permutation l2 l1 -> permutation (a :: l2) (a :: l1)
@@ -76,8 +75,8 @@ intros l1 l2 l3 H'0 H'1 H'2 H'3.
 rewrite <- H'3; auto.
 Qed.
 
-(* A permutation of the nil list is the nil list *) 
-Theorem permutation_nil_inv : forall l : list A, permutation l nil -> l = nil.
+(* A permutation of the [] list is the [] list *) 
+Theorem permutation_nil_inv : forall l : list A, permutation l [] -> l = [].
 Proof using.
 intros l H; generalize (permutation_length _ _ H); case l; simpl in |- *;
  auto.
@@ -86,7 +85,7 @@ Qed.
  
 Lemma permutation_one_inv_aux :
   forall l1 l2 : list A,
-  permutation l1 l2 -> forall a : A, l1 = a :: nil -> l2 = a :: nil.
+  permutation l1 l2 -> forall a : A, l1 = a :: [] -> l2 = a :: [].
 Proof using.
 intros l1 l2 H; elim H; clear H l1 l2; auto.
 intros a l3 l4 H0 H1 b H2.
@@ -100,9 +99,9 @@ Qed.
 
 (* A permutation of the singleton list is the singleton list *) 
 Theorem permutation_one_inv :
- forall (a : A) (l : list A), permutation (a :: nil) l -> l = a :: nil.
+ forall (a : A) (l : list A), permutation (a :: []) l -> l = a :: [].
 Proof using.
-intros a l H; apply permutation_one_inv_aux with (l1 := a :: nil); auto.
+intros a l H; apply permutation_one_inv_aux with (l1 := a :: []); auto.
 Qed.
 
 (* Compatibility with the belonging *) 
@@ -135,19 +134,19 @@ Proof using.
 intros l1; elim l1; auto.
 intros; rewrite <- app_nil_end; auto.
 intros a l H l2.
-replace (l2 ++ a :: l) with ((l2 ++ a :: nil) ++ l).
-apply permutation_trans with (l ++ l2 ++ a :: nil); auto.
-apply permutation_trans with (((a :: nil) ++ l2) ++ l); auto.
+replace (l2 ++ a :: l) with ((l2 ++ a :: []) ++ l).
+apply permutation_trans with (l ++ l2 ++ a :: []); auto.
+apply permutation_trans with (((a :: []) ++ l2) ++ l); auto.
 simpl in |- *; auto.
-apply permutation_trans with (l ++ (a :: nil) ++ l2); auto.
+apply permutation_trans with (l ++ (a :: []) ++ l2); auto.
 apply permutation_sym; auto.
-replace (l2 ++ a :: l) with ((l2 ++ a :: nil) ++ l).
+replace (l2 ++ a :: l) with ((l2 ++ a :: []) ++ l).
 apply permutation_app_comp; auto.
 elim l2; simpl in |- *; auto.
 intros a0 l0 H0.
 apply permutation_trans with (a0 :: a :: l0); auto.
-apply (app_ass l2 (a :: nil) l).
-apply (app_ass l2 (a :: nil) l).
+apply (app_ass l2 (a :: []) l).
+apply (app_ass l2 (a :: []) l).
 Qed.
 
 (* A transposition is a permutation *) 
@@ -158,11 +157,11 @@ Proof using.
 intros a b l1 l2 l3.
 apply permutation_app_comp; auto.
 change
-  (permutation ((a :: nil) ++ l2 ++ (b :: nil) ++ l3)
-     ((b :: nil) ++ l2 ++ (a :: nil) ++ l3)) in |- *.
+  (permutation ((a :: []) ++ l2 ++ (b :: []) ++ l3)
+     ((b :: []) ++ l2 ++ (a :: []) ++ l3)) in |- *.
 repeat rewrite <- app_ass.
 apply permutation_app_comp; auto.
-apply permutation_trans with ((b :: nil) ++ (a :: nil) ++ l2); auto.
+apply permutation_trans with ((b :: []) ++ (a :: []) ++ l2); auto.
 apply permutation_app_swap; auto.
 repeat rewrite app_ass.
 apply permutation_app_comp; auto.
@@ -193,7 +192,7 @@ Proof using.
 intros a l1 l2 H; elim H; clear H l1 l2.
 intros l11 l12; case l11; simpl in |- *; intros; discriminate.
 intros a0 l1 l2 H H0 l11 l12; case l11; simpl in |- *.
-exists (nil (A:=A)); exists l1; simpl in |- *; split; auto.
+exists []; exists l1; simpl in |- *; split; auto.
 apply f_equal2 with (f := cons (A:=A)); injection H1; auto.
 injection H1; intros H2 H3; rewrite <- H2; auto.
 intros a1 l111 H1.
@@ -205,11 +204,11 @@ apply f_equal2 with (f := cons (A:=A)); injection H1; auto.
 injection H1; intros H2 H3; rewrite H3; auto.
 intros a0 b l l11 l12; case l11; simpl in |- *.
 case l12; try (intros; discriminate).
-intros a1 l0 H; exists (b :: nil); exists l0; simpl in |- *; split; auto.
+intros a1 l0 H; exists (b :: []); exists l0; simpl in |- *; split; auto.
 repeat apply f_equal2 with (f := cons (A:=A)); injection H; auto.
 injection H; intros H1 H2 H3; rewrite H2; auto.
 intros a1 l111; case l111; simpl in |- *.
-intros H; exists (nil (A:=A)); exists (a0 :: l12); simpl in |- *; split; auto.
+intros H; exists []; exists (a0 :: l12); simpl in |- *; split; auto.
 repeat apply f_equal2 with (f := cons (A:=A)); injection H; auto.
 injection H; intros H1 H2 H3; rewrite H3; auto.
 intros a2 H1111 H; exists (a2 :: a1 :: H1111); exists l12; simpl in |- *;
@@ -232,7 +231,7 @@ Theorem permutation_cons_ex :
    (exists l4 : list A, l2 = l3 ++ a :: l4 /\ permutation l1 (l3 ++ l4)).
 Proof using.  
 intros a l1 l2 H.
-apply (permutation_cons_ex_aux a (a :: l1) l2 H nil l1); simpl in |- *; auto.
+apply (permutation_cons_ex_aux a (a :: l1) l2 H [] l1); simpl in |- *; auto.
 Qed.
 
 (* A permutation can be simply inverted if the two list starts with a cons *) 
@@ -255,7 +254,7 @@ Qed.
    list and the remaining list *) 
 Fixpoint split_one (l : list A) : list (A * list A) :=
   match l with
-  | nil => nil
+  | [] => []
   | a :: l1 =>
      (a, l1) :: map (fun p : A * list A => (fst p, a :: snd p)) (split_one l1)
   end.
@@ -299,7 +298,7 @@ Qed.
 Fixpoint all_permutations_aux (l : list A) (n : nat) {struct n} :
  list (list A) :=
   match n with
-  | O => nil :: nil
+  | O => [] :: []
   | S n1 =>
       flat_map
         (fun p : A * list A =>
@@ -361,7 +360,7 @@ clear l1; intros a1 l1 l2 H1 H2.
 case (split_one_in_ex a1 l2); auto.
 apply permutation_in with (1 := H2); auto with datatypes.
 intros x H0.
-apply in_flat_map with (b := (a1, x)); auto.
+apply in_flat_map_in with (b := (a1, x)); auto.
 apply in_map; simpl in |- *.
 apply H; auto.
 apply eq_add_S.
@@ -420,11 +419,11 @@ Hint Resolve permutation_map : core.
 Lemma permutation_map_ex_aux :
   forall (A B : Type) (f : A -> B) l1 l2 l3,
   permutation l1 l2 ->
-  l1 = map f l3 -> exists l4 : _, permutation l4 l3 /\ l2 = map f l4.
+  l1 = map f l3 -> exists l4, permutation l4 l3 /\ l2 = map f l4.
 Proof using.
 intros A1 B1 f l1 l2 l3 H; generalize l3; elim H; clear H l1 l2 l3.
 intros l3; case l3; simpl in |- *; auto.
-intros H; exists (nil (A:=A1)); auto.
+intros H; exists []; auto.
 intros; discriminate.
 intros a0 l1 l2 H H0 l3; case l3; simpl in |- *; auto.
 intros; discriminate.
@@ -450,7 +449,7 @@ Qed.
 Theorem permutation_map_ex :
  forall (A B : Type) (f : A -> B) l1 l2,
  permutation (map f l1) l2 ->
- exists l3 : _, permutation l3 l1 /\ l2 = map f l3.
+ exists l3, permutation l3 l1 /\ l2 = map f l3.
 Proof using.  
 intros A0 B f l1 l2 H; apply permutation_map_ex_aux with (l1 := map f l1);
  auto.

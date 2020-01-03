@@ -73,10 +73,10 @@ Theorem prod2list_le_l :
 Proof using.
 intros a b c d l1 l2 l3 l4 l5 l6 H H0 H1 H2 H3;
  change
-   (prod2list (l1 ++ (a :: nil) ++ l2 ++ (b :: nil) ++ l3)
-      (l4 ++ (d :: nil) ++ l5 ++ (c :: nil) ++ l6) <=
-    prod2list (l1 ++ (a :: nil) ++ l2 ++ (b :: nil) ++ l3)
-      (l4 ++ (c :: nil) ++ l5 ++ (d :: nil) ++ l6)) 
+   (prod2list (l1 ++ (a :: []) ++ l2 ++ (b :: []) ++ l3)
+      (l4 ++ (d :: []) ++ l5 ++ (c :: []) ++ l6) <=
+    prod2list (l1 ++ (a :: []) ++ l2 ++ (b :: []) ++ l3)
+      (l4 ++ (c :: []) ++ l5 ++ (d :: []) ++ l6)) 
   in |- *.
 repeat rewrite prod2list_app; auto.
 apply plus_le_compat; auto with arith.
@@ -116,10 +116,10 @@ Theorem prod2list_le_r :
 Proof using.
 intros a b c d l1 l2 l3 l4 l5 l6 H H0 H1 H2 H3;
  change
-   (prod2list (l1 ++ (a :: nil) ++ l2 ++ (b :: nil) ++ l3)
-      (l4 ++ (d :: nil) ++ l5 ++ (c :: nil) ++ l6) <=
-    prod2list (l1 ++ (a :: nil) ++ l2 ++ (b :: nil) ++ l3)
-      (l4 ++ (c :: nil) ++ l5 ++ (d :: nil) ++ l6)) 
+   (prod2list (l1 ++ (a :: []) ++ l2 ++ (b :: []) ++ l3)
+      (l4 ++ (d :: []) ++ l5 ++ (c :: []) ++ l6) <=
+    prod2list (l1 ++ (a :: []) ++ l2 ++ (b :: []) ++ l3)
+      (l4 ++ (c :: []) ++ l5 ++ (d :: []) ++ l6)) 
   in |- *.
 repeat rewrite prod2list_app; auto.
 apply plus_le_compat; auto with arith.
@@ -155,10 +155,10 @@ Theorem prod2list_eq :
 Proof using.
 intros a b c l1 l2 l3 l4 l5 l6 H H0 H1;
  change
-   (prod2list (l1 ++ (a :: nil) ++ l2 ++ (a :: nil) ++ l3)
-      (l4 ++ (b :: nil) ++ l5 ++ (c :: nil) ++ l6) =
-    prod2list (l1 ++ (a :: nil) ++ l2 ++ (a :: nil) ++ l3)
-      (l4 ++ (c :: nil) ++ l5 ++ (b :: nil) ++ l6)) 
+   (prod2list (l1 ++ (a :: []) ++ l2 ++ (a :: []) ++ l3)
+      (l4 ++ (b :: []) ++ l5 ++ (c :: []) ++ l6) =
+    prod2list (l1 ++ (a :: []) ++ l2 ++ (a :: []) ++ l3)
+      (l4 ++ (c :: []) ++ l5 ++ (b :: []) ++ l6)) 
   in |- *.
 repeat rewrite prod2list_app; auto with arith.
 ring.
@@ -173,8 +173,8 @@ Theorem prod2list_reorder :
  (forall b, In b l2 -> b <= a) ->
  permutation (l3 ++ b :: l4) (b1 :: l5) ->
  ordered (sum_order f) (b1 :: l5) ->
- exists l6 : _,
-   (exists l7 : _,
+ exists l6,
+   (exists l7,
       length l1 = length l6 /\
       length l2 = length l7 /\
       permutation (b1 :: l5) (l6 ++ b1 :: l7) /\
@@ -196,7 +196,7 @@ case in_app_or with (1 := HH1); intros HH2.
 case in_ex_app with (1 := HH2).
 intros l6 (l7, HH3); exists (l6 ++ b :: l7); exists l4; repeat (split; auto).
 apply trans_equal with (1 := H).
-rewrite HH3; repeat rewrite length_app; simpl in |- *; auto with arith.
+rewrite HH3; repeat rewrite app_length; simpl in |- *; auto with arith.
 apply permutation_sym; apply permutation_trans with (2 := H3); auto.
 rewrite HH3.
 repeat rewrite app_ass.
@@ -220,7 +220,7 @@ pattern b1 at 2 in |- *; rewrite <- HH3; apply permutation_sym; auto.
 case in_ex_app with (1 := HH3).
 intros l6 (l7, HH4); exists l3; exists (l6 ++ b :: l7); repeat (split; auto).
 apply trans_equal with (1 := H0).
-rewrite HH4; repeat rewrite length_app; simpl in |- *; auto with arith.
+rewrite HH4; repeat rewrite app_length; simpl in |- *; auto with arith.
 apply permutation_sym; apply permutation_trans with (2 := H3); auto.
 rewrite HH4.
 simpl in |- *; apply permutation_transposition.
@@ -246,8 +246,8 @@ Theorem prod2list_reorder2 :
  (forall b, In b l2 -> b <= a) ->
  permutation (l3 ++ b :: c :: l4) (b1 :: c1 :: l5) ->
  ordered (sum_order f) (b1 :: c1 :: l5) ->
- exists l6 : _,
-   (exists l7 : _,
+ exists l6,
+   (exists l7,
       length l1 = length l6 /\
       length l2 = length l7 /\
       permutation (b1 :: c1 :: l5) (l6 ++ b1 :: c1 :: l7) /\
@@ -267,8 +267,8 @@ case (prod2list_reorder a c2 c1 l1 l2 l6 l7 l5); simpl in |- *; auto.
 apply permutation_inv with (a := b1); auto.
 apply permutation_sym; apply permutation_trans with (1 := HH3).
 change
-  (permutation (l6 ++ (b1 :: nil) ++ c2 :: l7)
-     (((b1 :: nil) ++ l6) ++ c2 :: l7)) in |- *.
+  (permutation (l6 ++ (b1 :: []) ++ c2 :: l7)
+     (((b1 :: []) ++ l6) ++ c2 :: l7)) in |- *.
 repeat rewrite <- app_ass.
 apply permutation_app_comp; auto.
 apply ordered_inv with (1 := H4); auto.
@@ -280,8 +280,8 @@ apply permutation_trans with (1 := HH7).
 apply permutation_trans with ((c1 :: l9) ++ l8); auto.
 apply le_trans with (2 := HH4).
 change
-  (prod2list (l1 ++ (a :: nil) ++ a :: l2) (l8 ++ (b1 :: nil) ++ c1 :: l9) <=
-   prod2list (l1 ++ (a :: nil) ++ a :: l2) (l6 ++ (b1 :: nil) ++ c2 :: l7))
+  (prod2list (l1 ++ (a :: []) ++ a :: l2) (l8 ++ (b1 :: []) ++ c1 :: l9) <=
+   prod2list (l1 ++ (a :: []) ++ a :: l2) (l6 ++ (b1 :: []) ++ c2 :: l7))
  in |- *.
 generalize HH8; repeat rewrite prod2list_app; auto with arith.
 intros HH9.

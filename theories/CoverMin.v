@@ -35,7 +35,7 @@ Definition cover_min (l : list (btree A)) (t1 : btree A) : Prop :=
   (forall t2 : btree A, cover l t2 -> weight_tree f t1 <= weight_tree f t2).
 
 (* Minimum tree for a singleton cover *)
-Theorem cover_min_one : forall t : btree A, cover_min (t :: nil) t.
+Theorem cover_min_one : forall t : btree A, cover_min (t :: []) t.
 Proof using.
 intros t; split; auto.
 intros t2 H; inversion H; auto.
@@ -60,7 +60,7 @@ Qed.
 
 (* For all covers, there is a minimum tree *)
 Theorem cover_min_ex :
- forall l : list (btree A), l <> nil -> exists t : btree A, cover_min l t.
+ forall l : list (btree A), l <> [] -> exists t : btree A, cover_min l t.
 Proof using.
 intros l H;
  generalize (find_min_correct (btree A) (weight_tree f) (all_cover _ l)).

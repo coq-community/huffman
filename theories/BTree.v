@@ -56,7 +56,7 @@ intros t1 t2 t3 H H1; generalize t1 H; elim H1; clear H H1 t1 t2 t3; auto.
 Qed.
 
 (* A tree has at least one leaf  *)
-Theorem inb_ex : forall t : btree, exists x : _, inb (leaf x) t.
+Theorem inb_ex : forall t : btree, exists x, inb (leaf x) t.
 Proof using.
 intros t; elim t; simpl in |- *; auto.
 intros a; exists a; auto.
@@ -140,7 +140,7 @@ Defined.
 (* Compute all the leaves of the tree *)
 Fixpoint all_leaves (t : btree) : list A :=
   match t with
-  | leaf a => a :: nil
+  | leaf a => a :: []
   | node t1 t2 => all_leaves t1 ++ all_leaves t2
   end.
 
@@ -230,7 +230,7 @@ Defined.
 (* Compute the code associated with a binary tree *)
 Fixpoint compute_code (a : btree) : list (A * list bool) :=
   match a with
-  | leaf b => (b, nil) :: nil
+  | leaf b => (b, []) :: []
   | node l1 l2 =>
       map
         (fun v : A * list bool =>
@@ -248,7 +248,7 @@ Fixpoint compute_code (a : btree) : list (A * list bool) :=
 Theorem length_compute_lt_O : forall t, 0 < length (compute_code t).
 Proof using.
 intros t; elim t; simpl in |- *; auto with arith.
-intros b H b0 H0; rewrite length_app.
+intros b H b0 H0; rewrite app_length.
 replace 0 with (0 + 0); auto with arith.
 apply plus_lt_compat.
 generalize H; elim (compute_code b); simpl in |- *; auto with arith.
@@ -278,11 +278,11 @@ Qed.
 
 (* For every leaf in the tree there is an associated key in the code *)
 Theorem inb_compute_ex :
- forall a p, inb (leaf a) p -> exists l : _, In (a, l) (compute_code p).
+ forall a p, inb (leaf a) p -> exists l, In (a, l) (compute_code p).
 Proof using.
 intros a p; elim p; simpl in |- *; auto.
 intros a0 H; inversion H.
-exists (nil (A:=bool)); auto.
+exists []; auto.
 intros p0 H p1 H0 H1; inversion H1.
 case H; auto.
 intros x Hx; exists (false :: x).

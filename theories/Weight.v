@@ -13,7 +13,6 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-
 (**********************************************************************
     Proof of Huffman algorithm: Weight.v                             
                                                                      
@@ -62,7 +61,7 @@ Theorem length_encode_nId :
 Proof using.
 intros a l1 l n; elim n; simpl in |- *; auto.
 intros n0 H; case (eqA_dec a a); auto.
-intros e; rewrite length_app; rewrite H; auto.
+intros e; rewrite app_length; rewrite H; auto.
 intros H1; case H1; auto.
 Qed.
 
@@ -85,7 +84,7 @@ rewrite
                     (1 := 
                       encode_permutation_val _ eqA_dec _ _ ((a, l1) :: l) Hm1).
 rewrite encode_app; auto.
-rewrite length_app; auto.
+rewrite app_length; auto.
 rewrite length_encode_nId.
 rewrite encode_cons_inv; auto.
 rewrite Rec; simpl in |- *; auto.
