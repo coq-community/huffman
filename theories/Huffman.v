@@ -141,9 +141,7 @@ apply restrict_unique_prefix; auto.
 apply frequency_not_null with (1 := frequency_more_than_one); auto.
 Qed.
 
-(* Auxillary function to compute minimal code *)
-Definition huffman_aux :
-  forall l : list (nat * code A),
+Definition huffman_aux_type (l : list (nat * code A)) : Type :=
   l <> [] ->
   ordered (fun x y => fst x <= fst y) l ->
   (forall a,
@@ -158,8 +156,11 @@ Definition huffman_aux :
   build (fun x => number_of_occurrences eqA_dec x m)
     (map (fun x => to_btree (pbbuild empty (snd x))) l)
     (to_btree (pbbuild empty c))}.
+
+(* Auxillary function to compute minimal code *)
+Program Definition huffman_aux_F :
+ forall l, (forall l2, length l2 < length l -> huffman_aux_type l2) -> huffman_aux_type l.
 Proof.
-intros l; elim l using list_length_induction; clear l.
 intros l; case l.
 intros H H0; case H0; auto.
 intros p l0; case p; intros n1 c1; case l0; clear p l0.
@@ -300,6 +301,9 @@ rewrite pbbuild_pbnode; auto.
 generalize (H4 (n1, c1)); simpl in |- *; auto with datatypes.
 generalize (H4 (n2, c2)); simpl in |- *; auto with datatypes.
 Defined.
+
+Definition huffman_aux : forall l : list (nat * code A), huffman_aux_type l :=
+list_length_induction (nat * code A) huffman_aux_type huffman_aux_F.
 
 (* The huffman algorithm *)
 Program Definition huffman :
