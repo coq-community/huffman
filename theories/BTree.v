@@ -13,17 +13,17 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**********************************************************************
-    Proof of Huffman algorithm: BTree.v                              
-                                                                     
+(**
+    Proof of Huffman algorithm: BTree.v
+
     Definition and some properties of binary trees                   
-                                                                     
-    Definitions:                                                     
+
+    Definitions:
         btree, inb, all_leaves, distinct_leaves, compute_code,
-        number_of_nodes        
-                                                                     
-                                    Laurent.Thery@inria.fr (2003)    
- **********************************************************************)
+        number_of_nodes
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Export Code.
 From Huffman Require Export ISort.

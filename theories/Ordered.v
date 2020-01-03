@@ -13,14 +13,15 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**********************************************************************
-    Proof of Huffman algorithm: Ordered.v                            
-                                                                     
-    Definition of ordered list and some properties                   
-                                                                     
-    Definition: ordered                                              
-                                    Laurent.Thery@inria.fr (2003)    
- **********************************************************************)
+(**
+    Proof of Huffman algorithm: Ordered.v
+
+    Definition of ordered list and some properties
+
+    Definition: ordered
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Export Permutation.
 From Huffman Require Export Aux.

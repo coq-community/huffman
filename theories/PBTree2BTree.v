@@ -13,15 +13,15 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**********************************************************************
-    Proof of Huffman algorithm: PBTree2BTree.v                       
-                                                                     
-    Definition of translation from partial trees to binary trees     
-                                                                     
-    Definition: to_btree                                             
-                                                                     
-                                    Laurent.Thery@inria.fr (2003)    
- **********************************************************************)
+(**
+    Proof of Huffman algorithm: PBTree2BTree.v
+
+    Definition of translation from partial trees to binary trees
+
+    Definition: to_btree
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Export Aux.
 From Huffman Require Export Code.

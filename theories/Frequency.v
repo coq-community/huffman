@@ -13,15 +13,15 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(***********************************************************************)
-(*    Proof of Huffman algorithm: Frequency.v                          *)
-(*                                                                     *)
-(*    Frequency list from a message and some properties                *)
-(*                                                                     *)
-(*    Definitions: frequency_list, number_of_occurrences               *)
-(*                                                                     *)
-(*                                    Laurent.Thery@inria.fr (2003)    *)
-(***********************************************************************)
+(**
+    Proof of Huffman algorithm: Frequency.v
+
+    Frequency list from a message and some properties
+
+    Definitions: frequency_list, number_of_occurrences
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Import Aux.
 Require Import List.

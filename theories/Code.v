@@ -13,18 +13,17 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
+(**
+    Proof of Huffman algorithm: Code.v
 
-(**********************************************************************
-    Proof of Huffman algorithm: Code.v                               
-                                                                     
-    Definitions of code as association lists and some properties     
-                                                                     
-    Definitions:                                                     
-      code, encode, decode, find_code, find_val,                     
-      in_alphabet, unique_prefix, not_null                           
-                                                                     
-                                    Laurent.Thery@inria.fr (2003)    
- **********************************************************************)
+    Definitions of code as association lists and some properties
+
+    Definitions:
+      code, encode, decode, find_code, find_val,
+      in_alphabet, unique_prefix, not_null
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 Require Bool.Bool.
 From Huffman Require Export Aux.

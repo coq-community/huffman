@@ -13,16 +13,15 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
+(**
+    Proof of Huffman algorithm: UList.v
 
-(***********************************************************************)
-(*    Proof of Huffman algorithm: UList.v                              *)
-(*                                                                     *)
-(*    Definition of list with distinct elements                        *)
-(*                                                                     *)
-(*    Definition: ulist                                                *)
-(*                                                                     *)
-(*                                    Laurent.Thery@inria.fr (2003)    *)
-(***********************************************************************)
+    Definition of list with distinct elements
+
+    Definition: ulist
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 Require Import List.
 Require Import Arith.

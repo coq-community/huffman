@@ -13,14 +13,15 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**********************************************************************
-    Proof of Huffman algorithm: CoverMin.v                           
-                                                                     
-    Definition of a minimal tree for a cover                         
-                                                                     
-    Defintion: cover_min                                             
-                                    Laurent.Thery@inria.fr (2003)    
- **********************************************************************)
+(**
+    Proof of Huffman algorithm: CoverMin.v
+
+    Definition of a minimal tree for a cover
+
+    Definition: cover_min
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Export Cover.
 From Huffman Require Export WeightTree.

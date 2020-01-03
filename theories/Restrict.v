@@ -13,16 +13,16 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
+(**
+    Proof of Huffman algorithm: Restrict.v
 
-(**********************************************************************
-    Proof of Huffman algorithm: Restrict.v                           
-                                                                     
-    Definition of a restriction of a code (only the keys of a        
-    message appears                                                  
-                                                                     
-    Definition: restrict_code                                        
-                                    Laurent.Thery@inria.fr (2003)    
- **********************************************************************)
+    Definition of a restriction of a code (only the keys of a
+    message appears
+
+    Definition: restrict_code
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Export Code.
 From Huffman Require Export Frequency.

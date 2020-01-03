@@ -13,15 +13,16 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**********************************************************************
-    Proof of Huffman algorithm: sTactic.v                            
-                                                                     
+(**
+    Proof of Huffman algorithm: sTactic.v
+
     Useful tactics                                                   
-                                                                     
-    Tactics: Contradict, CaseEq, ElimEq                              
-                                    Laurent.Thery@inria.fr (2003)    
-  **********************************************************************)
- 
+
+    Tactics: Contradict, CaseEq, ElimEq
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
+
 Theorem Contradict1 : forall a b : Prop, b -> (a -> ~ b) -> ~ a.
 Proof.
 intuition.

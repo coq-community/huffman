@@ -6,28 +6,29 @@
 (* This program is distributed in the hope that it will be useful,    *)
 (* but WITHOUT ANY WARRANTY; without even the implied warranty of     *)
 (* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *)
-(* GNU LessernGeneral Public License for more details.                *)
+(* GNU Lesser General Public License for more details.                *)
 (*                                                                    *)
 (* You should have received a copy of the GNU Lesser General Public   *)
 (* License along with this program; if not, write to the Free         *)
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**********************************************************************
-    Proof of Huffman algorithm: Huffman.v                            
-                                                                     
-    The huffman algorithm and its proof of correctness               
-                                                                     
-    Definition: huffman                                              
-                                    Laurent.Thery@inria.fr (2003)    
- **********************************************************************)
+(**
+    Proof of Huffman algorithm: Huffman.v
+
+    The huffman algorithm and its proof of correctness
+
+    Definition: huffman
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Import Code.
 From Huffman Require Import BTree.
 From Huffman Require Import Build.
 From Huffman Require Import PBTree2BTree.
 From Huffman Require Import Restrict.
- 
+
 Section Huffman.
 Variable A : Type.
 Variable empty : A.
@@ -44,7 +45,7 @@ intros; discriminate.
 Qed.
 
 (* Every tree that is built is of minimum weight *)
-Theorem huffman_build_minimun :
+Theorem huffman_build_minimum :
  forall (c : code A) (t : btree A),
  unique_prefix c ->
  in_alphabet m c ->
@@ -169,7 +170,7 @@ match l1 with
   | [] => fun _ _ _ _ _ => exist _ c1 _
   | (n2, c2) :: l'0 =>
     fun _ _ _ _ _ =>
-    let (c3, Hc3) :=
+    let (c3, _) :=
       huffman_aux_rec
         (insert (fun x y => le_bool (fst x) (fst y))
           (n1 + n2,
@@ -334,7 +335,7 @@ Program Definition huffman :
   (forall c1 : code A,
    unique_prefix c1 ->
    in_alphabet m c1 -> weight eqA_dec m c <= weight eqA_dec m c1)} :=
-let (c, Hc) :=
+let (c, _) :=
   huffman_aux
     (isort (fun x y => le_bool (fst x) (fst y))
       (map (fun x => (snd x, (fst x, []) :: [])) (frequency_list eqA_dec m))) _ _ _ _ _
@@ -355,6 +356,7 @@ Next Obligation.
            (fun x y : nat * list (A * list bool) => le_bool (fst x) (fst y))
            (map (fun x : A * nat => (snd x, (fst x, []) :: [])) l));
     auto with datatypes.
+  (* FIXME: prove by contradict instead *)
   apply insert_permutation.
 Qed.
 Next Obligation.
@@ -448,7 +450,7 @@ Next Obligation.
   intros a0 l H6; apply f_equal2 with (f := cons (A:=btree A)); auto.
   intros c1 H H0.
   rewrite <- Hc1.
-  apply huffman_build_minimun; auto.
+  apply huffman_build_minimum; auto.
   apply build_permutation with (1 := Hc2); auto.
   apply
     permutation_trans

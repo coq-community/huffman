@@ -13,15 +13,15 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(***********************************************************************)
-(*    Proof of Huffman algorithm: ISort.v                              *)
-(*                                                                     *)
-(*    Definition of sorting by insertion and its proof of correctness  *)
-(*                                                                     *)
-(*    Definitions: isort, insert                                       *)
-(*                                                                     *)
-(*                                    Laurent.Thery@inria.fr (2003)    *)
-(***********************************************************************)
+(**
+    Proof of Huffman algorithm: ISort.v
+
+    Definition of sorting by insertion and its proof of correctness
+
+    Definitions: isort, insert
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 Require Import List.
 From Huffman Require Import Permutation.

@@ -13,17 +13,17 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**********************************************************************
-    Proof of Huffman algorithm: PBTree.v                             
-                                                                     
-    Definition of partial binary trees (nodes have upto 2 sons)      
-                                                                     
+(**
+    Proof of Huffman algorithm: PBTree.v
+
+    Definition of partial binary trees (nodes have up to 2 sons)
+
     Definitions:                                                     
-        pbtree, inpb, pbfree, compute_pbcode, pbadd                  
-        pbbuild, all_pbleaves, distinct_pbleaves, compute_pbcode     
-                                                                     
-                                    Laurent.Thery@inria.fr (2003)    
- **********************************************************************)
+        pbtree, inpb, pbfree, compute_pbcode, pbadd
+        pbbuild, all_pbleaves, distinct_pbleaves, compute_pbcode
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 Require Import List.
 From Huffman Require Import Aux.

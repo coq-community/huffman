@@ -13,16 +13,15 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
+(**
+    Proof of Huffman algorithm: Permutation.v
 
-(**********************************************************************
-    Proof of Huffman algorithm: Permutation.v                        
-                                                                     
-    Defintion and properties of permutations                         
-                                                                     
-    Definition: permutation                                          
-                                                                     
-                                    Laurent.Thery@inria.fr (2003)    
- **********************************************************************)
+    Defintion and properties of permutations
+
+    Definition: permutation
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Export Aux.
  

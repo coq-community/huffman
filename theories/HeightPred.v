@@ -13,15 +13,16 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**********************************************************************
-    Proof of Huffman algorithm: HeightPred.v                         
-                                                                     
-    Definition of the predicate that associates a height list        
-    with a cover                                                     
-                                                                     
-    Definition: height_pred                                          
-                                    Laurent.Thery@inria.fr (2003)    
- **********************************************************************)
+(**
+    Proof of Huffman algorithm: HeightPred.v
+
+    Definition of the predicate that associates a height list
+    with a cover
+
+    Definition: height_pred
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Export Aux.
 From Huffman Require Export OrderedCover.

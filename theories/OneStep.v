@@ -13,13 +13,14 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**********************************************************************
-    Proof of Huffman algorithm: OneStep.v                            
-                                                                     
-    Definition of one step of the building process (merging the      
-    smallest tree) and its properties                                
-                                    Laurent.Thery@inria.fr (2003)    
- **********************************************************************)
+(**
+    Proof of Huffman algorithm: OneStep.v
+
+    Definition of one step of the building process (merging the
+    smallest tree) and its properties
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Export WeightTree.
 From Huffman Require Export Ordered.

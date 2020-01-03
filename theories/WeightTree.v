@@ -13,12 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(***********************************************************************)
-(*    Proof of Huffman algorithm: WeightTree.v                         *)
-(*                                                                     *)
-(*                                                                     *)
-(*                                    Laurent.Thery@inria.fr (2003)    *)
-(***********************************************************************)
+(**
+    Proof of Huffman algorithm: WeightTree.v
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Export BTree.
 From Huffman Require Export Ordered.

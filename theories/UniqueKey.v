@@ -13,13 +13,13 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(***********************************************************************)
-(*    Proof of Huffman algorithm: UniqueKey.v                          *)
-(*                                                                     *)
-(*    Definition: uniqueness of keys in association list               *)
-(*                                                                     *)
-(*                                    Laurent.Thery@inria.fr (2003)    *)
-(***********************************************************************)
+(**
+    Proof of Huffman algorithm: UniqueKey.v
+
+    Definition: uniqueness of keys in association list
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Export Aux.
 From Huffman Require Export Permutation.

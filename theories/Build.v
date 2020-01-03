@@ -13,16 +13,15 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
+(**
+    Proof of Huffman algorithm: Build.v
 
-(***********************************************************************)
-(*    Proof of Huffman algorithm: Build.v                              *)
-(*                                                                     *)
-(*    Define the build process iteratively  merging the two smaller    *)
-(*    trees                                                            *)
-(*                                                                     *)
-(*    Definition: build build_fun                                      *)
-(*                                    Laurent.Thery@inria.fr (2003)    *)
-(***********************************************************************)
+    Define the build process iteratively merging the two smaller trees
+
+    Definitions: build build_fun
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Export OneStep.
 From Huffman Require Export HeightPred.

@@ -13,18 +13,18 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**********************************************************************
-    Proof of Huffman algorithm: Aux.v                                
-                                                                     
-    Auxillary functions & Theorems                                   
-                                                                     
-    Definitions:                                                     
-      le_bool, map2, first_n, skip_n find_min find_max               
-                                                                     
-    Theorems: minus, map, app                                        
-                                                                     
-                                    Laurent.Thery@inria.fr (2003)    
- **********************************************************************)
+(**
+    Proof of Huffman algorithm: Aux.v
+
+    Auxiliary functions & theorems
+
+    Definitions:
+      le_bool, map2, find_min, find_max
+
+    Theorems: minus, map, app
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 Require Export List.
 Export ListNotations.

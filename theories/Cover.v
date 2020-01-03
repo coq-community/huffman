@@ -13,19 +13,20 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**********************************************************************
-    Proof of Huffman algorithm: Cover.v                              
-                                                                     
-    Definition of a cover for a tree and some properties             
-                                                                     
-    Definitions: cover                                               
-                                    Laurent.Thery@inria.fr (2003)    
- **********************************************************************)
+(**
+    Proof of Huffman algorithm: Cover.v
+
+    Definition of a cover for a tree and some properties
+
+    Definitions: cover
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Export BTree.
 From Huffman Require Export Permutation.
 Require Import ArithRing.
- 
+
 Section Cover.
 Variable A : Type.
 Variable empty : A.
@@ -41,7 +42,6 @@ Inductive cover : list (btree A) -> btree A -> Prop :=
       permutation l1 (t1 :: t2 :: l2) ->
       cover (node t1 t2 :: l2) t3 -> cover l1 t3.
 Hint Constructors cover : core.
-
 
 (* Covers are compatible with permutation *)
 Theorem cover_permutation :

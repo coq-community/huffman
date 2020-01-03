@@ -13,16 +13,16 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**********************************************************************
-    Proof of Huffman algorithm: Prod2List.v                          
-                                                                     
-    Definition of a product between an integer list and a list of    
-    trees and its properties                                         
-                                                                     
-    Definition: prod2list                                            
-                                                                     
-                                    Laurent.Thery@inria.fr (2003)    
- **********************************************************************)
+(**
+    Proof of Huffman algorithm: Prod2List.v
+
+    Definition of a product between an integer list and a list of
+    trees and its properties
+
+    Definition: prod2list
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Export WeightTree.
 Require Import ArithRing.

@@ -13,15 +13,15 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**********************************************************************
-    Proof of Huffman algorithm: SubstPred.v                          
-                                                                     
-    Definition of the substitution in a tree with respect to a cover 
-                                                                     
-    Definition: subst_pred                                           
-                                                                     
-                                    Laurent.Thery@inria.fr (2003)    
- **********************************************************************)
+(**
+    Proof of Huffman algorithm: SubstPred.v
+
+    Definition of the substitution in a tree with respect to a cover
+
+    Definition: subst_pred
+
+    Initial author: Laurent.Thery@inria.fr (2003)
+*)
 
 From Huffman Require Import HeightPred.
  
