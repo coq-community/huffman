@@ -16,7 +16,7 @@
 (**
     Proof of Huffman algorithm: sTactic.v
 
-    Useful tactics                                                   
+    Useful tactics
 
     Tactics: Contradict, CaseEq, ElimEq
 
