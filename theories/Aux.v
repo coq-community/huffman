@@ -182,20 +182,13 @@ intros P H l;
 apply wf_inverse_image with (R := lt); auto.
 apply lt_wf.
 Qed.
- 
-Definition list_length_induction :
-  forall P : list A -> Type,
-  (forall l1 : list A,
-   (forall l2 : list A, length l2 < length l1 -> P l2) -> P l1) ->
-  forall l : list A, P l.
-Proof.
-intros P H l;
- apply
-  well_founded_induction_type with (R := fun x y : list A => length x < length y);
- auto.
-apply wf_inverse_image with (R := lt); auto.
-apply lt_wf.
-Defined.
+
+Program Definition list_length_induction (P : list A -> Type)
+ (rec: forall l1 : list A, (forall l2 : list A, length l2 < length l1 -> P l2) -> P l1)
+ (l : list A) : P l :=
+@well_founded_induction_type _
+ (fun x y : list A => length x < length y)
+  ((fun _ _ _ => @wf_inverse_image _ _ lt _ _) P rec l) P rec l.
 
 Theorem in_ex_app :
  forall (a : A) (l : list A),

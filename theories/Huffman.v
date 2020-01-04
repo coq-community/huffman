@@ -16,7 +16,7 @@
 (**
     Proof of Huffman algorithm: Huffman.v
 
-    The huffman algorithm and its proof of correctness
+    The Huffman algorithm and its proof of correctness
 
     Definition: huffman
 
@@ -159,25 +159,20 @@ Definition huffman_aux_type (l : list (nat * code A)) : Type :=
     (to_btree (pbbuild empty c))}.
 
 (* Auxiliary function to compute minimal code *)
-Program Definition huffman_aux_F
-  (l1 : list (nat * code A))
-  (huffman_aux_rec : forall l2 : list (nat * code A), length l2 < length l1 -> huffman_aux_type l2) :
-  huffman_aux_type l1 :=
+Program Definition huffman_aux_F (l1 : list (nat * code A))
+ (huffman_aux_rec : forall l2 : list (nat * code A), length l2 < length l1 -> huffman_aux_type l2) :
+ huffman_aux_type l1 :=
 match l1 with
 | [] => eq_rect [] huffman_aux_type (fun _ _ _ _ _ => False_rect _ _) _ _
-| (n1, c1) :: l0 =>
-  match l0 with
-  | [] => fun _ _ _ _ _ => exist _ c1 _
-  | (n2, c2) :: l'0 =>
-    fun _ _ _ _ _ =>
-    let (c3, _) :=
-      huffman_aux_rec
-        (insert (fun x y => le_bool (fst x) (fst y))
-          (n1 + n2,
-           map (fun x => (fst x, false :: snd x)) c1 ++
-            map (fun x => (fst x, true :: snd x)) c2) l'0) _ _ _ _ _ _
-    in exist _ c3 _
-  end
+| (n1, c1) :: [] => fun _ _ _ _ _ => exist _ c1 _
+| (n1, c1) :: (n2, c2) :: l0 => fun _ _ _ _ _ =>
+  let (c3, _) :=
+   huffman_aux_rec
+     (insert (fun x y => le_bool (fst x) (fst y))
+      (n1 + n2,
+       map (fun x => (fst x, false :: snd x)) c1 ++
+        map (fun x => (fst x, true :: snd x)) c2) l0) _ _ _ _ _ _
+  in exist _ c3 _
 end.
 Next Obligation.
   simpl in |- *; repeat (split; auto).
@@ -193,7 +188,7 @@ Next Obligation.
           map (fun x : A * list bool => (fst x, false :: snd x))
               c1 ++
               map (fun x : A * list bool => (fst x, true :: snd x))
-              c2) :: l'0).
+              c2) :: l0).
   simpl in |- *; auto with arith.
   apply permutation_sym; apply insert_permutation.
 Qed.
@@ -202,7 +197,7 @@ Next Obligation.
     absurd
       ((n1 + n2,
         map (fun x : A * list bool => (fst x, false :: snd x)) c1 ++
-            map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l'0 = []).
+            map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l0 = []).
   intros; discriminate.
   apply permutation_nil_inv; auto.
   unfold code in H5; rewrite <- H5; apply insert_permutation.
@@ -220,7 +215,7 @@ Next Obligation.
     (In a
         ((n1 + n2,
           map (fun x : A * list bool => (fst x, false :: snd x)) c1 ++
-              map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l'0)).
+              map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l0)).
   simpl in |- *; intros [H6| H6]; try rewrite <- H6; simpl in |- *;
     auto with datatypes.
   rewrite pbbuild_pbnode; simpl in |- *; auto with datatypes.
@@ -229,12 +224,12 @@ Next Obligation.
     auto with datatypes.
   elim c1; simpl in |- *; auto.
   intros a0; case a0; simpl in |- *; auto.
-  intros a1 l0 l2 H7; apply f_equal2 with (f := cons (A:=A * list bool)); auto.
+  intros a1 l1 l2 H7; apply f_equal2 with (f := cons (A:=A * list bool)); auto.
   generalize (H1 (n2, c2)); simpl in |- *; intros tmp; rewrite tmp; clear tmp;
     auto with datatypes.
   elim c2; simpl in |- *; auto.
   intros a0; case a0; simpl in |- *; auto.
-  intros a1 l0 l2 H7; apply f_equal2 with (f := cons (A:=A * list bool));
+  intros a1 l1 l2 H7; apply f_equal2 with (f := cons (A:=A * list bool));
     auto with datatypes.
   generalize (H3 (n1, c1)); simpl in |- *; auto with datatypes.
   generalize (H3 (n2, c2)); simpl in |- *; auto with datatypes.
@@ -247,7 +242,7 @@ Next Obligation.
     (In a
         ((n1 + n2,
           map (fun x : A * list bool => (fst x, false :: snd x)) c1 ++
-              map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l'0)).
+              map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l0)).
   simpl in |- *; intros [H6| H6]; try rewrite <- H6; simpl in |- *;
     auto with datatypes.
   rewrite pbbuild_pbnode; simpl in |- *; auto with datatypes.
@@ -265,7 +260,7 @@ Next Obligation.
     (In a
         ((n1 + n2,
           map (fun x : A * list bool => (fst x, false :: snd x)) c1 ++
-              map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l'0)).
+              map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l0)).
   simpl in |- *; intros [H6| H6]; try rewrite <- H6; simpl in |- *;
     auto with datatypes.
   generalize (H3 (n1, c1)); case c1; simpl in |- *; auto with datatypes.
@@ -277,19 +272,20 @@ Next Obligation.
   split; auto.
   apply build_step with (2 := H5); auto.
   simpl in |- *; red in |- *.
-  exists (map (fun x : nat * code A => to_btree (pbbuild empty (snd x))) l'0);
+  exists (map (fun x : nat * code A => to_btree (pbbuild empty (snd x))) l0);
     exists (to_btree (pbbuild empty c1)); exists (to_btree (pbbuild empty c2));
       repeat (split; auto).
   - change
       (ordered (sum_order (fun x : A => number_of_occurrences eqA_dec x m))
                (map (fun x : nat * code A => to_btree (pbbuild empty (snd x)))
-                    ((n1, c1) :: (n2, c2) :: l'0))) in |- *.
+                    ((n1, c1) :: (n2, c2) :: l0))) in |- *.
     apply ordered_map_inv; auto.
-    assert (H2': forall a, In a ((n1, c1) :: (n2, c2) :: l'0) ->
-                      sum_leaves (fun x : A => number_of_occurrences eqA_dec x m) (to_btree (pbbuild empty (snd a))) = fst a) by apply H2.
-    generalize H2' H0; elim ((n1, c1) :: (n2, c2) :: l'0); (simpl in |- *; auto).
-    intros a l0; case a; case l0; simpl in |- *; auto; clear a l0.
-    intros p0 l0 n4 c4; case p0; intros n5 c5; simpl in |- *; clear p0; auto.
+    assert (H2': forall a, In a ((n1, c1) :: (n2, c2) :: l0) ->
+     sum_leaves (fun x : A => number_of_occurrences eqA_dec x m)
+      (to_btree (pbbuild empty (snd a))) = fst a) by apply H2.
+    generalize H2' H0; elim ((n1, c1) :: (n2, c2) :: l0); (simpl in |- *; auto).
+    intros a l1; case a; case l1; simpl in |- *; auto; clear a l1.
+    intros p0 l1 n4 c4; case p0; intros n5 c5; simpl in |- *; clear p0; auto.
     intros H6 H7 H8; apply ordered_cons; unfold sum_order in |- *; simpl in |- *;
       auto.
     * generalize (H7 (n4, c4)); simpl in |- *; intros tmp; rewrite tmp; clear tmp;
@@ -306,7 +302,7 @@ Next Obligation.
         (map (fun x : nat * code A => to_btree (pbbuild empty (snd x)))
              ((n1 + n2,
                map (fun x : A * list bool => (fst x, false :: snd x)) c1 ++
-                   map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l'0));
+                   map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l0));
       auto.
     apply permutation_map; auto.
     apply permutation_sym; apply insert_permutation.
@@ -316,7 +312,7 @@ Next Obligation.
         (map (fun x : nat * code A => to_btree (pbbuild empty (snd x)))
              ((n1 + n2,
                map (fun x : A * list bool => (fst x, false :: snd x)) c1 ++
-                   map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l'0));
+                   map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l0));
       auto.
     simpl in |- *; auto.
     rewrite pbbuild_pbnode; auto.
