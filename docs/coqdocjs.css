@@ -67,7 +67,7 @@
   content: "\25BC"; /* arrow down */
 }
 .proof[show="false"]:before {
-  content: "\25B2"; /* arrow right */
+  content: "\25B6"; /* arrow right */
 }
 
 .proof[show="false"]:hover {
