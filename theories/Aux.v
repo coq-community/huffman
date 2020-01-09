@@ -29,7 +29,6 @@
 Require Export List.
 Export ListNotations.
 Require Export Arith.
-From Huffman Require Export sTactic.
 Require Import Inverse_Image.
 Require Import Wf_nat.
 

@@ -33,8 +33,7 @@ From Huffman Require Import ISort.
 Require Import Compare_dec.
 From Huffman Require Import Permutation.
 From Huffman Require Import UniqueKey.
-From Huffman Require Import sTactic.
- 
+
 Section PBTree.
 Variable A : Type.
 Variable empty : A.
@@ -47,7 +46,7 @@ Inductive pbtree : Type :=
   | pbright : pbtree -> pbtree
   | pbnode : pbtree -> pbtree -> pbtree.
 
-(* Predictate for belonging *)
+(* Predicate for belonging *)
 Theorem pbleaf_or_not :
  forall p, (exists a, p = pbleaf a) \/ (forall a : A, p <> pbleaf a).
 Proof using.

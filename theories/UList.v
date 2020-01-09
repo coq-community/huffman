@@ -26,7 +26,6 @@
 Require Import List.
 Require Import Arith.
 From Huffman Require Import Permutation.
-From Huffman Require Import sTactic.
 
 Section UniqueList.
 Variable A : Type.

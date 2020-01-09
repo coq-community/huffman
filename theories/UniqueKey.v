@@ -24,7 +24,6 @@
 From Huffman Require Export Aux.
 From Huffman Require Export Permutation.
 From Huffman Require Export UList.
-From Huffman Require Export sTactic.
 
 Section UniqueKey.
 Variables (A : Type) (B : Type).

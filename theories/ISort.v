@@ -26,8 +26,7 @@
 Require Import List.
 From Huffman Require Import Permutation.
 From Huffman Require Import Ordered.
-From Huffman Require Import sTactic.
- 
+
 Section ISortExample.
 Variable A : Type.
 Variable order : A -> A -> Prop.
