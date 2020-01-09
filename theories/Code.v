@@ -110,7 +110,7 @@ intros a1 [H3| H3];
  [ case H2; intros l1 Hl1; exists l1; rewrite <- H3 | idtac ]; 
  auto.
 right; red in |- *; intros H3; case (H3 a); simpl in |- *; auto.
-right; Contradict H1; auto; red in |- *.
+right; contradict H1; auto; red in |- *.
 intros a0 H0; case (H1 a0); simpl in |- *; auto.
 intros x H2; exists x; auto.
 Defined.
@@ -606,10 +606,10 @@ Theorem frequency_not_null :
  unique_prefix c -> in_alphabet m c -> not_null c.
 Proof using.
 intros m c H H0 H1.
-CaseEq (frequency_list eqA_dec m); auto.
-intros H2; rewrite H2 in H; Contradict H; simpl in |- *; auto with arith.
+case_eq (frequency_list eqA_dec m); auto.
+intros H2; rewrite H2 in H; contradict H; simpl in |- *; auto with arith.
 intros p l; case p; case l; simpl in |- *; auto.
-intros a n H2; rewrite H2 in H; Contradict H; simpl in |- *; auto with arith.
+intros a n H2; rewrite H2 in H; contradict H; simpl in |- *; auto with arith.
 intros p0 l0; case p0; intros b nb a na H2.
 apply unique_prefix_not_null with a b; auto.
 intros H3; absurd (In (fst (a, na)) (fst (b, nb) :: map (fst (B:=_)) l0)).

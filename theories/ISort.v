@@ -74,7 +74,7 @@ Theorem insert_permutation :
 Proof using.
 intros L; elim L; simpl in |- *; auto.
 intros b l H' a.
-CaseEq (order_fun a b); intros H1; auto.
+case_eq (order_fun a b); intros H1; auto.
 apply permutation_trans with (l2 := b :: a :: l); auto.
 Qed.
 Hint Resolve insert_ordered insert_permutation : core.

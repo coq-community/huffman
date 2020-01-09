@@ -72,22 +72,22 @@ intros a; elim a; simpl in |- *; auto.
 intros a0 b; case b; try (intros; right; red in |- *; intros; discriminate).
 intros a1; case (eqA_dec a0 a1); intros H1.
 left; rewrite H1; auto.
-right; red in |- *; Contradict H1; inversion H1; auto.
+right; red in |- *; contradict H1; inversion H1; auto.
 intros p H b; case b; try (intros; right; red in |- *; intros; discriminate).
 intros p1; case (H p1).
 intros e; rewrite e; auto.
-intros H1; right; Contradict H1; inversion H1; auto.
+intros H1; right; contradict H1; inversion H1; auto.
 intros p H b; case b; try (intros; right; red in |- *; intros; discriminate).
 intros p1; case (H p1).
 intros e; rewrite e; auto.
-intros H1; right; Contradict H1; inversion H1; auto.
+intros H1; right; contradict H1; inversion H1; auto.
 intros p H p0 H0 b; case b;
  try (intros; right; red in |- *; intros; discriminate).
 intros p1 p2; case (H p1); intros H1.
 case (H0 p2); intros H2.
 left; rewrite H1; rewrite H2; auto.
-right; Contradict H2; injection H2; auto.
-right; Contradict H1; injection H1; auto.
+right; contradict H2; injection H2; auto.
+right; contradict H1; injection H1; auto.
 Defined.
 
 (* Belonging is decidable *) 
@@ -98,7 +98,7 @@ intros a0; case a;
  try (intros; right; red in |- *; intros HH; inversion HH; auto; fail).
 intros a1; case (eqA_dec a1 a0); intros HH.
 left; rewrite HH; auto.
-right; Contradict HH; inversion HH; auto.
+right; contradict HH; inversion HH; auto.
 intros p Hp; case Hp; auto; intros HH.
 case (pbtree_dec a (pbleft p)); intros HH1.
 left; rewrite HH1; auto.
@@ -852,10 +852,10 @@ apply all_pbleaves_inpb; auto.
 intros p p0 H0 H1; apply ulist_app; auto.
 apply ulist_app_inv_l with (1 := H1); auto.
 apply H.
-Contradict H0; auto.
+contradict H0; auto.
 apply ulist_app_inv_r with (1 := H1); auto.
 intros a H2 H3; case all_pbleaves_pbadd with (1 := H3).
-intros H4; Contradict H0; rewrite <- H4; apply all_pbleaves_inpb;
+intros H4; contradict H0; rewrite <- H4; apply all_pbleaves_inpb;
  simpl in |- *; auto with datatypes.
 intros H4; apply ulist_app_inv with (1 := H1) (a := a); auto.
 intros l H t; case t; simpl in |- *; auto.
@@ -866,11 +866,11 @@ intros a [H3| H3] H2; auto; (case H0; rewrite H3); auto.
 apply all_pbleaves_inpb; auto.
 intros p p0 H0 H1; apply ulist_app; auto.
 apply H.
-Contradict H0; auto.
+contradict H0; auto.
 apply ulist_app_inv_l with (1 := H1); auto.
 apply ulist_app_inv_r with (1 := H1); auto.
 intros a H2 H3; case all_pbleaves_pbadd with (1 := H2).
-intros H4; Contradict H0; rewrite <- H4; apply all_pbleaves_inpb;
+intros H4; contradict H0; rewrite <- H4; apply all_pbleaves_inpb;
  simpl in |- *; auto with datatypes.
 intros H4; apply ulist_app_inv with (1 := H1) (a := a); auto.
 Qed.

@@ -145,7 +145,7 @@ Theorem unique_key_map :
 Proof using.
 intros A B C D l f H; elim H; simpl in |- *; auto.
 intros a b l0 H0 H1 H2 H3.
-CaseEq (f (a, b)); intros fa fb Hf; auto.
+case_eq (f (a, b)); intros fa fb Hf; auto.
 apply unique_key_cons; auto.
 generalize H0; elim l0; simpl in |- *; auto.
 intros (a0, b0) l1 H4 H5 b1; red in |- *; intros [H6| H6].

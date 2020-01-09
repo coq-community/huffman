@@ -194,7 +194,7 @@ generalize (height_pred_length _ _ _ _ H1); case l2; simpl in |- *; auto;
  intros; discriminate.
 intros n0 ln5 E1 H1; case height_pred_larger_strict with (n1 := n0) (1 := H1);
  simpl in |- *; auto with datatypes.
-intros HH6; Contradict HH6; apply le_not_lt; rewrite <- HH5; apply H5;
+intros HH6; contradict HH6; apply le_not_lt; rewrite <- HH5; apply H5;
  rewrite E1; auto with datatypes.
 intros (H8, H9); left; exists []; injection H8.
 intros HH7 HH8; rewrite HH5; rewrite <- HH8; rewrite <- HH7; rewrite E1;
@@ -214,7 +214,7 @@ cut (ln3 = [] /\ ln4 = [] /\ a = S n);
     | intros n0 l; case l; simpl in |- *; intros; discriminate ] ].
 case height_pred_larger_ex with (1 := H); auto.
 intros n1; rewrite <- HH5; intros (HH6, HH7).
-Contradict HH7; apply lt_not_le; apply H4; rewrite E1; auto with datatypes.
+contradict HH7; apply lt_not_le; apply H4; rewrite E1; auto with datatypes.
 Qed.
 
 (* The first maximum height in the list is immediately repeated once *)
@@ -393,11 +393,11 @@ rewrite <- H6; rewrite <- Eq2; rewrite E1; rewrite app_length;
  auto with arith.
 rewrite HH1 in H; case height_pred_disj_larger2 with (1 := H); simpl in |- *;
  auto.
-intros (n1, (HH3, HH4)); Contradict HH4; auto with arith.
+intros (n1, (HH3, HH4)); contradict HH4; auto with arith.
 intros [(n1, (HH3, HH4))| ((HH3, (HH4, HH5)), HH6)]; [ case HH3 | idtac ].
 case height_pred_larger_strict with (1 := H1) (n1 := b); auto.
 rewrite HH2; auto with datatypes.
-rewrite <- HH4; intros HH7; Contradict HH7; apply le_not_lt;
+rewrite <- HH4; intros HH7; contradict HH7; apply le_not_lt;
  auto with arith datatypes.
 intros (H8, H9); rewrite HH4; rewrite HH3; simpl in |- *.
 cut (l0 = []); [ intros HM1; rewrite HM1 | idtac ].

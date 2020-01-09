@@ -388,7 +388,7 @@ Proof.
 intros H l1 l2.
 case (In_dec (list_eq_dec H) l1 (all_permutations l2)).
 intros i; left; apply all_permutations_permutation; auto.
-intros i; right; Contradict i; apply permutation_all_permutations; auto.
+intros i; right; contradict i; apply permutation_all_permutations; auto.
 Defined.
  
 End permutation.

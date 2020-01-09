@@ -102,15 +102,15 @@ intros a; elim a.
 intros a1 b; case b.
 intros b1; case (eqA_dec a1 b1).
 intros e; left; rewrite e; auto.
-intros e; right; Contradict e; inversion e; auto.
+intros e; right; contradict e; inversion e; auto.
 intros b0 b1; right; red in |- *; intros H; discriminate.
 intros b H b0 H0 b1; case b1.
 intros a0; right; red in |- *; intros H1; discriminate.
 intros b2 b3; case (H b2); intros H1.
 case (H0 b3); intros H2.
 left; rewrite H1; rewrite H2; auto.
-right; rewrite H1; Contradict H2; inversion H2; auto.
-right; Contradict H1; inversion H1; auto.
+right; rewrite H1; contradict H2; inversion H2; auto.
+right; contradict H1; inversion H1; auto.
 Defined.
 
 (* Belonging is decidable *)
@@ -120,7 +120,7 @@ intros a; elim a; simpl in |- *; auto; clear a.
 intros a p; elim p; simpl in |- *; auto; clear p.
 intros a1; case (eqA_dec a a1); intros Ha.
 left; rewrite Ha; simpl in |- *; auto.
-right; red in |- *; Contradict Ha; inversion Ha; auto.
+right; red in |- *; contradict Ha; inversion Ha; auto.
 intros b [H| H]; auto.
 intros b0 [H1| H1]; auto.
 right; red in |- *; intros H2; inversion H2.
@@ -224,7 +224,7 @@ Definition distinct_leaves_dec :
 Proof.
 intros a; case (ulist_dec A eqA_dec (all_leaves a)); intros H.
 left; apply all_leaves_unique; auto.
-right; Contradict H; apply all_leaves_ulist; auto.
+right; contradict H; apply all_leaves_ulist; auto.
 Defined.
 
 (* Compute the code associated with a binary tree *)

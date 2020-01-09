@@ -110,9 +110,9 @@ case inpb_compute_ex with (1 := H1).
 intros x Hx; rewrite in_find_map with (l := x); simpl in |- *; auto.
 rewrite not_in_find_map; simpl in |- *; auto.
 rewrite not_in_find_code; simpl in |- *; auto.
-intros p1; Contradict H1; auto.
+intros p1; contradict H1; auto.
 apply in_pbcompute_inpb with (1 := H1).
-intros p1; Contradict H1; auto.
+intros p1; contradict H1; auto.
 apply in_pbcompute_inpb with (1 := H1).
 intros p H a.
 apply le_trans with (1 := H a); auto.
@@ -121,9 +121,9 @@ case inpb_compute_ex with (1 := H1).
 intros x Hx; rewrite in_find_map with (l := x); simpl in |- *; auto.
 rewrite not_in_find_map; simpl in |- *; auto.
 rewrite not_in_find_code; simpl in |- *; auto.
-intros p1; Contradict H1; auto.
+intros p1; contradict H1; auto.
 apply in_pbcompute_inpb with (1 := H1).
-intros p1; Contradict H1; auto.
+intros p1; contradict H1; auto.
 apply in_pbcompute_inpb with (1 := H1).
 intros p H p0 H0 a.
 simpl in |- *; repeat rewrite find_code_app; auto.
@@ -151,11 +151,11 @@ rewrite not_in_find_map with (p := compute_pbcode p0); simpl in |- *;
  auto with arith.
 rewrite not_in_find_map with (p := compute_code (to_btree p0)); simpl in |- *;
  auto with arith.
-intros l; Contradict H2; apply to_btree_inpb;
+intros l; contradict H2; apply to_btree_inpb;
  apply inCompute_inb with (1 := H2); auto.
-intros l; Contradict H2; apply in_pbcompute_inpb with (1 := H2).
-intros l; Contradict H1; apply in_pbcompute_inpb with (1 := H1).
-intros l; Contradict H1; apply to_btree_inpb;
+intros l; contradict H2; apply in_pbcompute_inpb with (1 := H2).
+intros l; contradict H1; apply in_pbcompute_inpb with (1 := H1).
+intros l; contradict H1; apply to_btree_inpb;
  apply inCompute_inb with (1 := H1); auto.
 Qed.
 

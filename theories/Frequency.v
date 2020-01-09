@@ -262,7 +262,7 @@ apply
  auto.
 simpl in |- *; apply permutation_skip; auto.
 apply permutation_trans with (1 := H2); auto.
-simpl in |- *; Contradict H3; case H3; intros H4; auto; case H1; auto.
+simpl in |- *; contradict H3; case H3; intros H4; auto; case H1; auto.
 Qed.
 
 (* Number of occurrences in an appended list is the sum of the occurrences *)
@@ -299,7 +299,7 @@ intros H1; rewrite e; apply add_frequency_list_in; auto.
 apply (H a); rewrite <- e; auto.
 intros H1; rewrite number_of_occurrences_O; auto.
 rewrite e; apply add_frequency_list_1.
-intros ca; Contradict H1; auto.
+intros ca; contradict H1; auto.
 rewrite e; apply frequency_list_in with (1 := H1).
 intros H1; case H0; auto.
 intros H2; case H1; auto.

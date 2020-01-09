@@ -77,7 +77,7 @@ Theorem ulist_app_inv_l : forall l1 l2 : list A, ulist (l1 ++ l2) -> ulist l1.
 Proof using.
 intros l1; elim l1; simpl in |- *; auto.
 intros a l H l2 H0; inversion H0; apply ulist_cons; auto.
-Contradict H3; auto with datatypes.
+contradict H3; auto with datatypes.
 apply H with l2; auto.
 Qed.
 
@@ -95,7 +95,7 @@ intros l; elim l; auto.
 intros a l1 [H| H]; auto.
 case (In_dec eqA_dec a l1); intros H2; auto.
 right; red in |- *; intros H1; inversion H1; auto.
-right; Contradict H; apply ulist_inv with (1 := H).
+right; contradict H; apply ulist_inv with (1 := H).
 Defined.
 
 (* Uniqueness is compatible with permutation *) 
@@ -105,17 +105,17 @@ Proof using.
 intros l1 l2 H; elim H; clear H l1 l2; simpl in |- *; auto.
 intros a l1 l2 H0 H1 H2; apply ulist_cons; auto.
 inversion H2; auto.
-Contradict H4; apply permutation_in with (1 := permutation_sym _ _ _ H0);
+contradict H4; apply permutation_in with (1 := permutation_sym _ _ _ H0);
  auto.
 inversion H2; auto.
 intros a b L H0; apply ulist_cons; auto.
 inversion H0; auto.
 inversion H3; auto.
-simpl in |- *; Contradict H7; case H7; auto.
+simpl in |- *; contradict H7; case H7; auto.
 intros H8; case H2; rewrite H8; simpl in |- *; auto.
 apply ulist_cons; auto.
 inversion H0; auto.
-Contradict H2; simpl in |- *; auto.
+contradict H2; simpl in |- *; auto.
 inversion H0; auto.
 inversion H3; auto.
 Qed.
