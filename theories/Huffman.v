@@ -40,7 +40,7 @@ Hypothesis frequency_more_than_one : 1 < length (frequency_list eqA_dec m).
 Theorem not_null_m : m <> [].
 Proof using A eqA_dec frequency_more_than_one m.
 generalize frequency_more_than_one; case m; simpl in |- *; auto.
-intros H; Contradict H; auto with arith.
+intros H; contradict H; auto with arith.
 intros; discriminate.
 Qed.
 
@@ -94,7 +94,7 @@ intros a0 l H4; apply f_equal2 with (f := cons (A:=btree A)); auto.
 apply build_correct; auto.
 generalize frequency_more_than_one; case (frequency_list eqA_dec m);
  simpl in |- *; auto.
-intros H; Contradict H; auto with arith.
+intros H; contradict H; auto with arith.
 intros; discriminate.
 apply to_btree_distinct_leaves; auto.
 apply pbbuild_distinct_pbleaves; auto.
@@ -339,7 +339,7 @@ in exist _ c _.
 Next Obligation.
   generalize frequency_more_than_one; case (frequency_list eqA_dec m);
     simpl in |- *; auto.
-  intros H; Contradict H; auto with arith.
+  intros H; contradict H; auto with arith.
   intros p l frequency_more_than_one_bis H.
   absurd (In (A:=nat * code A) (snd p, (fst p, []) :: []) []).
   simpl in |- *; intros H1; case H1.

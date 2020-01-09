@@ -330,7 +330,7 @@ Definition cover_dec :
 Proof.
 intros H l t; case (In_dec (btree_dec _ H) t (all_cover l)).
 intros H1; left; apply all_cover_cover; auto.
-intros H1; right; Contradict H1; apply cover_all_cover; auto.
+intros H1; right; contradict H1; apply cover_all_cover; auto.
 Defined.
 
 (* All the leaves of the tree gives a cover to the tree. *)

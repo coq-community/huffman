@@ -29,7 +29,6 @@
 Require Export List.
 Export ListNotations.
 Require Export Arith.
-From Huffman Require Export sTactic.
 Require Import Inverse_Image.
 Require Import Wf_nat.
 
@@ -39,7 +38,7 @@ Section Minus.
 Theorem lt_minus_O : forall n m, m < n -> 0 < n - m.
 Proof using.
 intros n; elim n; simpl in |- *; auto.
-intros m H1; Contradict H1; auto with arith.
+intros m H1; contradict H1; auto with arith.
 intros n1 Rec m; case m; simpl in |- *; auto.
 intros m1 H1; apply Rec; apply lt_S_n; auto.
 Qed.
@@ -380,7 +379,7 @@ Theorem skipn_le_app1 :
 Proof using.
 intros n; elim n; simpl in |- *; auto.
 intros l1; case l1; simpl in |- *; auto.
-intros b l l2 H; Contradict H; auto with arith.
+intros b l l2 H; contradict H; auto with arith.
 intros n0 H l1; case l1; simpl in |- *; auto with arith.
 Qed.
  
@@ -390,7 +389,7 @@ Theorem skipn_le_app2 :
 Proof using.
 intros n; elim n; simpl in |- *; auto.
 intros n0 H l1; case l1; simpl in |- *; auto with arith.
-intros l2 H1; Contradict H1; auto with arith.
+intros l2 H1; contradict H1; auto with arith.
 Qed.
 
 (* skipn_length in >= 8.10 *)
