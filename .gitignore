@@ -4,6 +4,7 @@ huffman.ml
 huffman.mli
 run_huffman.ml
 _build
+docs
 *~
 *.d
 *.aux

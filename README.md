@@ -19,7 +19,7 @@
 [gitter-link]: https://gitter.im/coq-community/Lobby
 
 [coqdoc-shield]: https://img.shields.io/badge/docs-coqdoc-blue.svg
-[coqdoc-link]: https://coq-community.github.io/huffman/toc.html
+[coqdoc-link]: https://coq-community.github.io/huffman/docs/latest/coqdoc/toc.html
 
 
 This projects contains a Coq proof of the correctness of the Huffman coding algorithm,
@@ -64,7 +64,7 @@ make install
 
 For more information about the project, see the [technical report][techreport]
 describing the formalization. See also the [coqdoc presentation][coqdoc] of the
-Coq source files.
+Coq source files from the latest release.
 
 ### Running extracted code
 
@@ -94,4 +94,4 @@ decode code c;;
 ```
 
 [techreport]: https://hal.archives-ouvertes.fr/hal-02149909
-[coqdoc]: https://coq-community.github.io/huffman/toc.html
+[coqdoc]: https://coq-community.github.io/huffman/docs/latest/coqdoc/toc.html
