@@ -158,7 +158,7 @@ Definition huffman_aux_type (l : list (nat * code A)) : Type :=
     (map (fun x => to_btree (pbbuild empty (snd x))) l)
     (to_btree (pbbuild empty c))}.
 
-(* AuxLibiliary function to compute minimal code *)
+(* Auxiliary function to compute minimal code *)
 Program Definition huffman_aux_F (l1 : list (nat * code A))
  (huffman_aux_rec : forall l2 : list (nat * code A), length l2 < length l1 -> huffman_aux_type l2) :
  huffman_aux_type l1 :=
