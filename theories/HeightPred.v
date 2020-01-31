@@ -24,7 +24,7 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export Aux.
+From Huffman Require Export AuxLib.
 From Huffman Require Export OrderedCover.
 From Huffman Require Export WeightTree.
 Require Import ArithRing.

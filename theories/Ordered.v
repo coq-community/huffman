@@ -24,7 +24,7 @@
 *)
 
 From Huffman Require Export Permutation.
-From Huffman Require Export Aux.
+From Huffman Require Export AuxLib.
  
 Section ordered.
 Variable A : Type.

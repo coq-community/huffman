@@ -2,7 +2,7 @@
 
 -arg -w -arg +default
 
-theories/Aux.v
+theories/AuxLib.v
 theories/Cover.v
 theories/HeightPred.v
 theories/Ordered.v

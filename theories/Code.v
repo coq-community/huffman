@@ -26,7 +26,7 @@
 *)
 
 Require Bool.Bool.
-From Huffman Require Export Aux.
+From Huffman Require Export AuxLib.
 From Huffman Require Export Permutation.
 From Huffman Require Export UniqueKey.
 From Huffman Require Export Frequency.

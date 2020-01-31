@@ -23,7 +23,7 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export Aux.
+From Huffman Require Export AuxLib.
  
 Section permutation.
 Variable A : Type.
