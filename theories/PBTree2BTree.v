@@ -23,7 +23,7 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export Aux.
+From Huffman Require Export AuxLib.
 From Huffman Require Export Code.
 From Huffman Require Export Build.
 From Huffman Require Export ISort.

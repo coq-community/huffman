@@ -2,5 +2,4 @@
  (name Huffman)
  (public_name coq-huffman.Huffman)
  (synopsis "Coq proof of the correctness of the Huffman coding algorithm")
- (libraries coq.plugins.extraction)
  (modules :standard))

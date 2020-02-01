@@ -23,7 +23,7 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Import Aux.
+From Huffman Require Import AuxLib.
 Require Import List.
 From Huffman Require Import UniqueKey.
 From Huffman Require Import Permutation.

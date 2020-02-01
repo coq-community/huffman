@@ -14,7 +14,7 @@
 (* 02110-1301 USA                                                     *)
 
 (**
-    Proof of Huffman algorithm: Aux.v
+    Proof of Huffman algorithm: AuxLib.v
 
     Auxiliary functions & theorems
 

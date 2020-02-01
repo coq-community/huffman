@@ -26,7 +26,7 @@
 *)
 
 Require Import List.
-From Huffman Require Import Aux.
+From Huffman Require Import AuxLib.
 From Huffman Require Import Code.
 From Huffman Require Import Build.
 From Huffman Require Import ISort.
