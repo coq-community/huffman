@@ -1,5 +1,4 @@
 (coq.theory
  (name Huffman)
- (public_name coq-huffman.Huffman)
- (synopsis "Coq proof of the correctness of the Huffman coding algorithm")
- (modules :standard))
+ (package coq-huffman)
+ (synopsis "Coq proof of the correctness of the Huffman coding algorithm"))
