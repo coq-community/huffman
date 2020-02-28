@@ -1,4 +1,5 @@
 (coq.theory
  (name Huffman)
  (package coq-huffman)
- (synopsis "Coq proof of the correctness of the Huffman coding algorithm"))
+ (synopsis "Coq proof of the correctness of the Huffman coding algorithm")
+ (flags -w +default))
