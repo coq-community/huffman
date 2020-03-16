@@ -34,7 +34,7 @@ Codes, Proc. IRE, pp. 1098-1101, September 1952.
   - Karl Palmskog ([**@palmskog**](https://github.com/palmskog))
 - License: [GNU Lesser General Public License v2.1 or later](LICENSE)
 - Compatible Coq versions: 8.7 or later
-- Additional Coq dependencies: none
+- Additional dependencies: none
 - Coq namespace: `Huffman`
 - Related publication(s):
   - [Formalising Huffman's algorithm](https://hal.archives-ouvertes.fr/hal-02149909) 
@@ -53,7 +53,7 @@ opam install coq-huffman
 To instead build and install manually, do:
 
 ``` shell
-git clone https://github.com/coq-community/huffman
+git clone https://github.com/coq-community/huffman.git
 cd huffman
 make   # or make -j <number-of-cores-on-your-machine>
 make install

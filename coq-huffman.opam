@@ -14,10 +14,9 @@ This projects contains a Coq proof of the correctness of the Huffman coding algo
 as described in David A. Huffman's paper A Method for the Construction of Minimum-Redundancy
 Codes, Proc. IRE, pp. 1098-1101, September 1952."""
 
-build: [make "-j%{jobs}%"]
-install: [make "install"]
+build: ["dune" "build" "-p" name "-j" jobs]
 depends: [
-  "ocaml"
+  "dune" {>= "2.4"}
   "coq" {(>= "8.7" & < "8.12~") | (= "dev")}
 ]
 
