@@ -1,0 +1,4 @@
+(coq.extraction
+ (prelude Extraction)
+ (extracted_modules huffman)
+ (theories Huffman))
