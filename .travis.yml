@@ -62,9 +62,4 @@ jobs:
     <<: *NIX
 
   # Test supported versions of Coq via OPAM
-  - env:
-    - COQ_IMAGE=coqorg/coq:dev
-    - PACKAGE=coq-huffman.dev
-    - NJOBS=2
-    <<: *OPAM
 

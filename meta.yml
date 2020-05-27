@@ -49,7 +49,7 @@ tested_coq_nix_versions:
 - version_or_url: '8.7'
 
 tested_coq_opam_versions:
-- version: dev
+#- version: dev
 
 namespace: Huffman
 
