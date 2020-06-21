@@ -19,7 +19,7 @@
 [zulip-link]: https://coq.zulipchat.com/#narrow/stream/237663-coq-community-devs.20.26.20users
 
 [coqdoc-shield]: https://img.shields.io/badge/docs-coqdoc-blue.svg
-[coqdoc-link]: https://coq-community.github.io/huffman/docs/latest/coqdoc/toc.html
+[coqdoc-link]: https://coq-community.org/huffman/docs/latest/coqdoc/toc.html
 
 
 This projects contains a Coq proof of the correctness of the Huffman coding algorithm,
@@ -55,7 +55,7 @@ To instead build and install manually, do:
 ``` shell
 git clone https://github.com/coq-community/huffman.git
 cd huffman
-make   # or make -j <number-of-cores-on-your-machine>
+make   # or make -j <number-of-cores-on-your-machine> 
 make install
 ```
 

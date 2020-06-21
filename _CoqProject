@@ -1,7 +1,5 @@
 -Q theories Huffman
 
--arg -w -arg +default
-
 theories/AuxLib.v
 theories/Cover.v
 theories/HeightPred.v
