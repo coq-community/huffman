@@ -94,4 +94,4 @@ decode code c;;
 ```
 
 [techreport]: https://hal.archives-ouvertes.fr/hal-02149909
-[coqdoc]: https://coq-community.github.io/huffman/docs/latest/coqdoc/toc.html
+[coqdoc]: https://coq-community.org/huffman/docs/latest/coqdoc/toc.html
