@@ -38,7 +38,7 @@ Inductive ordered : list A -> Prop :=
   | ordered_cons :
       forall (a b : A) (l : list A),
       order a b -> ordered (b :: l) -> ordered (a :: b :: l).
-Hint Constructors ordered : core.
+Local Hint Constructors ordered : core.
 
 (* Inversion theorem *)
 Theorem ordered_inv_order :
@@ -127,7 +127,7 @@ apply ordered_trans with (1 := H1); auto.
 Qed.
  
 End ordered.
-Hint Constructors ordered : core.
+Global Hint Constructors ordered : core.
 Arguments ordered [A].
 
 (* Ordered list are preserved by maps *)

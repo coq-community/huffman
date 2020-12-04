@@ -192,7 +192,7 @@ Proof using.
 intros l; elim l; simpl in |- *; auto.
 intros a l0 H; apply add_frequency_list_unique_key; auto.
 Qed.
-Hint Resolve frequency_list_unique : core.
+Local Hint Resolve frequency_list_unique : core.
 
 (* Elements of the message are keys of the frequency list *)
 Theorem in_frequency_map :
@@ -210,7 +210,7 @@ case (eqA_dec a a1); simpl in |- *; auto.
 intros e H1 [H2| H2]; auto; left; rewrite <- H2; auto.
 intros e H1 [H2| H2]; auto.
 Qed.
-Hint Resolve in_frequency_map : core.
+Local Hint Resolve in_frequency_map : core.
 
 (* Keys of the frequency list are elements of the message *)
 Theorem in_frequency_map_inv :
@@ -311,5 +311,5 @@ Arguments id_list [A].
 Arguments add_frequency_list [A].
 Arguments frequency_list [A].
 Arguments number_of_occurrences [A].
-Hint Resolve in_frequency_map : core.
-Hint Resolve frequency_list_unique : core.
+Global Hint Resolve in_frequency_map : core.
+Global Hint Resolve frequency_list_unique : core.

@@ -62,7 +62,7 @@ Inductive inpb : pbtree -> pbtree -> Prop :=
   | inpb_right : forall t t1 t2 : pbtree, inpb t t1 -> inpb t (pbright t1)
   | inpb_node_l : forall t t1 t2 : pbtree, inpb t t1 -> inpb t (pbnode t1 t2)
   | inpb_node_r : forall t t1 t2 : pbtree, inpb t t2 -> inpb t (pbnode t1 t2).
-Hint Constructors inpb : core.
+Local Hint Constructors inpb : core.
 
 (* Equality on partial trees is decidable *) 
 Definition pbtree_dec : forall a b : pbtree, {a = b} + {a <> b}.
@@ -141,7 +141,7 @@ Proof using.
 intros a; red in |- *.
 intros a0 t1 t2 H; inversion H.
 Qed.
-Hint Resolve distinct_pbleaves_Leaf : core.
+Local Hint Resolve distinct_pbleaves_Leaf : core.
 
 (* Direct subtrees of a tree with distinct leaves have distinct leaves *)
 Theorem distinct_pbleaves_l :
@@ -187,7 +187,7 @@ Proof using.
 intros a; red in |- *.
 intros a0 t1 t2 H; inversion H.
 Qed.
-Hint Resolve distinct_pbleaves_pbleaf : core.
+Local Hint Resolve distinct_pbleaves_pbleaf : core.
 
 (* A left has distinct leaves if its subtree has it *) 
 Theorem distinct_pbleaves_pbleft :
@@ -206,7 +206,7 @@ intros t H; red in |- *.
 intros a t1 t2 H0 H1 H2; apply (H a t1 t2); auto.
 inversion H0; auto.
 Qed.
-Hint Resolve distinct_pbleaves_pbleft distinct_pbleaves_pbright : core.
+Local Hint Resolve distinct_pbleaves_pbleft distinct_pbleaves_pbright : core.
 
 (* Transform a tree in a code *) 
 Fixpoint compute_pbcode (a : pbtree) : code A :=
@@ -244,7 +244,7 @@ intros p; elim p; simpl in |- *; auto;
  try (intros p0; case (compute_pbcode p0); simpl in |- *; auto); 
  intros; red in |- *; intros HH1; discriminate.
 Qed.
-Hint Resolve compute_pbcode_not_null : core.
+Local Hint Resolve compute_pbcode_not_null : core.
 
 (* Keys in the computed code are leaves of the tree *)
 Theorem in_pbcompute_inpb :
@@ -449,7 +449,7 @@ Inductive pbfree : list bool -> pbtree -> Prop :=
       forall b c l, pbfree l b -> pbfree (false :: l) (pbnode b c)
   | pbfree_node2 :
       forall b c l, pbfree l b -> pbfree (true :: l) (pbnode c b).
-Hint Constructors pbfree : core.
+Local Hint Constructors pbfree : core.
 
 (* Add an element in a tree at a given position (list of bool) *)
 Fixpoint pbadd (a : A) (t : pbtree) (l : list bool) {struct l} : pbtree :=
@@ -695,7 +695,7 @@ intros b; case b; simpl in |- *; auto.
 intros l H t1; (case t1; simpl in |- *; auto).
 intros l H t1; (case t1; simpl in |- *; auto).
 Qed.
-Hint Resolve inpb_pbadd : core.
+Local Hint Resolve inpb_pbadd : core.
 
 (* 
   Subtrees in an added tree either contains the added leaf or
@@ -1233,9 +1233,9 @@ Arguments all_pbleaves [A].
 Arguments distinct_pbleaves [A].
 Arguments compute_pbcode [A].
 Arguments inpb_dec [A].
-Hint Constructors inpb : core.
-Hint Resolve distinct_pbleaves_pbleaf : core.
-Hint Resolve distinct_pbleaves_pbleft distinct_pbleaves_pbright : core.
-Hint Resolve compute_pbcode_not_null : core.
-Hint Resolve compute_pbcode_not_null : core.
-Hint Constructors pbfree : core.
+Global Hint Constructors inpb : core.
+Global Hint Resolve distinct_pbleaves_pbleaf : core.
+Global Hint Resolve distinct_pbleaves_pbleft distinct_pbleaves_pbright : core.
+Global Hint Resolve compute_pbcode_not_null : core.
+Global Hint Resolve compute_pbcode_not_null : core.
+Global Hint Constructors pbfree : core.

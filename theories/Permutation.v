@@ -39,7 +39,7 @@ Inductive permutation : list A -> list A -> Prop :=
   | permutation_trans :
       forall l1 l2 l3 : list A,
       permutation l1 l2 -> permutation l2 l3 -> permutation l1 l3.
-Hint Constructors permutation : core.
+Local Hint Constructors permutation : core.
 
 (* Reflexivity *) 
 Theorem permutation_refl : forall l : list A, permutation l l.
@@ -49,7 +49,7 @@ apply permutation_nil.
 intros a l1 H.
 apply permutation_skip with (1 := H).
 Qed.
-Hint Resolve permutation_refl : core.
+Local Hint Resolve permutation_refl : core.
 
 (* Symmetry *) 
 Theorem permutation_sym :
@@ -124,7 +124,7 @@ elim l; simpl in |- *; auto.
 intros l1 l2 l3 H H0 H1 H2 l4 l5 H3.
 apply permutation_trans with (l2 ++ l4); auto.
 Qed.
-Hint Resolve permutation_app_comp : core.
+Local Hint Resolve permutation_app_comp : core.
 
 (* Swap two sublists *) 
 Theorem permutation_app_swap :
@@ -394,10 +394,10 @@ Defined.
 End permutation.
 
 (* Hints *)
-Hint Constructors permutation : core.
-Hint Resolve permutation_refl : core.
-Hint Resolve permutation_app_comp : core.
-Hint Resolve permutation_app_swap : core.
+Global Hint Constructors permutation : core.
+Global Hint Resolve permutation_refl : core.
+Global Hint Resolve permutation_app_comp : core.
+Global Hint Resolve permutation_app_swap : core.
 
 (* Implicits *)
 Arguments permutation [A].
@@ -413,7 +413,7 @@ Proof using.
 intros A B f l1 l2 H; elim H; simpl in |- *; auto.
 intros l0 l3 l4 H0 H1 H2 H3; apply permutation_trans with (2 := H3); auto.
 Qed.
-Hint Resolve permutation_map : core.
+Global Hint Resolve permutation_map : core.
  
 Lemma permutation_map_ex_aux :
   forall (A B : Type) (f : A -> B) l1 l2 l3,

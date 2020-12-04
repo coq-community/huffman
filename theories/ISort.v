@@ -76,7 +76,7 @@ intros b l H' a.
 case_eq (order_fun a b); intros H1; auto.
 apply permutation_trans with (l2 := b :: a :: l); auto.
 Qed.
-Hint Resolve insert_ordered insert_permutation : core.
+Local Hint Resolve insert_ordered insert_permutation : core.
 
 (* Sorting by insertion *)
 Fixpoint isort (l : list A) : list A :=
@@ -98,7 +98,7 @@ intros l; elim l; clear l; simpl in |- *; auto.
 intros a l H'.
 apply permutation_trans with (l2 := a :: isort l); auto.
 Qed.
-Hint Resolve isort_ordered isort_permutation : core.
+Local Hint Resolve isort_ordered isort_permutation : core.
 
 End ISortExample.
 Arguments insert [A].
