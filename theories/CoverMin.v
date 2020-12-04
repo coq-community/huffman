@@ -42,7 +42,7 @@ intros t; split; auto.
 intros t2 H; inversion H; auto.
 generalize (permutation_length _ _ _ H0); simpl in |- *; intros; discriminate.
 Qed.
-Hint Resolve cover_min_one : core.
+Local Hint Resolve cover_min_one : core.
 
 (* Minimum trees are preserved by permutation *)
 Theorem cover_min_permutation :
@@ -80,4 +80,4 @@ apply cover_all_cover; auto.
 Qed.
  
 End CoverMin.
-Hint Resolve cover_min_one : core.
+Global Hint Resolve cover_min_one : core.

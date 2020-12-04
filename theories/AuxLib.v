@@ -78,7 +78,7 @@ rewrite <- le_plus_minus; auto.
 Qed.
  
 End Minus.
-Hint Resolve le_minus: arith.
+Global Hint Resolve le_minus: arith.
 
 (*A function to compare naturals *)
 Section LeBool.

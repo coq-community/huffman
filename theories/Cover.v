@@ -41,7 +41,7 @@ Inductive cover : list (btree A) -> btree A -> Prop :=
       forall l1 l2 t1 t2 t3,
       permutation l1 (t1 :: t2 :: l2) ->
       cover (node t1 t2 :: l2) t3 -> cover l1 t3.
-Hint Constructors cover : core.
+Local Hint Constructors cover : core.
 
 (* Covers are compatible with permutation *)
 Theorem cover_permutation :
@@ -344,4 +344,4 @@ Qed.
  
 End Cover.
 Arguments cover [A].
-Hint Constructors cover : core.
+Global Hint Constructors cover : core.
