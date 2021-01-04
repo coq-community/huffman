@@ -25,14 +25,8 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-Require Import List.
-From Huffman Require Import AuxLib.
-From Huffman Require Import Code.
-From Huffman Require Import Build.
-From Huffman Require Import ISort.
-Require Import Compare_dec.
-From Huffman Require Import Permutation.
-From Huffman Require Import UniqueKey.
+From Coq Require Import List Compare_dec.
+From Huffman Require Import AuxLib Code Build ISort Permutation UniqueKey.
 
 Section PBTree.
 Variable A : Type.

@@ -26,11 +26,10 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-Require Export List.
+From Coq Require Export List Arith.
+From Coq Require Import Inverse_Image Wf_nat.
+
 Export ListNotations.
-Require Export Arith.
-Require Import Inverse_Image.
-Require Import Wf_nat.
 
 (* Some facts about the minus operator *)
 Section Minus.
@@ -534,5 +533,6 @@ intros c [H1| H1]; rewrite H1 || case H1; auto.
 Qed.
  
 End FindMin.
+
 Arguments find_min [A].
 Arguments find_max [A].

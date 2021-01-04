@@ -23,9 +23,8 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-Require Import List.
-From Huffman Require Import Permutation.
-From Huffman Require Import Ordered.
+From Coq Require Import List.
+From Huffman Require Import Permutation Ordered.
 
 Section ISortExample.
 Variable A : Type.
@@ -101,5 +100,6 @@ Qed.
 Local Hint Resolve isort_ordered isort_permutation : core.
 
 End ISortExample.
+
 Arguments insert [A].
 Arguments isort [A].

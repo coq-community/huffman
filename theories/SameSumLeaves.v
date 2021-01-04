@@ -23,9 +23,8 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export Cover.
-From Huffman Require Export WeightTree.
- 
+From Huffman Require Export Cover WeightTree.
+
 Section SameSumLeaves.
 Variable A : Type.
 Variable f : A -> nat.

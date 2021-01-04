@@ -25,11 +25,8 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-Require Bool.Bool.
-From Huffman Require Export AuxLib.
-From Huffman Require Export Permutation.
-From Huffman Require Export UniqueKey.
-From Huffman Require Export Frequency.
+From Coq Require Bool.Bool.
+From Huffman Require Export AuxLib Permutation UniqueKey Frequency.
 
 Section Code.
 (* Arbitrary set *)

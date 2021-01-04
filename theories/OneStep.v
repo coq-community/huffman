@@ -22,9 +22,7 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export WeightTree.
-From Huffman Require Export Ordered.
-From Huffman Require Export SameSumLeaves.
+From Huffman Require Export WeightTree Ordered SameSumLeaves.
  
 Section OneStep.
 Variable A : Type.
