@@ -23,16 +23,10 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export AuxLib.
-From Huffman Require Export Code.
-From Huffman Require Export Build.
-From Huffman Require Export ISort.
-Require Export Compare_dec.
-From Huffman Require Export Permutation.
-From Huffman Require Export UniqueKey.
-From Huffman Require Export PBTree.
-From Huffman Require Export BTree.
- 
+From Coq Require Export Compare_dec.
+From Huffman Require Export AuxLib Code Build ISort Permutation.
+From Huffman Require Export UniqueKey PBTree BTree.
+
 Section PBTREE2BTREE.
 Variable A : Type.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.

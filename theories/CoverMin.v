@@ -23,8 +23,7 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export Cover.
-From Huffman Require Export WeightTree.
+From Huffman Require Export Cover WeightTree.
  
 Section CoverMin.
 Variable A : Type.
@@ -80,4 +79,5 @@ apply cover_all_cover; auto.
 Qed.
  
 End CoverMin.
+
 Global Hint Resolve cover_min_one : core.

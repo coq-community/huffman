@@ -25,12 +25,9 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export Code.
-From Huffman Require Export ISort.
-Require Export Compare_dec.
-From Huffman Require Export Weight.
-From Huffman Require Export UniqueKey.
-Require Import ArithRing.
+From Coq Require Export Compare_dec.
+From Coq Require Import ArithRing.
+From Huffman Require Export Code ISort Weight UniqueKey.
  
 Section Tree.
 Variable A : Type.
@@ -403,6 +400,7 @@ intros t H1; split; try exact (btree_unique_prefix1 t);
 Qed.
  
 End Tree.
+
 Arguments leaf [A].
 Arguments node [A].
 Arguments inb [A].
@@ -410,6 +408,7 @@ Arguments all_leaves [A].
 Arguments distinct_leaves [A].
 Arguments compute_code [A].
 Arguments number_of_nodes [A].
+
 Global Hint Constructors inb : core.
 Global Hint Resolve distinct_leaves_leaf : core.
 Global Hint Resolve length_compute_lt_O : core.

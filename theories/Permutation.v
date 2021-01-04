@@ -24,7 +24,7 @@
 *)
 
 From Huffman Require Export AuxLib.
- 
+
 Section permutation.
 Variable A : Type.
 

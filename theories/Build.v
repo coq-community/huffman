@@ -23,12 +23,8 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export OneStep.
-From Huffman Require Export HeightPred.
-From Huffman Require Export CoverMin.
-From Huffman Require Export OrderedCover.
-From Huffman Require Export SubstPred.
-Require Import ArithRing.
+From Huffman Require Export OneStep HeightPred CoverMin OrderedCover SubstPred.
+From Coq Require Import ArithRing.
 
 Section Build.
 Variable A : Type.

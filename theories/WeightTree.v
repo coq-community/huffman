@@ -19,9 +19,8 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export BTree.
-From Huffman Require Export Ordered.
-Require Import ArithRing.
+From Coq Require Import ArithRing.
+From Huffman Require Export BTree Ordered.
  
 Section WeightTree.
 Variable A : Type.

@@ -23,10 +23,8 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Import AuxLib.
-Require Import List.
-From Huffman Require Import UniqueKey.
-From Huffman Require Import Permutation.
+From Coq Require Import List.
+From Huffman Require Import AuxLib UniqueKey Permutation.
  
 Section Frequency.
 Variable A : Type.
@@ -307,9 +305,11 @@ intros H3; apply add_frequency_list_not_in; auto.
 Qed.
  
 End Frequency.
+
 Arguments id_list [A].
 Arguments add_frequency_list [A].
 Arguments frequency_list [A].
 Arguments number_of_occurrences [A].
+
 Global Hint Resolve in_frequency_map : core.
 Global Hint Resolve frequency_list_unique : core.

@@ -24,12 +24,8 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export AuxLib.
-From Huffman Require Export OrderedCover.
-From Huffman Require Export WeightTree.
-Require Import ArithRing.
-From Huffman Require Export Ordered.
-From Huffman Require Export Prod2List.
+From Coq Require Import ArithRing.
+From Huffman Require Export AuxLib OrderedCover WeightTree Ordered Prod2List.
 
 Section HeightPred.
 Variable A : Type.

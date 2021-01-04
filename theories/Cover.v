@@ -23,9 +23,8 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export BTree.
-From Huffman Require Export Permutation.
-Require Import ArithRing.
+From Huffman Require Export BTree Permutation.
+From Coq Require Import ArithRing.
 
 Section Cover.
 Variable A : Type.

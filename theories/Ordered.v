@@ -23,9 +23,8 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export Permutation.
-From Huffman Require Export AuxLib.
- 
+From Huffman Require Export Permutation AuxLib.
+
 Section ordered.
 Variable A : Type.
 Variable order : A -> A -> Prop.
@@ -127,7 +126,9 @@ apply ordered_trans with (1 := H1); auto.
 Qed.
  
 End ordered.
+
 Global Hint Constructors ordered : core.
+
 Arguments ordered [A].
 
 (* Ordered list are preserved by maps *)

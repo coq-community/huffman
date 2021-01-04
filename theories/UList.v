@@ -23,8 +23,7 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-Require Import List.
-Require Import Arith.
+From Coq Require Import List Arith.
 From Huffman Require Import Permutation.
 
 Section UniqueList.
@@ -120,5 +119,7 @@ inversion H3; auto.
 Qed.
 
 End UniqueList.
+
 Arguments ulist [A].
+
 Global Hint Constructors ulist : core.

@@ -21,13 +21,11 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export AuxLib.
-From Huffman Require Export Permutation.
-From Huffman Require Export UList.
+From Huffman Require Export AuxLib Permutation UList.
 
 Section UniqueKey.
 Variables (A : Type) (B : Type).
- 
+
 (* An association list has unique keys if the keys appear only once *)
 Inductive unique_key : list (A * B) -> Prop :=
   | unique_key_nil : unique_key []
