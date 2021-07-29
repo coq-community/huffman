@@ -24,12 +24,17 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Coq Require Import ArithRing.
+From Coq Require Import ArithRing Sorting.Permutation.
 From Huffman Require Export WeightTree Ordered.
 
 Section Prod2List.
 Variable A : Type.
 Variable f : A -> nat.
+
+Local Hint Constructors Permutation : core.
+Local Hint Resolve Permutation_refl : core.
+Local Hint Resolve Permutation_app : core.
+Local Hint Resolve Permutation_app_swap : core.
 
 (* 
  In the product the sum of the leaves is multiplied by the integer
@@ -170,36 +175,37 @@ Theorem prod2list_reorder :
  length l2 = length l4 ->
  (forall b, In b l1 -> b <= a) ->
  (forall b, In b l2 -> b <= a) ->
- permutation (l3 ++ b :: l4) (b1 :: l5) ->
+ Permutation (l3 ++ b :: l4) (b1 :: l5) ->
  ordered (sum_order f) (b1 :: l5) ->
  exists l6,
    (exists l7,
       length l1 = length l6 /\
       length l2 = length l7 /\
-      permutation (b1 :: l5) (l6 ++ b1 :: l7) /\
+      Permutation (b1 :: l5) (l6 ++ b1 :: l7) /\
       prod2list (l1 ++ a :: l2) (l6 ++ b1 :: l7) <=
       prod2list (l1 ++ a :: l2) (l3 ++ b :: l4)).
 Proof using.
 intros a b b1 l1 l2 l3 l4 l5 H H0 H1 H2 H3 H4.
 cut (In b (b1 :: l5));
  [ simpl in |- *; intros [HH0| HH0]
- | apply permutation_in with (1 := H3); auto with datatypes ].
+ | apply Permutation_in with (1 := H3); auto with datatypes ].
 exists l3; exists l4; repeat (split; auto).
-pattern b1 at 2 in |- *; rewrite HH0; apply permutation_sym; auto.
+pattern b1 at 2 in |- *; rewrite HH0; apply Permutation_sym; auto.
 rewrite HH0; auto.
 cut (In b1 (l3 ++ b :: l4));
  [ intros HH1
- | apply permutation_in with (1 := permutation_sym _ _ _ H3);
+ | apply Permutation_in with (1 := Permutation_sym H3);
     auto with datatypes ].
 case in_app_or with (1 := HH1); intros HH2.
 case in_ex_app with (1 := HH2).
 intros l6 (l7, HH3); exists (l6 ++ b :: l7); exists l4; repeat (split; auto).
 apply trans_equal with (1 := H).
 rewrite HH3; repeat rewrite app_length; simpl in |- *; auto with arith.
-apply permutation_sym; apply permutation_trans with (2 := H3); auto.
+apply Permutation_sym; apply Permutation_trans with (2 := H3); auto.
 rewrite HH3.
 repeat rewrite app_ass.
-simpl in |- *; apply permutation_transposition.
+simpl in |- *; apply Permutation_app; auto.
+apply Permutation_transposition.
 rewrite HH3; auto.
 repeat rewrite app_ass.
 case (same_length_ex _ _ b1 l6 l7 l1); auto.
@@ -215,14 +221,15 @@ unfold sum_order in |- *; intros a0 b0 c H5 H6; apply le_trans with (1 := H5);
 apply H1; rewrite HH6; auto with datatypes.
 simpl in HH2; case HH2; intros HH3.
 exists l3; exists l4; repeat (split; auto); try (rewrite <- HH3; auto; fail).
-pattern b1 at 2 in |- *; rewrite <- HH3; apply permutation_sym; auto.
+pattern b1 at 2 in |- *; rewrite <- HH3; apply Permutation_sym; auto.
 case in_ex_app with (1 := HH3).
 intros l6 (l7, HH4); exists l3; exists (l6 ++ b :: l7); repeat (split; auto).
 apply trans_equal with (1 := H0).
 rewrite HH4; repeat rewrite app_length; simpl in |- *; auto with arith.
-apply permutation_sym; apply permutation_trans with (2 := H3); auto.
+apply Permutation_sym; apply Permutation_trans with (2 := H3); auto.
 rewrite HH4.
-simpl in |- *; apply permutation_transposition.
+simpl in |- *; apply Permutation_app; auto. 
+apply Permutation_transposition.
 rewrite HH4; auto.
 case (same_length_ex _ _ b1 l6 l7 l2); auto.
 rewrite <- HH4; auto.
@@ -243,13 +250,13 @@ Theorem prod2list_reorder2 :
  length l2 = length l4 ->
  (forall b, In b l1 -> b <= a) ->
  (forall b, In b l2 -> b <= a) ->
- permutation (l3 ++ b :: c :: l4) (b1 :: c1 :: l5) ->
+ Permutation (l3 ++ b :: c :: l4) (b1 :: c1 :: l5) ->
  ordered (sum_order f) (b1 :: c1 :: l5) ->
  exists l6,
    (exists l7,
       length l1 = length l6 /\
       length l2 = length l7 /\
-      permutation (b1 :: c1 :: l5) (l6 ++ b1 :: c1 :: l7) /\
+      Permutation (b1 :: c1 :: l5) (l6 ++ b1 :: c1 :: l7) /\
       prod2list (l1 ++ a :: a :: l2) (l6 ++ b1 :: c1 :: l7) <=
       prod2list (l1 ++ a :: a :: l2) (l3 ++ b :: c :: l4)).
 Proof using.
@@ -263,20 +270,20 @@ generalize HH2 HH3 HH4; case l7; clear HH2 HH3 HH4 l7.
 intros; discriminate.
 intros c2 l7 HH2 HH3 HH4.
 case (prod2list_reorder a c2 c1 l1 l2 l6 l7 l5); simpl in |- *; auto.
-apply permutation_inv with (a := b1); auto.
-apply permutation_sym; apply permutation_trans with (1 := HH3).
+apply Permutation_cons_inv with (a := b1); auto.
+apply Permutation_sym; apply Permutation_trans with (1 := HH3).
 change
-  (permutation (l6 ++ (b1 :: []) ++ c2 :: l7)
+  (Permutation (l6 ++ (b1 :: []) ++ c2 :: l7)
      (((b1 :: []) ++ l6) ++ c2 :: l7)) in |- *.
 repeat rewrite <- app_ass.
-apply permutation_app_comp; auto.
+apply Permutation_app; auto.
 apply ordered_inv with (1 := H4); auto.
 intros l8 (l9, (HH5, (HH6, (HH7, HH8)))).
 exists l8; exists l9; repeat (split; auto).
-apply permutation_trans with ((b1 :: c1 :: l9) ++ l8); auto.
-simpl in |- *; apply permutation_skip; auto.
-apply permutation_trans with (1 := HH7).
-apply permutation_trans with ((c1 :: l9) ++ l8); auto.
+apply Permutation_trans with ((b1 :: c1 :: l9) ++ l8); auto.
+simpl in |- *; apply perm_skip; auto.
+apply Permutation_trans with (1 := HH7).
+apply Permutation_trans with ((c1 :: l9) ++ l8); auto.
 apply le_trans with (2 := HH4).
 change
   (prod2list (l1 ++ (a :: []) ++ a :: l2) (l8 ++ (b1 :: []) ++ c1 :: l9) <=
@@ -290,4 +297,5 @@ repeat rewrite plus_assoc_reverse; auto with arith.
 Qed.
  
 End Prod2List.
+
 Arguments prod2list [A].

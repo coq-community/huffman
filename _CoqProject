@@ -20,7 +20,6 @@ theories/Weight.v
 theories/Code.v
 theories/Frequency.v
 theories/OneStep.v
-theories/Permutation.v
 theories/Prod2List.v
 theories/SameSumLeaves.v
 theories/WeightTree.v

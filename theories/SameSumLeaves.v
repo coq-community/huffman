@@ -23,6 +23,7 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
+From Coq Require Import Sorting.Permutation.
 From Huffman Require Export Cover WeightTree.
 
 Section SameSumLeaves.
@@ -33,8 +34,9 @@ Variable f : A -> nat.
 Definition same_sum_leaves (l1 l2 : list (btree A)) : Prop :=
   exists l3 : list (btree A),
     (exists l4 : list (btree A),
-       permutation l1 l3 /\
-       permutation l2 l4 /\ map (sum_leaves f) l3 = map (sum_leaves f) l4).
+       Permutation l1 l3 /\
+       Permutation l2 l4 /\ 
+       map (sum_leaves f) l3 = map (sum_leaves f) l4).
 
 (* if the sum leaves are the same, the list are of same length *)
 Theorem same_sum_leaves_length :
@@ -42,11 +44,12 @@ Theorem same_sum_leaves_length :
  same_sum_leaves l1 l2 -> length l1 = length l2.
 Proof using.
 intros l1 l2 (l3, (l4, (H0, (H1, H2)))).
-rewrite (permutation_length _ _ _ H0).
-rewrite (permutation_length _ _ _ H1).
+rewrite (Permutation_length H0).
+rewrite (Permutation_length H1).
 repeat rewrite <- (map_length (sum_leaves f)); auto.
 apply f_equal with (f := length (A:=nat)); auto.
 Qed.
  
 End SameSumLeaves.
+
 Arguments same_sum_leaves [A].

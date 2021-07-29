@@ -25,13 +25,18 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Coq Require Import List Compare_dec.
-From Huffman Require Import AuxLib Code Build ISort Permutation UniqueKey.
+From Coq Require Import List Compare_dec Sorting.Permutation.
+From Huffman Require Import AuxLib Code Build ISort UniqueKey.
 
 Section PBTree.
 Variable A : Type.
 Variable empty : A.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
+
+Local Hint Constructors Permutation : core.
+Local Hint Resolve Permutation_refl : core.
+Local Hint Resolve Permutation_app : core.
+Local Hint Resolve Permutation_app_swap : core.
 
 (* Partial Binary Tree (no more than 2 sons *)
 Inductive pbtree : Type :=
@@ -56,6 +61,7 @@ Inductive inpb : pbtree -> pbtree -> Prop :=
   | inpb_right : forall t t1 t2 : pbtree, inpb t t1 -> inpb t (pbright t1)
   | inpb_node_l : forall t t1 t2 : pbtree, inpb t t1 -> inpb t (pbnode t1 t2)
   | inpb_node_r : forall t t1 t2 : pbtree, inpb t t2 -> inpb t (pbnode t1 t2).
+
 Local Hint Constructors inpb : core.
 
 (* Equality on partial trees is decidable *) 
@@ -135,6 +141,7 @@ Proof using.
 intros a; red in |- *.
 intros a0 t1 t2 H; inversion H.
 Qed.
+
 Local Hint Resolve distinct_pbleaves_Leaf : core.
 
 (* Direct subtrees of a tree with distinct leaves have distinct leaves *)
@@ -480,40 +487,40 @@ Qed.
 Theorem pbadd_prop2 :
  forall a1 l1 l2,
  pbfree l1 l2 ->
- permutation (compute_pbcode (pbadd a1 l2 l1))
+ Permutation (compute_pbcode (pbadd a1 l2 l1))
    ((a1, l1) :: compute_pbcode l2).
 Proof using.
 intros a1 l1 l2 H; generalize a1; elim H; clear H a1 l1 l2; simpl in |- *;
  auto.
 intros b l a1; rewrite pbadd_prop1; simpl in |- *; auto.
 apply
- permutation_trans
+ Permutation_trans
   with
     (((a1, true :: l) :: []) ++
      map (fun v => match v with
                    | (a0, b1) => (a0, false :: b1)
                    end) (compute_pbcode b)); auto.
-simpl in |- *; auto.
 intros b l H H0 a1.
 apply
- permutation_trans
+ Permutation_trans
   with
     (map (fun v => match v with
                    | (a0, b1) => (a0, false :: b1)
-                   end) ((a1, l) :: compute_pbcode b)); 
- auto.
+                   end) ((a1, l) :: compute_pbcode b)); auto.
+apply Permutation_map; auto.
 intros b l a1; rewrite pbadd_prop1; simpl in |- *; auto.
 intros b l H H0 a1.
 apply
- permutation_trans
+ Permutation_trans
   with
     (map (fun v => match v with
                    | (a0, b1) => (a0, true :: b1)
                    end) ((a1, l) :: compute_pbcode b)); 
  auto.
+apply Permutation_map; auto.
 intros b c l H H0 a1.
 apply
- permutation_trans
+ Permutation_trans
   with
     (map (fun v => match v with
                    | (a0, b1) => (a0, false :: b1)
@@ -521,9 +528,11 @@ apply
      map (fun v => match v with
                    | (a0, b1) => (a0, true :: b1)
                    end) (compute_pbcode c)); auto.
+apply Permutation_app; auto.
+apply Permutation_map; auto.
 intros b c l H H0 a1.
 apply
- permutation_trans
+ Permutation_trans
   with
     (map (fun v => match v with
                    | (a0, b1) => (a0, false :: b1)
@@ -532,8 +541,10 @@ apply
                    | (a0, b1) => (a0, true :: b1)
                    end) ((a1, l) :: compute_pbcode b)); 
  auto.
+apply Permutation_app; auto.
+apply Permutation_map; auto.
 apply
- permutation_trans
+ Permutation_trans
   with
     (map (fun v => match v with
                    | (a0, b1) => (a0, true :: b1)
@@ -1010,7 +1021,7 @@ Qed.
 
 (* The keys of the code are a permutation of the leaves of the tree *)
 Theorem all_pbleaves_compute_pb :
- forall t, permutation (map (fst (B:=_)) (compute_pbcode t)) (all_pbleaves t).
+ forall t, Permutation (map (fst (B:=_)) (compute_pbcode t)) (all_pbleaves t).
 Proof using.
 cut
  (forall b l,
@@ -1020,7 +1031,7 @@ cut
 intros t; elim t; simpl in |- *; auto.
 intros p H; rewrite HH; auto.
 intros p H; rewrite HH; auto.
-intros p H p0 H0; rewrite map_app; apply permutation_app_comp; auto.
+intros p H p0 H0; rewrite map_app; apply Permutation_app; auto.
 repeat rewrite HH; auto.
 repeat rewrite HH; auto.
 intros b l; elim l; simpl in |- *; auto.
@@ -1033,8 +1044,8 @@ Qed.
   gives a permutation of the initial code
 *) 
 Theorem pbbuild_compute_perm :
- forall c,
- c <> [] -> unique_prefix c -> permutation (compute_pbcode (pbbuild c)) c.
+ forall c, c <> [] -> unique_prefix c ->
+  Permutation (compute_pbcode (pbbuild c)) c.
 Proof using.
 intros c; elim c; simpl in |- *; auto.
 intros H; case H; auto.
@@ -1045,7 +1056,7 @@ intros H H0 H1; rewrite pbadd_prop1; auto.
 intros (a2, l2) l3; simpl in |- *.
 intros H H0 H1;
  apply
-  permutation_trans
+  Permutation_trans
    with ((a1, l1) :: compute_pbcode (pbadd a2 (pbbuild l3) l2)).
 unfold pbbuild in |- *; simpl in |- *; apply pbadd_prop2.
 cut (~ is_prefix l1 l2); [ intros Ip1 | idtac ].
@@ -1077,7 +1088,7 @@ red in |- *; intros H3;
 rewrite H3; auto.
 apply unique_prefix1 with (1 := H1) (lb1 := l1) (lb2 := l2); simpl in |- *;
  auto.
-apply permutation_skip.
+apply perm_skip.
 apply H; auto.
 red in |- *; intros Hj; discriminate.
 apply unique_prefix_inv with (1 := H1); auto.
@@ -1091,12 +1102,12 @@ Theorem all_pbleaves_pbbuild :
  forall c,
  c <> [] ->
  unique_prefix c ->
- permutation (map (fst (B:=_)) c) (all_pbleaves (pbbuild c)).
+ Permutation (map (fst (B:=_)) c) (all_pbleaves (pbbuild c)).
 Proof using.
 intros c H H0;
- apply permutation_trans with (map (fst (B:=_)) (compute_pbcode (pbbuild c))).
-apply permutation_map.
-apply permutation_sym; apply pbbuild_compute_perm; auto.
+ apply Permutation_trans with (map (fst (B:=_)) (compute_pbcode (pbbuild c))).
+apply Permutation_map.
+apply Permutation_sym; apply pbbuild_compute_perm; auto.
 apply all_pbleaves_compute_pb; auto.
 Qed.
 
@@ -1187,7 +1198,6 @@ intros p l0 a0 l1 H H0; rewrite H; auto.
 intros; discriminate.
 Qed.
 
-
 (* 
   Building can be decomposed in the codes starting with true
   and the one starting by false
@@ -1212,8 +1222,9 @@ intros a l; case a; case l; simpl in |- *; auto.
 intros p l0 a0 l1 H Hc0; rewrite H; auto.
 intros; discriminate.
 Qed.
- 
+
 End PBTree.
+
 Arguments pbleaf [A].
 Arguments pbleft [A].
 Arguments pbright [A].
@@ -1227,6 +1238,7 @@ Arguments all_pbleaves [A].
 Arguments distinct_pbleaves [A].
 Arguments compute_pbcode [A].
 Arguments inpb_dec [A].
+
 Global Hint Constructors inpb : core.
 Global Hint Resolve distinct_pbleaves_pbleaf : core.
 Global Hint Resolve distinct_pbleaves_pbleft distinct_pbleaves_pbright : core.

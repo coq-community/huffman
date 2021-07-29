@@ -24,11 +24,16 @@
 *)
 
 From Huffman Require Export OneStep HeightPred CoverMin OrderedCover SubstPred.
-From Coq Require Import ArithRing.
+From Coq Require Import ArithRing Sorting.Permutation.
 
 Section Build.
 Variable A : Type.
 Variable f : A -> nat.
+
+Local Hint Constructors Permutation : core.
+Local Hint Resolve Permutation_refl : core.
+Local Hint Resolve Permutation_app : core.
+Local Hint Resolve Permutation_app_swap : core.
 
 (* Iterative the one step predicate *)
 Inductive build : list (btree A) -> btree A -> Prop :=
@@ -61,13 +66,13 @@ simpl in |- *; repeat rewrite <- plus_n_O; auto.
 case H4.
 intros l5 (t3, (t4, (H8, (H9, H10)))).
 absurd (length l2 = length (t3 :: t4 :: l5)).
-rewrite permutation_length with (1 := H2).
+rewrite Permutation_length with (1 := H2).
 rewrite <- map_length with (f := sum_leaves f) (l := l4).
 rewrite <- H3.
 rewrite map_length with (f := sum_leaves f).
-rewrite permutation_length with (1 := permutation_sym _ _ _ H1).
+rewrite Permutation_length with (1 := Permutation_sym H1).
 simpl in |- *; red in |- *; intros; discriminate.
-apply permutation_length with (1 := H9).
+apply Permutation_length with (1 := H9).
 intros t l1 l2 H H0 H1 l0 t2 H2 H3 H4.
 inversion H2.
 case H.
@@ -75,13 +80,13 @@ intros l5 (t3, (t4, (H8, (H9, H10)))).
 case H4.
 intros l6 (l7, (H11, (H12, H13))).
 absurd (length l1 = length (t3 :: t4 :: l5)).
-rewrite permutation_length with (1 := H11).
+rewrite Permutation_length with (1 := H11).
 rewrite <- map_length with (f := sum_leaves f) (l := l6).
 rewrite H13.
 rewrite map_length with (f := sum_leaves f).
-rewrite permutation_length with (1 := permutation_sym _ _ _ H12).
+rewrite Permutation_length with (1 := Permutation_sym H12).
 rewrite <- H5; simpl in |- *; red in |- *; intros; discriminate.
-apply permutation_length with (1 := H9).
+apply Permutation_length with (1 := H9).
 apply H1 with (1 := H6).
 case one_step_comp with (3 := H) (4 := H5); auto.
 case one_step_comp with (3 := H) (4 := H5); auto.
@@ -99,18 +104,18 @@ Qed.
 (* Building is compatible with permutation *)
 Theorem build_permutation :
  forall (l1 l2 : list (btree A)) (t : btree A),
- build l1 t -> permutation l1 l2 -> build l2 t.
+ build l1 t -> Permutation l1 l2 -> build l2 t.
 Proof using.
 intros l1 l2 t H; generalize l2; elim H; clear H l1 l2 t; auto.
-intros t l2 H; rewrite permutation_one_inv with (1 := H); auto.
+intros t l2 H; rewrite Permutation_length_1_inv with (1 := H); auto.
 apply build_one.
 intros t l1 l2 H H0 H1 l0 H2.
 apply build_step with (l2 := l2); auto.
 case H.
 intros l3 (t1, (t2, (HH1, (HH2, HH3)))).
 exists l3; exists t1; exists t2; repeat (split; auto).
-apply permutation_trans with (2 := HH2); auto.
-apply permutation_sym; auto.
+apply Permutation_trans with (2 := HH2); auto.
+apply Permutation_sym; auto.
 Qed.
 
 Definition obuildf :
@@ -125,17 +130,14 @@ intros H H0 H1; exists b; auto.
 apply build_one.
 intros b0 l1 H H0 H1.
 case (H (insert (le_sum f) (node b b0) l1)); auto.
-rewrite <-
- permutation_length
-                    with
-                    (1 := insert_permutation _ (le_sum f) l1 (node b b0));
+rewrite <- Permutation_length with
+ (1 := insert_permutation _ (le_sum f) l1 (node b b0));
  simpl in |- *; auto.
 red in |- *; intros H2;
  absurd
   (length (node b b0 :: l1) = length (insert (le_sum f) (node b b0) l1)).
 rewrite H2; simpl in |- *; intros; discriminate.
-apply
- permutation_length
+apply Permutation_length
   with (1 := insert_permutation _ (le_sum f) l1 (node b b0)); 
  simpl in |- *; auto.
 apply insert_ordered; auto.
@@ -147,7 +149,7 @@ intros t Ht; exists t.
 apply build_step with (2 := Ht).
 red in |- *; auto.
 exists l1; exists b; exists b0; (repeat split; auto).
-apply permutation_sym; apply insert_permutation.
+apply Permutation_sym; apply insert_permutation.
 Defined.
 
 (* a function to buid tree from a cover list merging smaller trees *)
@@ -159,12 +161,13 @@ intros H1; cut (ordered (sum_order f) (isort (le_sum f) l)).
 intros H2; case (obuildf (isort (le_sum f) l) H1 H2).
 intros t H3; exists t; auto.
 apply build_permutation with (1 := H3); auto.
-apply permutation_sym; apply isort_permutation; auto.
+apply Permutation_sym; apply isort_permutation; auto.
 apply isort_ordered; auto.
 intros; apply le_sum_correct1; auto.
 intros; apply le_sum_correct2; auto.
-contradict Hl; apply permutation_nil_inv; auto.
+contradict Hl; apply Permutation_nil; auto.
 rewrite <- Hl; auto.
+apply Permutation_sym.
 apply isort_permutation; auto.
 Defined.
 
@@ -200,7 +203,7 @@ cut
  (exists b1,
     (exists c1,
        (exists l4,
-          permutation (l2 ++ t4 :: t5 :: l3) (b1 :: c1 :: l4) /\
+          Permutation (l2 ++ t4 :: t5 :: l3) (b1 :: c1 :: l4) /\
           ordered (sum_order f) (b1 :: c1 :: l4)))).
 intros (b1, (c1, (l4, (HC1, HC2)))).
 case
@@ -217,9 +220,9 @@ case (buildf (l5 ++ node b1 c1 :: l6)); auto.
 case l5; simpl in |- *; intros; discriminate.
 intros t7 HD3.
 case H with (3 := HD3); auto with arith.
-rewrite permutation_length with (1 := Hl1).
-rewrite permutation_length with (1 := HC1).
-rewrite permutation_length with (1 := HB3).
+rewrite Permutation_length with (1 := Hl1).
+rewrite Permutation_length with (1 := HC1).
+rewrite Permutation_length with (1 := HB3).
 repeat rewrite app_length; simpl in |- *; auto with arith.
 case l5; simpl in |- *; intros; discriminate.
 intros HD4 HD5.
@@ -240,15 +243,15 @@ replace (weight_tree f t6) with (0 * sum_leaves f t6 + weight_tree f t6);
 rewrite height_pred_weight with (1 := HD1); auto.
 apply build_step with (2 := HD3); auto.
 exists l4; exists b1; exists c1; repeat (split; auto).
-apply permutation_trans with (1 := Hl1).
-apply permutation_sym; apply permutation_trans with (1 := HB3).
-apply permutation_sym; apply permutation_trans with (1 := HC1); auto.
-apply permutation_trans with ((node b1 c1 :: l6) ++ l5); auto.
-simpl in |- *; apply permutation_skip.
-apply permutation_inv with c1.
-apply permutation_inv with b1.
-apply permutation_sym; apply permutation_trans with (1 := HB3).
-apply (permutation_app_swap _ l5 (b1 :: c1 :: l6)).
+apply Permutation_trans with (1 := Hl1).
+apply Permutation_sym; apply Permutation_trans with (1 := HB3).
+apply Permutation_sym; apply Permutation_trans with (1 := HC1); auto.
+apply Permutation_trans with ((node b1 c1 :: l6) ++ l5); auto.
+simpl in |- *; apply perm_skip.
+apply Permutation_cons_inv with c1.
+apply Permutation_cons_inv with b1.
+apply Permutation_sym; apply Permutation_trans with (1 := HB3).
+apply (Permutation_app_swap l5 (b1 :: c1 :: l6)).
 generalize (isort_permutation _ (le_sum f) (l2 ++ t4 :: t5 :: l3));
  generalize
   (isort_ordered _ (sum_order f) (le_sum f) (le_sum_correct1 _ f)
@@ -257,12 +260,13 @@ case (isort (le_sum f) (l2 ++ t4 :: t5 :: l3)); auto.
 intros H2 H3.
 absurd (l2 ++ t4 :: t5 :: l3 = []); auto.
 case l2; simpl in |- *; intros; discriminate.
-apply permutation_nil_inv with (1 := H3).
+apply Permutation_sym in H3.
+apply Permutation_nil with (1 := H3).
 intros b l4; case l4.
 intros H2 H3; absurd (l2 ++ t4 :: t5 :: l3 = b :: []).
 case l2; simpl in |- *; try (intros; discriminate).
 intros b0 l5; case l5; try (intros; discriminate).
-apply permutation_one_inv with (1 := permutation_sym _ _ _ H3).
+apply Permutation_length_1_inv with (1 := Permutation_sym H3).
 intros b0 l5 H2 H3; exists b; exists b0; exists l5; auto.
 intros ((H2, (H3, H4)), H5); split.
 apply build_cover with (1 := H1).
@@ -283,4 +287,5 @@ apply build_correct; auto.
 Defined.
 
 End Build.
+
 Arguments build [A].

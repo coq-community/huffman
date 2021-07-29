@@ -23,8 +23,8 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Coq Require Import List Arith.
-From Huffman Require Import Permutation.
+From Coq Require Import List Arith Sorting.Permutation.
+Import ListNotations.
 
 Section UniqueList.
 Variable A : Type.
@@ -98,12 +98,12 @@ Defined.
 
 (* Uniqueness is compatible with permutation *) 
 Theorem ulist_perm :
- forall l1 l2 : list A, permutation l1 l2 -> ulist l1 -> ulist l2.
+ forall l1 l2 : list A, Permutation l1 l2 -> ulist l1 -> ulist l2.
 Proof using.
 intros l1 l2 H; elim H; clear H l1 l2; simpl in |- *; auto.
 intros a l1 l2 H0 H1 H2; apply ulist_cons; auto.
 inversion H2; auto.
-contradict H4; apply permutation_in with (1 := permutation_sym _ _ _ H0);
+contradict H4; apply Permutation_in with (1 := Permutation_sym H0);
  auto.
 inversion H2; auto.
 intros a b L H0; apply ulist_cons; auto.

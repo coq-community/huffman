@@ -23,11 +23,17 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
+From Coq Require Import Sorting.Permutation.
 From Huffman Require Export Cover WeightTree.
  
 Section CoverMin.
 Variable A : Type.
 Variable f : A -> nat.
+
+Local Hint Constructors Permutation : core.
+Local Hint Resolve Permutation_refl : core.
+Local Hint Resolve Permutation_app : core.
+Local Hint Resolve Permutation_app_swap : core.
 
 (* To be a tree of minimum weight for a cover *)
 Definition cover_min (l : list (btree A)) (t1 : btree A) : Prop :=
@@ -39,14 +45,15 @@ Theorem cover_min_one : forall t : btree A, cover_min (t :: []) t.
 Proof using.
 intros t; split; auto.
 intros t2 H; inversion H; auto.
-generalize (permutation_length _ _ _ H0); simpl in |- *; intros; discriminate.
+generalize (Permutation_length H0); simpl in |- *; intros; discriminate.
 Qed.
+
 Local Hint Resolve cover_min_one : core.
 
 (* Minimum trees are preserved by permutation *)
 Theorem cover_min_permutation :
  forall (t : btree A) (l1 l2 : list (btree A)),
- cover_min l1 t -> permutation l1 l2 -> cover_min l2 t.
+ cover_min l1 t -> Permutation l1 l2 -> cover_min l2 t.
 Proof using.
 intros t l1 l2 H H0; split.
 apply cover_permutation with (2 := H0); auto.
@@ -54,7 +61,7 @@ inversion H; auto.
 intros t2 H1.
 assert (cover l1 t2).
 inversion H; auto.
-apply cover_permutation with (2 := permutation_sym _ _ _ H0); auto.
+apply cover_permutation with (2 := Permutation_sym H0); auto.
 inversion H; auto.
 Qed.
 

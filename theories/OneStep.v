@@ -22,11 +22,17 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
+From Coq Require Import Sorting.Permutation.
 From Huffman Require Export WeightTree Ordered SameSumLeaves.
  
 Section OneStep.
 Variable A : Type.
 Variable f : A -> nat.
+
+Local Hint Constructors Permutation : core.
+Local Hint Resolve Permutation_refl : core.
+Local Hint Resolve Permutation_app : core.
+Local Hint Resolve Permutation_app_swap : core.
 
 (* 
   A step is valid if the two smallest elements of the initial list
@@ -37,14 +43,15 @@ Definition one_step (l1 l2 : list (btree A)) : Prop :=
     (exists t1 : btree A,
        (exists t2 : btree A,
           ordered (sum_order f) (t1 :: t2 :: l3) /\
-          permutation l1 (t1 :: t2 :: l3) /\
-          permutation l2 (node t1 t2 :: l3))).
+          Permutation l1 (t1 :: t2 :: l3) /\
+          Permutation l2 (node t1 t2 :: l3))).
 
 (* Choosing one step or another does not change the weight *)
 Theorem one_step_weight_tree_list :
  forall l1 l2 l3 : list (btree A),
  one_step l1 l2 ->
- one_step l1 l3 -> weight_tree_list f l2 = weight_tree_list f l3.
+ one_step l1 l3 ->
+ weight_tree_list f l2 = weight_tree_list f l3.
 Proof using.
 intros l1 l2 l3 (l4, (t1, (t2, (H1, (H2, H3)))))
  (l5, (t3, (t4, (H4, (H5, H6))))).
@@ -57,8 +64,8 @@ cut
 simpl in |- *; intros H7; injection H7.
 intros H8 H9 H10; repeat apply f_equal2 with (f := plus); auto.
 apply ordered_sum_leaves_eq; auto.
-apply permutation_trans with (2 := H5); auto.
-apply permutation_sym; auto.
+apply Permutation_trans with (2 := H5); auto.
+apply Permutation_sym; auto.
 rewrite <- weight_tree_list_permutation with (1 := H2).
 apply weight_tree_list_permutation; auto.
 Qed.
@@ -79,8 +86,8 @@ cut
 simpl in |- *; intros H7; injection H7; intros H8 H9 H10;
  apply f_equal2 with (f := cons (A:=nat)); auto.
 apply ordered_sum_leaves_eq; auto.
-apply permutation_trans with (2 := H5); auto.
-apply permutation_sym; auto.
+apply Permutation_trans with (2 := H5); auto.
+apply Permutation_sym; auto.
 Qed.
 
 (* Choosing one step or another does not change weight and sum leaves *)
@@ -103,8 +110,8 @@ rewrite weight_tree_list_permutation with (1 := H10).
 repeat rewrite weight_tree_list_node.
 apply f_equal2 with (f := plus).
 injection H11; intros H12 H13 H14; auto.
-rewrite weight_tree_list_permutation with (1 := permutation_sym _ _ _ H6).
-rewrite weight_tree_list_permutation with (1 := permutation_sym _ _ _ H9);
+rewrite weight_tree_list_permutation with (1 := Permutation_sym H6).
+rewrite weight_tree_list_permutation with (1 := Permutation_sym H9);
  auto.
 red in |- *; exists (node t1 t2 :: l7); exists (node t3 t4 :: l8);
  repeat (split; auto).
@@ -114,18 +121,18 @@ intros; apply f_equal2 with (f := cons (A:=nat)); auto.
 apply ordered_perm_antisym_eq with (order := le).
 exact le_trans.
 exact le_antisym.
-apply permutation_trans with (map (sum_leaves f) l1).
+apply Permutation_trans with (map (sum_leaves f) l1).
 generalize
- (permutation_map _ _ (sum_leaves f) _ _ (permutation_sym _ _ _ H6)); 
+ (Permutation_map (sum_leaves f) (Permutation_sym H6)); 
  auto.
-apply permutation_trans with (map (sum_leaves f) l5).
-generalize (permutation_map _ _ (sum_leaves f) _ _ H2); auto.
+apply Permutation_trans with (map (sum_leaves f) l5).
+generalize (Permutation_map (sum_leaves f) H2); auto.
 rewrite H4.
-apply permutation_trans with (map (sum_leaves f) l2).
+apply Permutation_trans with (map (sum_leaves f) l2).
 generalize
- (permutation_map _ _ (sum_leaves f) _ _ (permutation_sym _ _ _ H3)); 
+ (Permutation_map (sum_leaves f) (Permutation_sym H3)); 
  auto.
-generalize (permutation_map _ _ (sum_leaves f) _ _ H9); auto.
+generalize (Permutation_map (sum_leaves f) H9); auto.
 change (ordered le (map (sum_leaves f) (t1 :: t2 :: l7))) in |- *.
 apply ordered_map_inv; auto.
 change (ordered le (map (sum_leaves f) (t3 :: t4 :: l8))) in |- *.
@@ -133,4 +140,5 @@ apply ordered_map_inv; auto.
 Qed.
 
 End OneStep.
+
 Arguments one_step [A].
