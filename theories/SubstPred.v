@@ -116,4 +116,4 @@ Qed.
  
 End SubstPred.
 Arguments subst_pred [A].
-Global Hint Resolve subst_pred_id : core.
+#[export] Hint Resolve subst_pred_id : core.

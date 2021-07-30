@@ -87,4 +87,4 @@ Qed.
  
 End CoverMin.
 
-Global Hint Resolve cover_min_one : core.
+#[export] Hint Resolve cover_min_one : core.

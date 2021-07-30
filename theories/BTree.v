@@ -409,6 +409,6 @@ Arguments distinct_leaves [A].
 Arguments compute_code [A].
 Arguments number_of_nodes [A].
 
-Global Hint Constructors inb : core.
-Global Hint Resolve distinct_leaves_leaf : core.
-Global Hint Resolve length_compute_lt_O : core.
+#[export] Hint Constructors inb : core.
+#[export] Hint Resolve distinct_leaves_leaf : core.
+#[export] Hint Resolve length_compute_lt_O : core.

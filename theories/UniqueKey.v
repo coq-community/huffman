@@ -137,7 +137,7 @@ apply H; apply ulist_inv with (1 := H0); auto.
 Qed. 
 
 End UniqueKey.
-Global Hint Constructors unique_key : core.
+#[export] Hint Constructors unique_key : core.
 Arguments unique_key [A B].
  
 (* Uniqueness is compatible with map for injective functions *)
@@ -161,4 +161,4 @@ apply H4.
 intros b2; red in |- *; intros H7.
 case (H5 b2); auto.
 Qed.
-Global Hint Resolve unique_key_app unique_key_map : core.
+#[export] Hint Resolve unique_key_app unique_key_map : core.

@@ -1239,9 +1239,9 @@ Arguments distinct_pbleaves [A].
 Arguments compute_pbcode [A].
 Arguments inpb_dec [A].
 
-Global Hint Constructors inpb : core.
-Global Hint Resolve distinct_pbleaves_pbleaf : core.
-Global Hint Resolve distinct_pbleaves_pbleft distinct_pbleaves_pbright : core.
-Global Hint Resolve compute_pbcode_not_null : core.
-Global Hint Resolve compute_pbcode_not_null : core.
-Global Hint Constructors pbfree : core.
+#[export] Hint Constructors inpb : core.
+#[export] Hint Resolve distinct_pbleaves_pbleaf : core.
+#[export] Hint Resolve distinct_pbleaves_pbleft distinct_pbleaves_pbright : core.
+#[export] Hint Resolve compute_pbcode_not_null : core.
+#[export] Hint Resolve compute_pbcode_not_null : core.
+#[export] Hint Constructors pbfree : core.

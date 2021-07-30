@@ -499,4 +499,4 @@ Qed.
 
 End HeightPred.
 Arguments height_pred [A].
-Global Hint Resolve height_pred_nil height_pred_node : core.
+#[export] Hint Resolve height_pred_nil height_pred_node : core.

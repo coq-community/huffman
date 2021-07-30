@@ -122,4 +122,4 @@ End UniqueList.
 
 Arguments ulist [A].
 
-Global Hint Constructors ulist : core.
+#[export] Hint Constructors ulist : core.

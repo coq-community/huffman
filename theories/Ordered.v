@@ -127,7 +127,7 @@ Qed.
  
 End ordered.
 
-Global Hint Constructors ordered : core.
+#[export] Hint Constructors ordered : core.
 
 Arguments ordered [A].
 
