@@ -21,10 +21,16 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export AuxLib Permutation UList.
+From Coq Require Import Sorting.Permutation.
+From Huffman Require Export AuxLib UList.
 
 Section UniqueKey.
 Variables (A : Type) (B : Type).
+
+Local Hint Constructors Permutation : core.
+Local Hint Resolve Permutation_refl : core.
+Local Hint Resolve Permutation_app : core.
+Local Hint Resolve Permutation_app_swap : core.
 
 (* An association list has unique keys if the keys appear only once *)
 Inductive unique_key : list (A * B) -> Prop :=
@@ -64,23 +70,23 @@ Qed.
 
 (* Uniqueness is compatible with permutation *)
 Theorem unique_key_perm :
- forall l1 l2, permutation l1 l2 -> unique_key l1 -> unique_key l2.
+ forall l1 l2, Permutation l1 l2 -> unique_key l1 -> unique_key l2.
 Proof using.
 intros l1 l2 H; elim H; auto.
 intros (a1, b1) L1 L2 H0 H1 H2; apply unique_key_cons.
 intros b; red in |- *; intros H3; case (unique_key_in _ _ b _ H2).
-apply permutation_in with (2 := H3); auto.
-apply permutation_sym; auto.
+apply Permutation_in with (2 := H3); auto.
+apply Permutation_sym; auto.
 apply H1; apply unique_key_inv with (1 := H2); auto.
 intros (a1, b1) (a2, b2) L H0; apply unique_key_cons.
 intros b; red in |- *; simpl in |- *; intros [H1| H1].
-case (unique_key_in _ _ b2 _ H0); auto.
+case (unique_key_in _ _ b1 _ H0); auto.
 injection H1; intros H2 H3; rewrite H3; simpl in |- *; auto.
 case (unique_key_in _ _ b _ (unique_key_inv _ _ H0)); auto.
 apply unique_key_cons.
 intros b; red in |- *; simpl in |- *; intros H1;
  case (unique_key_in _ _ b _ H0); simpl in |- *; auto.
-apply unique_key_inv with (a := (a2, b2));
+apply unique_key_inv with (a := (a1, b1));
  apply unique_key_inv with (1 := H0).
 Qed.
 

@@ -23,10 +23,16 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
+From Coq Require Import Sorting.Permutation.
 From Huffman Require Export Cover.
  
 Section OrderedCover.
 Variable A : Type.
+
+Local Hint Constructors Permutation : core.
+Local Hint Resolve Permutation_refl : core.
+Local Hint Resolve Permutation_app : core.
+Local Hint Resolve Permutation_app_swap : core.
 
 (* 
   An ordered cover is a cover where the positions of the elements in
@@ -53,7 +59,7 @@ Qed.
 (* It is always possible to get an ordered cover from a cover *)
 Theorem cover_ordered_cover :
  forall (l1 : list (btree A)) (t : btree A),
- cover l1 t -> exists l2, permutation l1 l2 /\ ordered_cover l2 t.
+ cover l1 t -> exists l2, Permutation l1 l2 /\ ordered_cover l2 t.
 Proof using.
 intros l1; elim l1 using list_length_ind.
 intros l0 H t; case t.
@@ -63,18 +69,18 @@ intros t1 t2 H1; case cover_inv_app with (1 := H1).
 intros H2; exists l0; split; auto; rewrite H2; auto.
 intros (l2, (l3, ((HH1, HH2), HH3))).
 case H with (2 := HH1); auto.
-rewrite permutation_length with (1 := HH3).
+rewrite Permutation_length with (1 := HH3).
 generalize HH2; rewrite app_length; case l3; simpl in |- *; auto with arith.
 intros HH4; case cover_not_nil with (1 := HH4); auto.
 intros; rewrite plus_comm; simpl in |- *; auto with arith.
 intros l4 (HP1, HP2).
 case H with (2 := HH2); auto.
-rewrite permutation_length with (1 := HH3).
+rewrite Permutation_length with (1 := HH3).
 generalize HH1; rewrite app_length; case l2; simpl in |- *; auto with arith.
 intros HH4; case cover_not_nil with (1 := HH4); auto.
 intros l5 (HP3, HP4).
 exists (l4 ++ l5); split; auto.
-apply permutation_trans with (1 := HH3); auto.
+apply Permutation_trans with (1 := HH3); auto.
 Qed.
 
 (* 

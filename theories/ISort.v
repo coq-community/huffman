@@ -23,8 +23,8 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Coq Require Import List.
-From Huffman Require Import Permutation Ordered.
+From Coq Require Import List Sorting.Permutation.
+From Huffman Require Import Ordered.
 
 Section ISortExample.
 Variable A : Type.
@@ -32,6 +32,11 @@ Variable order : A -> A -> Prop.
 Variable order_fun : A -> A -> bool.
 Hypothesis order_fun_true : forall a b : A, order_fun a b = true -> order a b.
 Hypothesis order_fun_false : forall a b : A, order_fun a b = false -> order b a.
+
+Local Hint Constructors Permutation : core.
+Local Hint Resolve Permutation_refl : core.
+Local Hint Resolve Permutation_app : core.
+Local Hint Resolve Permutation_app_swap : core.
 
 (* Insert an element *) 
 Fixpoint insert (a : A) (l : list A) {struct l} : list A :=
@@ -68,12 +73,12 @@ Qed.
 
 (* Inserting returns a permutation *)
 Theorem insert_permutation :
- forall (L : list A) (a : A), permutation (a :: L) (insert a L).
+ forall (L : list A) (a : A), Permutation (a :: L) (insert a L).
 Proof using.
 intros L; elim L; simpl in |- *; auto.
 intros b l H' a.
 case_eq (order_fun a b); intros H1; auto.
-apply permutation_trans with (l2 := b :: a :: l); auto.
+apply Permutation_trans with (l' := b :: a :: l); auto.
 Qed.
 Local Hint Resolve insert_ordered insert_permutation : core.
 
@@ -91,11 +96,11 @@ intros l; elim l; simpl in |- *; auto.
 Qed.
 
 (* The result is a permutation of the original list *)
-Theorem isort_permutation : forall l : list A, permutation l (isort l).
+Theorem isort_permutation : forall l : list A, Permutation l (isort l).
 Proof using.
 intros l; elim l; clear l; simpl in |- *; auto.
 intros a l H'.
-apply permutation_trans with (l2 := a :: isort l); auto.
+apply Permutation_trans with (l' := a :: isort l); auto.
 Qed.
 Local Hint Resolve isort_ordered isort_permutation : core.
 

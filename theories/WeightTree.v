@@ -19,7 +19,7 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Coq Require Import ArithRing.
+From Coq Require Import ArithRing Sorting.Permutation.
 From Huffman Require Export BTree Ordered.
  
 Section WeightTree.
@@ -68,7 +68,7 @@ Qed.
  
 Theorem weight_tree_list_permutation :
  forall l1 l2 : list (btree A),
- permutation l1 l2 -> weight_tree_list l1 = weight_tree_list l2.
+ Permutation l1 l2 -> weight_tree_list l1 = weight_tree_list l2.
 Proof using.
 intros l1 l2 H; elim H; auto.
 simpl in |- *; auto; intros; ring.
@@ -89,7 +89,7 @@ Arguments weight_tree_list [A].
 *)
 Theorem ordered_sum_leaves_eq :
  forall (A : Type) (f : A -> nat) (l1 l2 : list (btree A)),
- permutation l1 l2 ->
+ Permutation l1 l2 ->
  ordered (sum_order f) l1 ->
  ordered (sum_order f) l2 -> map (sum_leaves f) l1 = map (sum_leaves f) l2.
 Proof using.
@@ -97,7 +97,7 @@ intros A f l1 l2 H H0 H1.
 apply ordered_perm_antisym_eq with (order := le).
 exact le_trans.
 exact le_antisym.
-apply permutation_map; auto.
+apply Permutation_map; auto.
 apply ordered_map_inv; auto.
 apply ordered_map_inv; auto.
 Qed.

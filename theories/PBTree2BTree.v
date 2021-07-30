@@ -24,7 +24,7 @@
 *)
 
 From Coq Require Export Compare_dec.
-From Huffman Require Export AuxLib Code Build ISort Permutation.
+From Huffman Require Export AuxLib Code Build ISort.
 From Huffman Require Export UniqueKey PBTree BTree.
 
 Section PBTREE2BTREE.
@@ -154,4 +154,5 @@ intros l; contradict H1; apply to_btree_inpb;
 Qed.
 
 End PBTREE2BTREE.
+
 Arguments to_btree [A].

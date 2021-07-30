@@ -23,12 +23,17 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Coq Require Import List.
-From Huffman Require Import AuxLib UniqueKey Permutation.
+From Coq Require Import List Sorting.Permutation.
+From Huffman Require Import AuxLib UniqueKey.
  
 Section Frequency.
 Variable A : Type.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
+
+Local Hint Constructors Permutation : core.
+Local Hint Resolve Permutation_refl : core.
+Local Hint Resolve Permutation_app : core.
+Local Hint Resolve Permutation_app_swap : core.
  
 (* Create a list of a given length with a given element  *)
 Fixpoint id_list (a : A) (n : nat) {struct n} : list A :=
@@ -55,7 +60,7 @@ Fixpoint add_frequency_list (a : A) (l : list (A * nat)) {struct l} :
 *)
 Theorem add_frequency_list_perm :
  forall (a : A) l,
- permutation (a :: flat_map (fun p => id_list (fst p) (snd p)) l)
+ Permutation (a :: flat_map (fun p => id_list (fst p) (snd p)) l)
    (flat_map (fun p => id_list (fst p) (snd p)) (add_frequency_list a l)).
 Proof using.
 intros a l; generalize a; elim l; simpl in |- *; clear a l; auto.
@@ -65,13 +70,13 @@ intros e; simpl in |- *; rewrite e; auto.
 simpl in |- *.
 intros e;
  apply
-  permutation_trans
+  Permutation_trans
    with
      (id_list a n ++
       (b :: []) ++ flat_map (fun p => id_list (fst p) (snd p)) l);
  [ idtac | simpl in |- *; auto ].
 change
-  (permutation
+  (Permutation
      ((b :: []) ++
       id_list a n ++ flat_map (fun p => id_list (fst p) (snd p)) l)
      (id_list a n ++
@@ -174,13 +179,13 @@ Qed.
 (* Developing the frequency list gives a permutation of the initial message *)
 Theorem frequency_list_perm :
  forall l : list A,
- permutation l
+ Permutation l
    (flat_map (fun p => id_list (fst p) (snd p)) (frequency_list l)).
 Proof using.
 intros l; elim l; simpl in |- *; auto.
 intros a l0 H.
 apply
- permutation_trans with (2 := add_frequency_list_perm a (frequency_list l0));
+ Permutation_trans with (2 := add_frequency_list_perm a (frequency_list l0));
  auto.
 Qed.
  
@@ -243,7 +248,7 @@ Qed.
 Theorem number_of_occurrences_permutation_ex :
  forall (m : list A) (a : A),
  exists m1 : list A,
-   permutation m (id_list a (number_of_occurrences a m) ++ m1) /\ ~ In a m1.
+   Permutation m (id_list a (number_of_occurrences a m) ++ m1) /\ ~ In a m1.
 Proof using.
 intros m; elim m; simpl in |- *; auto.
 intros a; exists []; split; auto with datatypes.
@@ -255,11 +260,11 @@ pattern a0 at 1 in |- *; rewrite H1; auto.
 case (H a0); intros m1 (H2, H3).
 exists (a :: m1); split; auto.
 apply
- permutation_trans
+ Permutation_trans
   with ((a :: m1) ++ id_list a0 (number_of_occurrences a0 l)); 
  auto.
-simpl in |- *; apply permutation_skip; auto.
-apply permutation_trans with (1 := H2); auto.
+simpl in |- *; apply perm_skip; auto.
+apply Permutation_trans with (1 := H2); auto.
 simpl in |- *; contradict H3; case H3; intros H4; auto; case H1; auto.
 Qed.
 
@@ -276,7 +281,7 @@ Qed.
 (* Permutation preserves the number of occurrences *)
 Theorem number_of_occurrences_permutation :
  forall l1 l2 a,
- permutation l1 l2 -> number_of_occurrences a l1 = number_of_occurrences a l2.
+ Permutation l1 l2 -> number_of_occurrences a l1 = number_of_occurrences a l2.
 Proof using.
 intros l1 l2 a H; generalize a; elim H; clear H a l1 l2; simpl in |- *; auto.
 intros a L1 L2 H H0 a0; case (eqA_dec a a0); simpl in |- *; auto;

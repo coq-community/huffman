@@ -26,13 +26,19 @@
 *)
 
 From Coq Require Bool.Bool.
-From Huffman Require Export AuxLib Permutation UniqueKey Frequency.
+From Coq Require Import Sorting.Permutation.
+From Huffman Require Export AuxLib UniqueKey Frequency.
 
 Section Code.
 (* Arbitrary set *)
 Variable A : Type.
 (* Equality is decidable *)
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
+
+Local Hint Constructors Permutation : core.
+Local Hint Resolve Permutation_refl : core.
+Local Hint Resolve Permutation_app : core.
+Local Hint Resolve Permutation_app_swap : core.
 
 (* A code is an association list *)
 Definition code := list (A * list bool).
@@ -235,14 +241,14 @@ Qed.
 (* Unique prefix is preserved by permutation *)
 Theorem unique_prefix_permutation :
  forall c1 c2 : code,
- permutation c1 c2 -> unique_prefix c1 -> unique_prefix c2.
+ Permutation c1 c2 -> unique_prefix c1 -> unique_prefix c2.
 Proof using.
 intros c1 c2 H (H1, H2).
-cut (permutation c2 c1); [ intros HP; split | apply permutation_sym; auto ].
+cut (Permutation c2 c1); [ intros HP; split | apply Permutation_sym; auto ].
 intros a1 a2 lb1 lb2 H0 H3 H4.
 apply (H1 a1 a2 lb1 lb2); auto.
-apply permutation_in with (2 := H0); auto.
-apply permutation_in with (2 := H3); auto.
+apply Permutation_in with (2 := H0); auto.
+apply Permutation_in with (2 := H3); auto.
 apply unique_key_perm with (2 := H2); auto.
 Qed.
 
@@ -326,7 +332,7 @@ Qed.
 (* find_code is invariant under permutation *)
 Theorem find_code_permutation :
  forall (a : A) (c1 c2 : code),
- permutation c1 c2 -> unique_prefix c1 -> find_code a c1 = find_code a c2.
+ Permutation c1 c2 -> unique_prefix c1 -> find_code a c1 = find_code a c2.
 Proof using.
 intros a c1 c2 H; elim H; simpl in |- *; auto.
 intros a0; case a0.
@@ -339,7 +345,7 @@ case (eqA_dec a a1).
 intros Ha1 b; case b; auto.
 intros a2 l2 L HL; case (eqA_dec a a2); auto.
 intros e.
-case unique_key_in with (1 := unique_prefix2 _ HL) (b2 := l2); auto.
+case unique_key_in with (1 := unique_prefix2 _ HL) (b2 := l1); auto.
 rewrite <- Ha1; rewrite e; simpl in |- *; auto.
 intros Ha1 b; case b; auto.
 intros L1 L2 L3 H0 H1 H2 H3 H4; apply trans_equal with (find_code a L2); auto.
@@ -482,7 +488,7 @@ Qed.
 (* The encoding does not depend of permutation *)
 Theorem encode_permutation :
  forall (m : list A) (c1 c2 : code),
- permutation c1 c2 -> unique_prefix c1 -> encode c1 m = encode c2 m.
+ Permutation c1 c2 -> unique_prefix c1 -> encode c1 m = encode c2 m.
 Proof using.
 intros m; elim m; simpl in |- *; auto.
 intros a l H c1 c2 H0 H1.
@@ -492,11 +498,11 @@ Qed.
 
 (* Permuting the message permutes the encoding *)
 Theorem encode_permutation_val :
- forall m1 m2 c, permutation m1 m2 -> permutation (encode c m1) (encode c m2).
+ forall m1 m2 c, Permutation m1 m2 -> Permutation (encode c m1) (encode c m2).
 Proof using.
 intros m1 m2 c H; elim H; simpl in |- *; auto; clear H m1 m2.
 intros; repeat rewrite <- app_ass; auto.
-intros l1 l2 l3 H H0 H1 H2; apply permutation_trans with (1 := H0); auto.
+intros l1 l2 l3 H H0 H1 H2; apply Permutation_trans with (1 := H0); auto.
 Qed.
 
 (* 

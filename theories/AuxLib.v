@@ -27,7 +27,7 @@
 *)
 
 From Coq Require Export List Arith.
-From Coq Require Import Inverse_Image Wf_nat.
+From Coq Require Import Inverse_Image Wf_nat Sorting.Permutation.
 
 Export ListNotations.
 
@@ -536,3 +536,185 @@ End FindMin.
 
 Arguments find_min [A].
 Arguments find_max [A].
+
+(* Permutation is compatible with fold_left *)
+Theorem fold_left_permutation :
+ forall (A B : Type) (f : A -> B -> A),
+ (forall (a : A) (b1 b2 : B), f (f a b1) b2 = f (f a b2) b1) ->
+ forall (a : A) (l1 l2 : list B),
+ Permutation l1 l2 -> fold_left f l1 a = fold_left f l2 a.
+Proof.
+intros A B f Hf a l1 l2 H; generalize a; elim H; clear H a l1 l2;
+ simpl in |- *; auto.
+intros a b l a0; rewrite Hf; auto.
+intros l1 l2 l3 H H0 H1 H2 a; apply trans_equal with (1 := H0 a); auto.
+Qed.
+
+Section Permutation.
+Variable A : Type.
+
+Local Hint Constructors Permutation : core.
+Local Hint Resolve Permutation_refl : core.
+Local Hint Resolve Permutation_app : core.
+Local Hint Resolve Permutation_app_swap : core.
+
+(* Take a list and return tle list of all pairs of an element of the
+   list and the remaining list *)
+Fixpoint split_one (l : list A) : list (A * list A) :=
+  match l with
+  | [] => []
+  | a :: l1 =>
+     (a, l1) :: map (fun p : A * list A => (fst p, a :: snd p)) (split_one l1)
+  end.
+
+(* The pairs of the list are a permutation *)
+Theorem split_one_permutation :
+ forall (a : A) (l1 l2 : list A),
+ In (a, l1) (split_one l2) -> Permutation (a :: l1) l2.
+Proof using.
+intros a l1 l2; generalize a l1; elim l2; clear a l1 l2; simpl in |- *; auto.
+intros a l1 H1; case H1.
+intros a l H a0 l1 [H0| H0].
+injection H0; intros H1 H2; rewrite H2; rewrite H1; auto.
+generalize H H0; elim (split_one l); simpl in |- *; auto.
+intros H1 H2; case H2.
+intros a1 l0 H1 H2 [H3| H3]; auto.
+injection H3; intros H4 H5; (rewrite <- H4; rewrite <- H5).
+apply Permutation_trans with (a :: fst a1 :: snd a1); auto.
+apply perm_skip.
+apply H2; auto.
+case a1; simpl in |- *; auto.
+Qed.
+
+(* All elements of the list are there *)
+Theorem split_one_in_ex :
+ forall (a : A) (l1 : list A),
+ In a l1 -> exists l2 : list A, In (a, l2) (split_one l1).
+Proof using.
+intros a l1; elim l1; simpl in |- *; auto.
+intros H; case H.
+intros a0 l H [H0| H0]; auto.
+exists l; left; apply f_equal2 with (f := pair (A:=A) (B:=list A)); auto.
+case H; auto.
+intros x H1; exists (a0 :: x); right; auto.
+apply
+ (in_map (fun p : A * list A => (fst p, a0 :: snd p)) (split_one l) (a, x));
+ auto.
+Qed.
+
+(* An auxillary function to generate all permutations *) 
+Fixpoint all_permutations_aux (l : list A) (n : nat) {struct n} :
+ list (list A) :=
+  match n with
+  | O => [] :: []
+  | S n1 =>
+      flat_map
+        (fun p : A * list A =>
+         map (cons (fst p)) (all_permutations_aux (snd p) n1)) 
+        (split_one l)
+  end.
+
+(* Generate all the permutations *)
+Definition all_permutations (l : list A) :=
+ all_permutations_aux l (length l).
+ 
+Lemma all_permutations_aux_permutation :
+  forall (n : nat) (l1 l2 : list A),
+  n = length l2 -> In l1 (all_permutations_aux l2 n) -> Permutation l1 l2.
+Proof using.
+intros n; elim n; simpl in |- *; auto.
+intros l1 l2; case l2.
+simpl in |- *; intros H0 [H1| H1].
+rewrite <- H1; auto.
+case H1.
+simpl in |- *; intros; discriminate.
+intros n0 H l1 l2 H0 H1.
+case in_flat_map_ex with (1 := H1).
+clear H1; intros x; case x; clear x; intros a1 l3 (H1, H2).
+case in_map_inv with (1 := H2).
+simpl in |- *; intros y (H3, H4).
+rewrite H4; auto.
+apply Permutation_trans with (a1 :: l3); auto.
+apply perm_skip; auto.
+apply H with (2 := H3).
+apply eq_add_S.
+apply trans_equal with (1 := H0).
+change (length l2 = length (a1 :: l3)) in |- *.
+apply Permutation_length; auto.
+apply Permutation_sym; apply split_one_permutation; auto.
+apply split_one_permutation; auto.
+Qed.
+
+(* All the elements of the list are permutations *) 
+Theorem all_permutations_permutation :
+ forall l1 l2 : list A, In l1 (all_permutations l2) -> Permutation l1 l2.
+Proof using.
+intros l1 l2 H; apply all_permutations_aux_permutation with (n := length l2);
+ auto.
+Qed.
+ 
+Lemma permutation_all_permutations_aux :
+  forall (n : nat) (l1 l2 : list A),
+  n = length l2 -> Permutation l1 l2 -> In l1 (all_permutations_aux l2 n).
+Proof using.
+intros n; elim n; simpl in |- *; auto.
+intros l1 l2; case l2.
+intros H H0; apply Permutation_sym in H0; rewrite Permutation_nil with (1 := H0); auto with datatypes.
+simpl in |- *; intros; discriminate.
+intros n0 H l1; case l1.
+intros l2 H0 H1;
+ rewrite Permutation_nil with (1 := H1) in H0;
+ discriminate.
+clear l1; intros a1 l1 l2 H1 H2.
+case (split_one_in_ex a1 l2); auto.
+apply Permutation_in with (1 := H2); auto with datatypes.
+intros x H0.
+apply in_flat_map_in with (b := (a1, x)); auto.
+apply in_map; simpl in |- *.
+apply H; auto.
+apply eq_add_S.
+apply trans_equal with (1 := H1).
+change (length l2 = length (a1 :: x)) in |- *.
+apply Permutation_length; auto.
+apply Permutation_sym; apply split_one_permutation; auto.
+apply Permutation_cons_inv with (a := a1).
+apply Permutation_trans with (1 := H2).
+apply Permutation_sym; apply split_one_permutation; auto.
+Qed.
+
+(* A permutation is in the list *) 
+Theorem permutation_all_permutations :
+ forall l1 l2 : list A, Permutation l1 l2 -> In l1 (all_permutations l2).
+Proof using.
+intros l1 l2 H; unfold all_permutations in |- *;
+ apply permutation_all_permutations_aux; auto.
+Qed.
+
+(* Permutation is decidable *) 
+Definition Permutation_dec :
+  (forall a b : A, {a = b} + {a <> b}) ->
+  forall l1 l2 : list A, {Permutation l1 l2} + {~ Permutation l1 l2}.
+Proof.
+intros H l1 l2.
+case (In_dec (list_eq_dec H) l1 (all_permutations l2)).
+intros i; left; apply all_permutations_permutation; auto.
+intros i; right; contradict i; apply permutation_all_permutations; auto.
+Defined.
+
+Theorem Permutation_transposition :
+ forall (a b : A) l1 l2,
+ Permutation (a :: l1 ++ b :: l2) (b :: l1 ++ a :: l2).
+Proof using.
+intros a b l1 l2.
+assert (H_eq: b :: l1 ++ a :: l2 = (b :: l1) ++ a :: l2) by reflexivity.
+rewrite H_eq.
+apply Permutation_cons_app.
+apply Permutation_sym.
+apply Permutation_cons_app; auto.
+Qed.
+
+End Permutation.
+
+Arguments split_one [A].
+Arguments all_permutations [A].
+Arguments Permutation_dec [A].

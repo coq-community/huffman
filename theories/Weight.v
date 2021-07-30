@@ -19,7 +19,8 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export Code Frequency ISort Permutation UniqueKey.
+From Coq Require Import Sorting.Permutation.
+From Huffman Require Export Code Frequency ISort UniqueKey.
 
 Section Weight.
 Variable A : Type.
@@ -39,7 +40,7 @@ Qed.
 
 Theorem fold_plus_permutation :
  forall (B : Type) (l1 l2 : list B) (c : nat) (f : B -> nat),
- permutation l1 l2 ->
+ Permutation l1 l2 ->
  fold_left (fun (a : nat) (b : B) => a + f b) l1 c =
  fold_left (fun (a : nat) (b : B) => a + f b) l2 c.
 Proof using.
@@ -74,7 +75,7 @@ intros (a, l1) l Rec m H; simpl in |- *.
 case (number_of_occurrences_permutation_ex A eqA_dec m a);
  intros m1 (Hm1, Hm2).
 rewrite
- permutation_length
+ Permutation_length
                     with
                     (1 := 
                       encode_permutation_val _ eqA_dec _ _ ((a, l1) :: l) Hm1).
@@ -120,7 +121,7 @@ apply
  trans_equal
   with
     (2 := number_of_occurrences_permutation _ eqA_dec _ _ a2
-            (permutation_sym _ _ _ Hm1)).
+            (Permutation_sym Hm1)).
 rewrite number_of_occurrences_app.
 replace
  (number_of_occurrences eqA_dec a2
@@ -139,7 +140,7 @@ Definition weight m c := length (encode eqA_dec c m).
 
 Theorem weight_permutation :
  forall m c1 c2,
- unique_prefix c1 -> permutation c1 c2 -> weight m c1 = weight m c2.
+ unique_prefix c1 -> Permutation c1 c2 -> weight m c1 = weight m c2.
 Proof using.
 intros m c1 c2 H H0; unfold weight in |- *.
 apply f_equal with (f := length (A:=bool)).

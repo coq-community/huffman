@@ -23,6 +23,7 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
+From Coq Require Import Sorting.Permutation.
 From Huffman Require Import Code BTree Build PBTree2BTree Restrict.
 
 Section Huffman.
@@ -31,6 +32,11 @@ Variable empty : A.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
 Variable m : list A.
 Hypothesis frequency_more_than_one : 1 < length (frequency_list eqA_dec m).
+
+Local Hint Constructors Permutation : core.
+Local Hint Resolve Permutation_refl : core.
+Local Hint Resolve Permutation_app : core.
+Local Hint Resolve Permutation_app_swap : core.
 
 (* The message is not null *) 
 Theorem not_null_m : m <> [].
@@ -77,10 +83,10 @@ apply cover_all_leaves.
 replace (map (fun x : A * nat => leaf (fst x)) (frequency_list eqA_dec m))
  with
  (map (fun x : A => leaf x) (map (fst (B:=_)) (frequency_list eqA_dec m))).
-apply permutation_map.
+apply Permutation_map.
 rewrite to_btree_all_leaves.
 rewrite frequency_list_restric_code_map with (c := c).
-apply permutation_sym; apply all_pbleaves_pbbuild.
+apply Permutation_sym; apply all_pbleaves_pbbuild.
 apply restrict_not_null with (eqA_dec := eqA_dec); auto.
 apply not_null_m; auto.
 apply restrict_unique_prefix; auto.
@@ -102,20 +108,19 @@ case
 apply build_cover with (1 := H3).
 intros l1 (H4, H5).
 apply all_leaves_unique; auto.
-case permutation_map_ex with (1 := H4); auto.
+apply Permutation_sym in H4.
+case Permutation_map_inv with (1 := H4); auto.
 intros l2 (HH1, HH2).
 rewrite ulist_ordered_cover with (l1 := l1) (l2 := map (fst (B:=_)) l2); auto.
 apply ulist_perm with (l1 := map (fst (B:=_)) (frequency_list eqA_dec m));
  auto.
-apply permutation_map; auto.
-apply permutation_sym; auto.
+apply Permutation_map; auto.
 apply unique_key_ulist; auto.
 apply ulist_perm with (l1 := map (fst (B:=_)) (frequency_list eqA_dec m));
  auto.
-apply permutation_map; auto.
-apply permutation_sym; auto.
+apply Permutation_map; auto.
 apply unique_key_ulist; auto.
-rewrite HH2; elim l2; simpl in |- *; auto.
+rewrite HH1; elim l2; simpl in |- *; auto.
 intros a0 l H6; apply f_equal2 with (f := cons (A:=btree A)); auto.
 rewrite
  encode_permutation
@@ -129,7 +134,7 @@ generalize
 intros H4; pattern m at 2 4 in |- *; elim m; simpl in |- *; auto.
 intros a0 l H5; repeat rewrite app_length.
 apply plus_le_compat; auto.
-apply permutation_sym; apply pbbuild_compute_perm.
+apply Permutation_sym; apply pbbuild_compute_perm.
 apply restrict_not_null with (eqA_dec := eqA_dec); auto.
 apply not_null_m; auto.
 apply restrict_unique_prefix; auto.
@@ -177,16 +182,16 @@ Next Obligation.
 Qed.
 Next Obligation.
   rewrite
-    permutation_length
+    Permutation_length
     with
-      (m :=
+      (l' :=
          (n1 + n2,
           map (fun x : A * list bool => (fst x, false :: snd x))
               c1 ++
               map (fun x : A * list bool => (fst x, true :: snd x))
               c2) :: l0).
   simpl in |- *; auto with arith.
-  apply permutation_sym; apply insert_permutation.
+  apply Permutation_sym; apply insert_permutation.
 Qed.
 Next Obligation.
   red in |- *; intros H5;
@@ -195,7 +200,8 @@ Next Obligation.
         map (fun x : A * list bool => (fst x, false :: snd x)) c1 ++
             map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l0 = []).
   intros; discriminate.
-  apply permutation_nil_inv; auto.
+  apply Permutation_nil; auto.
+  apply Permutation_sym.
   unfold code in H5; rewrite <- H5; apply insert_permutation.
 Qed.
 Next Obligation.
@@ -229,8 +235,8 @@ Next Obligation.
     auto with datatypes.
   generalize (H3 (n1, c1)); simpl in |- *; auto with datatypes.
   generalize (H3 (n2, c2)); simpl in |- *; auto with datatypes.
-  apply permutation_in with (2 := H4).
-  apply permutation_sym; apply insert_permutation.
+  apply Permutation_in with (2 := H4).
+  apply Permutation_sym; apply insert_permutation.
 Qed.
 Next Obligation.
   remember(n, c) as a.
@@ -247,8 +253,8 @@ Next Obligation.
   generalize (H2 (n2, c2)); simpl in |- *; auto with datatypes.
   generalize (H3 (n1, c1)); simpl in |- *; auto with datatypes.
   generalize (H3 (n2, c2)); simpl in |- *; auto with datatypes.
-  apply permutation_in with (2 := H4).
-  apply permutation_sym; apply insert_permutation.
+  apply Permutation_in with (2 := H4).
+  apply Permutation_sym; apply insert_permutation.
 Qed.
 Next Obligation.
   remember(n, c) as a.
@@ -261,8 +267,8 @@ Next Obligation.
     auto with datatypes.
   generalize (H3 (n1, c1)); case c1; simpl in |- *; auto with datatypes.
   intros; discriminate.
-  apply permutation_in with (2 := H4).
-  apply permutation_sym; apply insert_permutation.
+  apply Permutation_in with (2 := H4).
+  apply Permutation_sym; apply insert_permutation.
 Qed.
 Next Obligation.
   split; auto.
@@ -293,17 +299,17 @@ Next Obligation.
     * apply H6; auto.
       apply ordered_inv with (1 := H8); auto.
   - apply
-      permutation_trans
+      Permutation_trans
       with
         (map (fun x : nat * code A => to_btree (pbbuild empty (snd x)))
              ((n1 + n2,
                map (fun x : A * list bool => (fst x, false :: snd x)) c1 ++
                    map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l0));
       auto.
-    apply permutation_map; auto.
-    apply permutation_sym; apply insert_permutation.
+    apply Permutation_map; auto.
+    apply Permutation_sym; apply insert_permutation.
     apply
-      permutation_trans
+      Permutation_trans
       with
         (map (fun x : nat * code A => to_btree (pbbuild empty (snd x)))
              ((n1 + n2,
@@ -317,7 +323,7 @@ Next Obligation.
 Qed.
 
 Definition huffman_aux : forall l : list (nat * code A), huffman_aux_type l :=
-list_length_induction (nat * code A) huffman_aux_type huffman_aux_F.
+ list_length_induction (nat * code A) huffman_aux_type huffman_aux_F.
 
 (* The Huffman algorithm *)
 Program Definition huffman :
@@ -341,7 +347,7 @@ Next Obligation.
   simpl in |- *; intros H1; case H1.
   rewrite <- H;
     apply
-      permutation_in
+      Permutation_in
       with
         ((snd p, (fst p, []) :: [])
            :: isort
@@ -365,8 +371,8 @@ Next Obligation.
   intros x; case x; simpl in |- *; auto.
   intros a0 n0 (H2,H3).
   inversion H3; subst; simpl in |- *; auto.
-  apply permutation_in with (2 := H); auto.
-  apply permutation_sym; apply isort_permutation; auto.
+  apply Permutation_in with (2 := H); auto.
+  apply Permutation_sym; apply isort_permutation; auto.
 Qed.
 Next Obligation.
   cut
@@ -379,8 +385,8 @@ Next Obligation.
   apply unique_key_in_inv with (a := a0) (l := frequency_list eqA_dec m); auto.
   apply frequency_number_of_occurrences; auto.
   apply frequency_list_in with (1 := H2); auto.
-  apply permutation_in with (2 := H); auto.
-  apply permutation_sym; apply isort_permutation; auto.
+  apply Permutation_in with (2 := H); auto.
+  apply Permutation_sym; apply isort_permutation; auto.
 Qed.
 Next Obligation.
   cut
@@ -391,8 +397,8 @@ Next Obligation.
   intros x; case x; simpl in |- *; auto.
   intros a0 n0 (H2, H3); inversion H3; subst; simpl in |- *; auto.
   intros; discriminate.
-  apply permutation_in with (2 := H); auto.
-  apply permutation_sym; apply isort_permutation; auto.
+  apply Permutation_in with (2 := H); auto.
+  apply Permutation_sym; apply isort_permutation; auto.
 Qed.
 Next Obligation.
   rename H into Hc1.
@@ -407,7 +413,8 @@ Next Obligation.
                          (to_btree (pbbuild empty c))).
   apply build_cover with (1 := Hc3).
   intros l1 (H4, H5).
-  case permutation_map_ex with (1 := H4); auto.
+  apply Permutation_sym in H4.
+  case Permutation_map_inv with (1 := H4); auto.
   intros l2 (HH1, HH2).
   split; auto.
   rewrite <- Hc1; auto.
@@ -416,41 +423,38 @@ Next Obligation.
   rewrite ulist_ordered_cover with (l1 := l1) (l2 := map (fst (B:=_)) l2); auto.
   apply ulist_perm with (l1 := map (fst (B:=_)) (frequency_list eqA_dec m));
     auto.
-  apply permutation_map; auto.
-  apply permutation_sym; auto.
+  apply Permutation_map; auto.
   apply unique_key_ulist; auto.
   apply ulist_perm with (l1 := map (fst (B:=_)) (frequency_list eqA_dec m));
     auto.
-  apply permutation_map; auto.
-  apply permutation_sym; auto.
+  apply Permutation_map; auto.
   apply unique_key_ulist; auto.
-  rewrite HH2; elim l2; simpl in |- *; auto.
+  rewrite HH1; elim l2; simpl in |- *; auto.
   intros a0 l H6; apply f_equal2 with (f := cons (A:=btree A)); auto.
   split; auto.
   rewrite <- Hc1; auto.
   apply in_alphabet_compute_code; auto.
   intros a H; apply all_leaves_inb.
   rewrite ulist_ordered_cover with (l1 := l1) (l2 := map (fst (B:=_)) l2); auto.
-  apply permutation_in with (map (fst (B:=_)) (frequency_list eqA_dec m)); auto.
-  apply permutation_map; apply permutation_sym; auto.
+  apply Permutation_in with (map (fst (B:=_)) (frequency_list eqA_dec m)); auto.
+  apply Permutation_map; auto.
   apply ulist_perm with (l1 := map (fst (B:=_)) (frequency_list eqA_dec m));
     auto.
-  apply permutation_map; auto.
-  apply permutation_sym; auto.
+  apply Permutation_map; auto.
   apply unique_key_ulist; auto.
-  rewrite HH2; elim l2; simpl in |- *; auto.
+  rewrite HH1; elim l2; simpl in |- *; auto.
   intros a0 l H6; apply f_equal2 with (f := cons (A:=btree A)); auto.
   intros c1 H H0.
   rewrite <- Hc1.
   apply huffman_build_minimum; auto.
   apply build_permutation with (1 := Hc2); auto.
   apply
-    permutation_trans
+    Permutation_trans
     with
       (map (fun x : nat * code A => to_btree (pbbuild empty (snd x)))
            (map (fun x : A * nat => (snd x, (fst x, []) :: []))
                 (frequency_list eqA_dec m))).
-  apply permutation_map; apply permutation_sym; apply isort_permutation.
+  apply Permutation_map; apply Permutation_sym; apply isort_permutation.
   elim (frequency_list eqA_dec m); simpl in |- *; auto.
 Qed.
  

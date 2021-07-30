@@ -24,7 +24,8 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Huffman Require Export Code Frequency ISort Permutation UniqueKey PBTree2BTree.
+From Coq Require Import Sorting.Permutation.
+From Huffman Require Export Code Frequency ISort UniqueKey PBTree2BTree.
 
 Section Restrict.
 Variable A : Type.
@@ -33,8 +34,7 @@ Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
 Variable m : list A.
 
 (* Restrict the code putting only codes of element in the frequency list *)
-Definition restrict_code (m : list A) (c : code A) : 
-  code A :=
+Definition restrict_code (m : list A) (c : code A) : code A :=
   map (fun x => (fst x, find_code eqA_dec (fst x) c))
     (frequency_list eqA_dec m).
 
@@ -160,7 +160,7 @@ Theorem restrict_code_pbbuild :
  unique_prefix c ->
  in_alphabet m c ->
  m <> [] ->
- permutation (map fst (frequency_list eqA_dec m))
+ Permutation (map fst (frequency_list eqA_dec m))
    (all_pbleaves (pbbuild empty (restrict_code m c))).
 Proof using.
 intros c H H0 H1 H2.
@@ -171,4 +171,5 @@ apply restrict_unique_prefix; auto.
 Qed.
  
 End Restrict.
+
 Arguments restrict_code [A].
