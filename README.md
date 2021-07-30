@@ -41,7 +41,7 @@ Codes, Proc. IRE, pp. 1098-1101, September 1952.
 - Coq-community maintainer(s):
   - Karl Palmskog ([**@palmskog**](https://github.com/palmskog))
 - License: [GNU Lesser General Public License v2.1 or later](LICENSE)
-- Compatible Coq versions: 8.10 or later
+- Compatible Coq versions: 8.12 or later
 - Additional dependencies: none
 - Coq namespace: `Huffman`
 - Related publication(s):
