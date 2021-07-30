@@ -316,5 +316,5 @@ Arguments add_frequency_list [A].
 Arguments frequency_list [A].
 Arguments number_of_occurrences [A].
 
-Global Hint Resolve in_frequency_map : core.
-Global Hint Resolve frequency_list_unique : core.
+#[export] Hint Resolve in_frequency_map : core.
+#[export] Hint Resolve frequency_list_unique : core.

@@ -348,4 +348,4 @@ Qed.
  
 End Cover.
 Arguments cover [A].
-Global Hint Constructors cover : core.
+#[export] Hint Constructors cover : core.

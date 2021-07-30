@@ -638,9 +638,9 @@ Arguments find_val [A].
 Arguments in_alphabet [A].
 Arguments unique_prefix [A].
 Arguments not_null [A].
-Global Hint Constructors is_prefix : core.
-Global Hint Resolve is_prefix_refl : core.
-Global Hint Resolve not_null_map : core.
-Global Hint Resolve unique_prefix_nil : core.
-Global Hint Resolve in_alphabet_nil in_alphabet_cons : core.
-Global Hint Resolve not_null_app : core.
+#[export] Hint Constructors is_prefix : core.
+#[export] Hint Resolve is_prefix_refl : core.
+#[export] Hint Resolve not_null_map : core.
+#[export] Hint Resolve unique_prefix_nil : core.
+#[export] Hint Resolve in_alphabet_nil in_alphabet_cons : core.
+#[export] Hint Resolve not_null_app : core.

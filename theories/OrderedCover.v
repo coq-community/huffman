@@ -134,4 +134,4 @@ Qed.
 
 End OrderedCover.
 Arguments ordered_cover [A].
-Global Hint Resolve ordered_cover_one ordered_cover_node : core.
+#[export] Hint Resolve ordered_cover_one ordered_cover_node : core.
