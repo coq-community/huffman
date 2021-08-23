@@ -25,7 +25,9 @@
 
 From Coq Require Import Sorting.Permutation.
 From Huffman Require Export Cover WeightTree.
- 
+
+Set Default Proof Using "Type".
+
 Section CoverMin.
 Variable A : Type.
 Variable f : A -> nat.
@@ -42,7 +44,7 @@ Definition cover_min (l : list (btree A)) (t1 : btree A) : Prop :=
 
 (* Minimum tree for a singleton cover *)
 Theorem cover_min_one : forall t : btree A, cover_min (t :: []) t.
-Proof using.
+Proof.
 intros t; split; auto.
 intros t2 H; inversion H; auto.
 generalize (Permutation_length H0); simpl in |- *; intros; discriminate.
@@ -54,7 +56,7 @@ Local Hint Resolve cover_min_one : core.
 Theorem cover_min_permutation :
  forall (t : btree A) (l1 l2 : list (btree A)),
  cover_min l1 t -> Permutation l1 l2 -> cover_min l2 t.
-Proof using.
+Proof.
 intros t l1 l2 H H0; split.
 apply cover_permutation with (2 := H0); auto.
 inversion H; auto.
@@ -68,7 +70,7 @@ Qed.
 (* For all covers, there is a minimum tree *)
 Theorem cover_min_ex :
  forall l : list (btree A), l <> [] -> exists t : btree A, cover_min l t.
-Proof using.
+Proof.
 intros l H;
  generalize (find_min_correct (btree A) (weight_tree f) (all_cover _ l)).
 case (find_min (weight_tree f) (all_cover _ l)).

@@ -24,6 +24,8 @@
 From Coq Require Import Sorting.Permutation.
 From Huffman Require Export AuxLib UList.
 
+Set Default Proof Using "Type".
+
 Section UniqueKey.
 Variables (A : Type) (B : Type).
 
@@ -43,21 +45,21 @@ Local Hint Constructors unique_key : core.
  
 (* Inversion theorem *)
 Theorem unique_key_inv : forall a l, unique_key (a :: l) -> unique_key l.
-Proof using.  
+Proof.  
 intros a l H; inversion H; auto.
 Qed.
 
 (* Inversion theorem *)
 Theorem unique_key_in :
  forall (a : A) (b1 b2 : B) l, unique_key ((a, b1) :: l) -> ~ In (a, b2) l.
-Proof using.
+Proof.
 intros a b1 b2 l H; inversion H; auto.
 Qed.
 
 (* Inversion theorem *)
 Theorem unique_key_in_inv :
  forall a l1 l2 l, unique_key l -> In (a, l1) l -> In (a, l2) l -> l1 = l2.
-Proof using.
+Proof.
 intros a l1 l2 l H; generalize a l1 l2; elim H; simpl in |- *; auto;
  clear H a l1 l2 l.
 intros a l1 l2 H; case H.
@@ -71,7 +73,7 @@ Qed.
 (* Uniqueness is compatible with permutation *)
 Theorem unique_key_perm :
  forall l1 l2, Permutation l1 l2 -> unique_key l1 -> unique_key l2.
-Proof using.
+Proof.
 intros l1 l2 H; elim H; auto.
 intros (a1, b1) L1 L2 H0 H1 H2; apply unique_key_cons.
 intros b; red in |- *; intros H3; case (unique_key_in _ _ b _ H2).
@@ -97,7 +99,7 @@ Theorem unique_key_app :
  unique_key l2 ->
  (forall a b c, In (a, b) l1 -> In (a, c) l2 -> False) ->
  unique_key (l1 ++ l2).
-Proof using.
+Proof.
 intros l1; elim l1; simpl in |- *; auto.
 intros (a1, ll1) l H l2 H0 H1 H2; apply unique_key_cons; auto.
 intros b; red in |- *; intros H3.
@@ -112,7 +114,7 @@ Qed.
 (* The list of keys is unique *)
 Theorem unique_key_ulist :
  forall l : list (A * B), unique_key l -> ulist (map (fst (B:=_)) l).
-Proof using.
+Proof.
 intros l; elim l; simpl in |- *; auto.
 intros a l0 H H0; apply ulist_cons.
 inversion H0.
@@ -125,7 +127,7 @@ Qed.
 (* A list of keys is unique gives a code with unique keys *)
 Theorem ulist_unique_key :
  forall l : list (A * B), ulist (map (fst (B:=_)) l) -> unique_key l.
-Proof using.
+Proof.
 intros l; elim l; simpl in |- *; auto.
 intros a; case a.
 intros a0 b l0 H H0; apply unique_key_cons; auto.
@@ -145,7 +147,7 @@ Theorem unique_key_map :
  forall (A B C D : Type) l (f : A * B -> C * D),
  unique_key l ->
  (forall a b, fst (f a) = fst (f b) -> fst a = fst b) -> unique_key (map f l).
-Proof using.
+Proof.
 intros A B C D l f H; elim H; simpl in |- *; auto.
 intros a b l0 H0 H1 H2 H3.
 case_eq (f (a, b)); intros fa fb Hf; auto.

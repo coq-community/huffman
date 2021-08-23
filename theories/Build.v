@@ -26,6 +26,8 @@
 From Huffman Require Export OneStep HeightPred CoverMin OrderedCover SubstPred.
 From Coq Require Import ArithRing Sorting.Permutation.
 
+Set Default Proof Using "Type".
+
 Section Build.
 Variable A : Type.
 Variable f : A -> nat.
@@ -44,7 +46,7 @@ Inductive build : list (btree A) -> btree A -> Prop :=
  
 (* Building gives a cover *)
 Theorem build_cover : forall l t, build l t -> cover l t.
-Proof using.
+Proof.
 intros l t H; elim H; clear H l t; auto.
 intros t l1 l2 (l3, (t1, (t2, (HH, (HH1, HH2))))) H0 H1; try assumption.
 apply cover_node with (1 := HH1); auto.
@@ -58,7 +60,7 @@ Theorem build_comp :
  build l2 t2 ->
  weight_tree_list f l1 = weight_tree_list f l2 ->
  same_sum_leaves f l1 l2 -> weight_tree f t1 = weight_tree f t2.
-Proof using.
+Proof.
 intros l1 l2 t1 t2 H; generalize l2 t2; elim H; clear H l1 t1 l2 t2.
 intros t l2 t2 H H0 (l3, (l4, (H1, (H2, H3)))).
 generalize H0; inversion H; clear H0.
@@ -96,7 +98,7 @@ Qed.
 Theorem build_same_weight_tree :
  forall (l : list (btree A)) (t1 t2 : btree A),
  build l t1 -> build l t2 -> weight_tree f t1 = weight_tree f t2.
-Proof using.
+Proof.
 intros l t1 t2 H H0; apply build_comp with (l1 := l) (l2 := l); auto.
 exists l; exists l; simpl in |- *; auto.
 Qed.
@@ -105,7 +107,7 @@ Qed.
 Theorem build_permutation :
  forall (l1 l2 : list (btree A)) (t : btree A),
  build l1 t -> Permutation l1 l2 -> build l2 t.
-Proof using.
+Proof.
 intros l1 l2 t H; generalize l2; elim H; clear H l1 l2 t; auto.
 intros t l2 H; rewrite Permutation_length_1_inv with (1 := H); auto.
 apply build_one.
@@ -175,7 +177,7 @@ Defined.
 Theorem build_correct :
  forall (l : list (btree A)) (t : btree A),
  l <> [] -> build l t -> cover_min _ f l t.
-Proof using.
+Proof.
 intros l; elim l using list_length_ind.
 intros l0 H t H0 H1.
 case (cover_min_ex _ f) with (1 := H0); auto.

@@ -26,6 +26,8 @@
 From Coq Require Import List Arith Sorting.Permutation.
 Import ListNotations.
 
+Set Default Proof Using "Type".
+
 Section UniqueList.
 Variable A : Type.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
@@ -38,7 +40,7 @@ Local Hint Constructors ulist : core.
 
 (* Inversion theorem *)
 Theorem ulist_inv : forall a l, ulist (a :: l) -> ulist l.
-Proof using.  
+Proof.  
 intros a l H; inversion H; auto.
 Qed.
 
@@ -47,7 +49,7 @@ Theorem ulist_app :
  forall l1 l2,
  ulist l1 ->
  ulist l2 -> (forall a : A, In a l1 -> In a l2 -> False) -> ulist (l1 ++ l2).
-Proof using.  
+Proof.
 intros L1; elim L1; simpl in |- *; auto.
 intros a l H l2 H0 H1 H2; apply ulist_cons; simpl in |- *; auto.
 red in |- *; intros H3; case in_app_or with (1 := H3); auto; intros H4.
@@ -61,7 +63,7 @@ Qed.
 (* Inversion theorem the appended list *)
 Theorem ulist_app_inv :
  forall l1 l2 (a : A), ulist (l1 ++ l2) -> In a l1 -> In a l2 -> False.
-Proof using.
+Proof.
 intros l1; elim l1; simpl in |- *; auto.
 intros a l H l2 a0 H0 [H1| H1] H2.
 inversion H0; auto.
@@ -72,7 +74,7 @@ Qed.
 
 (* Inversion theorem the appended list *)
 Theorem ulist_app_inv_l : forall l1 l2 : list A, ulist (l1 ++ l2) -> ulist l1.
-Proof using.
+Proof.
 intros l1; elim l1; simpl in |- *; auto.
 intros a l H l2 H0; inversion H0; apply ulist_cons; auto.
 contradict H3; auto with datatypes.
@@ -81,14 +83,13 @@ Qed.
 
 (* Inversion theorem the appended list *)
 Theorem ulist_app_inv_r : forall l1 l2 : list A, ulist (l1 ++ l2) -> ulist l2.
-Proof using.
+Proof.
 intros l1; elim l1; simpl in |- *; auto.
 intros a l H l2 H0; inversion H0; auto.
 Qed.
 
 (* Uniqueness is decidable *)
 Definition ulist_dec : forall l, {ulist l} + {~ ulist l}.
-Proof.
 intros l; elim l; auto.
 intros a l1 [H| H]; auto.
 case (In_dec eqA_dec a l1); intros H2; auto.
@@ -99,7 +100,7 @@ Defined.
 (* Uniqueness is compatible with permutation *) 
 Theorem ulist_perm :
  forall l1 l2 : list A, Permutation l1 l2 -> ulist l1 -> ulist l2.
-Proof using.
+Proof.
 intros l1 l2 H; elim H; clear H l1 l2; simpl in |- *; auto.
 intros a l1 l2 H0 H1 H2; apply ulist_cons; auto.
 inversion H2; auto.

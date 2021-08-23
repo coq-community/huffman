@@ -27,6 +27,8 @@
 From Coq Require Import ArithRing Sorting.Permutation.
 From Huffman Require Export WeightTree Ordered.
 
+Set Default Proof Using "Type".
+
 Section Prod2List.
 Variable A : Type.
 Variable f : A -> nat.
@@ -49,7 +51,7 @@ Theorem prod2list_app :
  forall l1 l2 l3 l4,
  length l1 = length l2 ->
  prod2list (l1 ++ l3) (l2 ++ l4) = prod2list l1 l2 + prod2list l3 l4.
-Proof using.
+Proof.
 intros l1 l2 l3 l4 H; unfold prod2list in |- *.
 rewrite map2_app; auto.
 rewrite fold_left_app.
@@ -74,7 +76,7 @@ Theorem prod2list_le_l :
  a <= b ->
  prod2list (l1 ++ a :: l2 ++ b :: l3) (l4 ++ d :: l5 ++ c :: l6) <=
  prod2list (l1 ++ a :: l2 ++ b :: l3) (l4 ++ c :: l5 ++ d :: l6).
-Proof using.
+Proof.
 intros a b c d l1 l2 l3 l4 l5 l6 H H0 H1 H2 H3;
  change
    (prod2list (l1 ++ (a :: []) ++ l2 ++ (b :: []) ++ l3)
@@ -117,7 +119,7 @@ Theorem prod2list_le_r :
  b <= a ->
  prod2list (l1 ++ a :: l2 ++ b :: l3) (l4 ++ d :: l5 ++ c :: l6) <=
  prod2list (l1 ++ a :: l2 ++ b :: l3) (l4 ++ c :: l5 ++ d :: l6).
-Proof using.
+Proof.
 intros a b c d l1 l2 l3 l4 l5 l6 H H0 H1 H2 H3;
  change
    (prod2list (l1 ++ (a :: []) ++ l2 ++ (b :: []) ++ l3)
@@ -156,7 +158,7 @@ Theorem prod2list_eq :
  length l3 = length l6 ->
  prod2list (l1 ++ a :: l2 ++ a :: l3) (l4 ++ b :: l5 ++ c :: l6) =
  prod2list (l1 ++ a :: l2 ++ a :: l3) (l4 ++ c :: l5 ++ b :: l6).
-Proof using.
+Proof.
 intros a b c l1 l2 l3 l4 l5 l6 H H0 H1;
  change
    (prod2list (l1 ++ (a :: []) ++ l2 ++ (a :: []) ++ l3)
@@ -184,7 +186,7 @@ Theorem prod2list_reorder :
       Permutation (b1 :: l5) (l6 ++ b1 :: l7) /\
       prod2list (l1 ++ a :: l2) (l6 ++ b1 :: l7) <=
       prod2list (l1 ++ a :: l2) (l3 ++ b :: l4)).
-Proof using.
+Proof.
 intros a b b1 l1 l2 l3 l4 l5 H H0 H1 H2 H3 H4.
 cut (In b (b1 :: l5));
  [ simpl in |- *; intros [HH0| HH0]
@@ -259,7 +261,7 @@ Theorem prod2list_reorder2 :
       Permutation (b1 :: c1 :: l5) (l6 ++ b1 :: c1 :: l7) /\
       prod2list (l1 ++ a :: a :: l2) (l6 ++ b1 :: c1 :: l7) <=
       prod2list (l1 ++ a :: a :: l2) (l3 ++ b :: c :: l4)).
-Proof using.
+Proof.
 intros a b c b1 c1 l1 l2 l3 l4 l5 H H0 H1 H2 H3 H4.
 case (prod2list_reorder a b b1 l1 (a :: l2) l3 (c :: l4) (c1 :: l5));
  simpl in |- *; auto.

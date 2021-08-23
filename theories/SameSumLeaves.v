@@ -26,6 +26,8 @@
 From Coq Require Import Sorting.Permutation.
 From Huffman Require Export Cover WeightTree.
 
+Set Default Proof Using "Type".
+
 Section SameSumLeaves.
 Variable A : Type.
 Variable f : A -> nat.
@@ -42,7 +44,7 @@ Definition same_sum_leaves (l1 l2 : list (btree A)) : Prop :=
 Theorem same_sum_leaves_length :
  forall l1 l2 : list (btree A),
  same_sum_leaves l1 l2 -> length l1 = length l2.
-Proof using.
+Proof.
 intros l1 l2 (l3, (l4, (H0, (H1, H2)))).
 rewrite (Permutation_length H0).
 rewrite (Permutation_length H1).

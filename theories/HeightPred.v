@@ -27,6 +27,8 @@
 From Coq Require Import ArithRing.
 From Huffman Require Export AuxLib OrderedCover WeightTree Ordered Prod2List.
 
+Set Default Proof Using "Type".
+
 Section HeightPred.
 Variable A : Type.
 Variable f : A -> nat.
@@ -51,7 +53,7 @@ Local Hint Resolve height_pred_nil height_pred_node : core.
 Theorem height_pred_ordered_cover :
  forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t -> ordered_cover l t.
-Proof using.
+Proof.
 intros n ln t l H; elim H; simpl in |- *; auto.
 Qed.
 
@@ -59,7 +61,7 @@ Qed.
 Theorem height_pred_not_nil1 :
  forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t -> ln <> [].
-Proof using.
+Proof.
 intros n ln t l H; elim H; simpl in |- *; auto.
 intros; discriminate.
 intros n0 ln1 ln2 t1 t2 l1 l2 H0; case ln1; simpl in |- *; auto.
@@ -70,7 +72,7 @@ Qed.
 Theorem height_pred_not_nil2 :
  forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t -> l <> [].
-Proof using.
+Proof.
 intros n ln t l H; elim H; simpl in |- *; auto.
 intros; discriminate.
 intros n0 ln1 ln2 t1 t2 l1 l2 H0; case l1; simpl in |- *; auto.
@@ -81,7 +83,7 @@ Qed.
 Theorem height_pred_length :
  forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t -> length ln = length l.
-Proof using.
+Proof.
 intros n ln t l H; elim H; simpl in |- *; auto.
 intros; repeat rewrite app_length; auto with arith.
 Qed.
@@ -94,7 +96,7 @@ Theorem height_pred_weight :
  forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t ->
  n * sum_leaves f t + weight_tree f t = prod2list f ln l.
-Proof using.
+Proof.
 intros n ln t l H; elim H; simpl in |- *; auto.
 intros n0 ln1 ln2 t1 t2 l1 l2 H0 H1 H2 H3.
 rewrite prod2list_app; auto with arith.
@@ -106,7 +108,7 @@ Qed.
 Theorem ordered_cover_height_pred :
  forall (n : nat) (t : btree A) (l : list (btree A)),
  ordered_cover l t -> exists ln : list nat, height_pred n ln l t.
-Proof using.
+Proof.
 intros n t l H; generalize n; elim H; clear n t l H.
 intros t l n; exists (n :: []); auto.
 intros t1 t2 l1 l2 l3 H H0 H1 H2 n.
@@ -119,7 +121,7 @@ Qed.
 Theorem height_pred_larger :
  forall (n n1 : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t -> In n1 ln -> n <= n1.
-Proof using.
+Proof.
 intros n n1 ln t l H; generalize n1; elim H; clear H n ln t l n1;
  auto with arith.
 intros n t n1 [H2| H2]; [ rewrite H2 | case H2 ]; auto.
@@ -135,7 +137,7 @@ Qed.
 Theorem height_pred_larger_strict :
  forall (n n1 : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t -> In n1 ln -> n < n1 \/ ln = n :: [] /\ l = t :: [].
-Proof using.
+Proof.
 intros n n1 ln t l H; generalize n1; elim H; clear H n ln t l n1; auto.
 intros n ln1 ln2 t1 t2 l1 l2 H H0 H1 H2 n1 H3; left;
  apply lt_le_trans with (S n); auto.
@@ -148,7 +150,7 @@ Qed.
 Theorem height_pred_larger_ex :
  forall (n : nat) (ln : list nat) (t : btree A) (l : list (btree A)),
  height_pred n ln l t -> exists n1, In n1 ln /\ n <= n1.
-Proof using.
+Proof.
 intros n ln t l H; elim H; clear H n ln t l.
 intros n t; exists n; auto with datatypes.
 intros n ln1 ln2 t1 t2 l1 l2 H (n1, (HH1, HH2)) H1 H2.
@@ -163,7 +165,7 @@ Lemma height_pred_disj_larger_aux :
   (forall n1 : nat, In n1 ln1 -> n1 < a) ->
   (forall n1 : nat, In n1 ln2 -> n1 <= a) ->
   (exists ln3, ln2 = a :: ln3) \/ ln = n :: [] /\ l = t :: [].
-Proof using.
+Proof.
 intros n ln t l H; elim H; clear H n ln t l.
 intros n t l ln1 ln2 a; case ln1; simpl in |- *; auto.
 intros n ln1 ln2 t1 t2 l1 l2 H H0 H1 H2 ln0 ln3 a H3 H4 H5.
@@ -221,7 +223,7 @@ Theorem height_pred_disj_larger :
  (forall n1 : nat, In n1 ln2 -> n1 <= a) ->
  (exists ln3, ln2 = a :: ln3) \/
  (ln1 = [] /\ a = n /\ ln2 = []) /\ l = t :: [].
-Proof using.
+Proof.
 intros n a ln1 ln2 t l H H0 H1;
  case
   height_pred_disj_larger_aux
@@ -238,7 +240,7 @@ Lemma height_pred_disj_larger2_aux :
   ln = ln1 ++ a :: ln2 ->
   (exists n1, In n1 ln1 /\ a <= n1) \/
   (exists n1, In n1 ln2 /\ a <= n1) \/ ln = n :: [] /\ l = t :: [].
-Proof using.
+Proof.
 intros n ln t l H; elim H; clear H n ln t l.
 intros n t l ln1 ln2 a; case ln1; simpl in |- *; auto.
 intros n ln1 ln2 t1 t2 l1 l2 H H0 H1 H2 ln0 ln3 a H3.
@@ -286,7 +288,7 @@ Theorem height_pred_disj_larger2 :
  (exists n1, In n1 ln1 /\ a <= n1) \/
  (exists n1, In n1 ln2 /\ a <= n1) \/
  (ln1 = [] /\ a = n /\ ln2 = []) /\ l = t :: [].
-Proof using.
+Proof.
 intros n a ln1 ln2 t l H;
  case
   height_pred_disj_larger2_aux
@@ -309,7 +311,7 @@ Theorem height_pred_shrink_aux :
   length ln1 = length l1 ->
   l = l1 ++ t1 :: t2 :: l2 ->
   height_pred n (ln1 ++ pred a :: ln2) (l1 ++ node t1 t2 :: l2) t.
-Proof using.
+Proof.
 intros n ln t l H; elim H; clear n ln t l H; auto.
 intros n t l1 l2 ln1 ln2 a b t1 t2; case ln1;
  try (simpl in |- *; intros; discriminate).
@@ -421,7 +423,7 @@ Theorem height_pred_shrink :
  (forall n1 : nat, In n1 (b :: ln2) -> n1 <= a) ->
  length ln1 = length l1 ->
  height_pred n (ln1 ++ pred a :: ln2) (l1 ++ node t1 t2 :: l2) t.
-Proof using.
+Proof.
 intros n a b ln1 ln2 t t1 t2 l1 l2 H H0 H1 H2;
  apply height_pred_shrink_aux with (1 := H) (b := b); 
  auto.
@@ -436,7 +438,7 @@ Theorem height_pred_compute_code :
  forall (n : nat) (t : btree A),
  height_pred n (map (fun x => length (snd x) + n) (compute_code t))
    (map (fun x => leaf (fst x)) (compute_code t)) t.
-Proof using.
+Proof.
 intros n t; generalize n; elim t; clear t n; simpl in |- *; auto.
 intros b H b0 H0 n.
 repeat rewrite map_app.
@@ -469,7 +471,7 @@ Theorem weight_tree_compute :
  distinct_leaves t ->
  (forall a : A, f a = number_of_occurrences eqA_dec a m) ->
  length (encode eqA_dec (compute_code t) m) = weight_tree f t.
-Proof using.
+Proof.
 intros m t H0 H.
 rewrite frequency_length; auto.
 apply trans_equal with (0 * sum_leaves f t + weight_tree f t); auto.

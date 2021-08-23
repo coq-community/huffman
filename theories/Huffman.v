@@ -26,6 +26,8 @@
 From Coq Require Import Sorting.Permutation.
 From Huffman Require Import Code BTree Build PBTree2BTree Restrict.
 
+Set Default Proof Using "Type".
+
 Section Huffman.
 Variable A : Type.
 Variable empty : A.
@@ -40,7 +42,7 @@ Local Hint Resolve Permutation_app_swap : core.
 
 (* The message is not null *) 
 Theorem not_null_m : m <> [].
-Proof using A eqA_dec frequency_more_than_one m.
+Proof using frequency_more_than_one.
 generalize frequency_more_than_one; case m; simpl in |- *; auto.
 intros H; contradict H; auto with arith.
 intros; discriminate.
@@ -54,7 +56,7 @@ Theorem huffman_build_minimum :
  build (fun x => number_of_occurrences eqA_dec x m)
    (map (fun x => leaf (fst x)) (frequency_list eqA_dec m)) t ->
  weight eqA_dec m (compute_code t) <= weight eqA_dec m c.
-Proof using A empty eqA_dec frequency_more_than_one m.
+Proof using empty frequency_more_than_one.
 intros c t H1 H2 H3; unfold weight in |- *.
 rewrite restrict_code_encode_length with (c := c).
 apply

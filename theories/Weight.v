@@ -22,6 +22,8 @@
 From Coq Require Import Sorting.Permutation.
 From Huffman Require Export Code Frequency ISort UniqueKey.
 
+Set Default Proof Using "Type".
+
 Section Weight.
 Variable A : Type.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
@@ -30,7 +32,7 @@ Theorem fold_plus_split :
  forall (B : Type) (l : list B) (c : nat) (f : B -> nat),
  c + fold_left (fun (a : nat) (b : B) => a + f b) l 0 =
  fold_left (fun (a : nat) (b : B) => a + f b) l c.
-Proof using.
+Proof.
 intros B l; elim l; simpl in |- *; auto.
 intros a l0 H c f.
 rewrite <- (H (f a)).
@@ -43,7 +45,7 @@ Theorem fold_plus_permutation :
  Permutation l1 l2 ->
  fold_left (fun (a : nat) (b : B) => a + f b) l1 c =
  fold_left (fun (a : nat) (b : B) => a + f b) l2 c.
-Proof using.
+Proof.
 intros B l1 l2 c f H; generalize c f; elim H; clear H l1 l2 c f;
  simpl in |- *; auto.
 intros a b L c f; repeat rewrite <- plus_assoc; rewrite (plus_comm (f a));
@@ -54,7 +56,7 @@ Qed.
 Theorem length_encode_nId :
  forall a l1 l n,
  length (encode eqA_dec ((a, l1) :: l) (id_list a n)) = n * length l1.
-Proof using.
+Proof.
 intros a l1 l n; elim n; simpl in |- *; auto.
 intros n0 H; case (eqA_dec a a); auto.
 intros e; rewrite app_length; rewrite H; auto.
@@ -68,7 +70,7 @@ Theorem frequency_length :
  fold_left
    (fun a b => a + number_of_occurrences eqA_dec (fst b) m * length (snd b))
    c 0.
-Proof using.
+Proof.
 intros m c; generalize m; elim c; clear c m; simpl in |- *; auto.
 intros m; elim m; simpl in |- *; auto.
 intros (a, l1) l Rec m H; simpl in |- *.
@@ -141,7 +143,7 @@ Definition weight m c := length (encode eqA_dec c m).
 Theorem weight_permutation :
  forall m c1 c2,
  unique_prefix c1 -> Permutation c1 c2 -> weight m c1 = weight m c2.
-Proof using.
+Proof.
 intros m c1 c2 H H0; unfold weight in |- *.
 apply f_equal with (f := length (A:=bool)).
 apply encode_permutation; auto.
@@ -155,7 +157,7 @@ Definition restrict_code (m : list A) (c : code A) :
 Theorem ulist_unique_key :
  forall (A B : Type) (l : list (A * B)),
  ulist (map (fst (B:=_)) l) -> unique_key l.
-Proof using.
+Proof.
 intros AA BB l; elim l; simpl in |- *; auto.
 intros a; case a.
 intros a0 b l0 H H0; apply unique_key_cons; auto.
@@ -168,7 +170,7 @@ Qed.
  
 Theorem restrict_code_unique_key :
  forall (m : list A) (c : code A), unique_key (restrict_code m c).
-Proof using.
+Proof.
 intros m c; apply ulist_unique_key.
 unfold restrict_code in |- *.
 replace
@@ -184,7 +186,7 @@ Qed.
 Theorem restrict_code_in :
  forall (m : list A) (a : A) (c : code A),
  In a m -> find_code eqA_dec a c = find_code eqA_dec a (restrict_code m c).
-Proof using.
+Proof.
 intros m a c H.
 apply sym_equal; apply find_code_correct2; auto.
 apply restrict_code_unique_key.
@@ -198,7 +200,7 @@ Qed.
 Theorem restrict_code_encode_length_inc :
  forall (m m1 : list A) (c : code A),
  incl m1 m -> encode eqA_dec c m1 = encode eqA_dec (restrict_code m c) m1.
-Proof using.
+Proof.
 intros m m1 c; elim m1; simpl in |- *; auto.
 intros a l H H0.
 apply f_equal2 with (f := app (A:=bool)); auto with datatypes.
@@ -209,7 +211,7 @@ Qed.
 Theorem restrict_code_encode_length :
  forall (m : list A) (c : code A),
  encode eqA_dec c m = encode eqA_dec (restrict_code m c) m.
-Proof using.
+Proof.
 intros m c; apply restrict_code_encode_length_inc; auto with datatypes.
 Qed.
 
