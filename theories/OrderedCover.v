@@ -25,6 +25,8 @@
 
 From Coq Require Import Sorting.Permutation.
 From Huffman Require Export Cover.
+
+Set Default Proof Using "Type".
  
 Section OrderedCover.
 Variable A : Type.
@@ -52,7 +54,7 @@ Theorem ordered_cover_cover :
  forall (l : list (btree A)) (t : btree A), ordered_cover l t -> cover l t.
 intros l t H; elim H; auto.
 intros t1 t2 l1 l2 l3 H0 H1 H2 H3.
-Proof using.
+Proof.
 apply cover_app; auto.
 Qed.
 
@@ -60,7 +62,7 @@ Qed.
 Theorem cover_ordered_cover :
  forall (l1 : list (btree A)) (t : btree A),
  cover l1 t -> exists l2, Permutation l1 l2 /\ ordered_cover l2 t.
-Proof using.
+Proof.
 intros l1; elim l1 using list_length_ind.
 intros l0 H t; case t.
 intros a H1; rewrite cover_inv_leaf with (1 := H1).
@@ -91,7 +93,7 @@ Theorem ulist_ordered_cover :
  forall l1 l2 t,
  ordered_cover l1 t ->
  ulist l2 -> l1 = map (fun x : A => leaf x) l2 -> all_leaves t = l2.
-Proof using.
+Proof.
 intros l1 l2 t H; generalize l2; elim H; clear H l1 l2 t; simpl in |- *; auto.
 intros t l l2; case l2; simpl in |- *; auto.
 intros; discriminate.

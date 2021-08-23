@@ -28,6 +28,8 @@
 From Coq Require Import List Compare_dec Sorting.Permutation.
 From Huffman Require Import AuxLib Code Build ISort UniqueKey.
 
+Set Default Proof Using "Type".
+
 Section PBTree.
 Variable A : Type.
 Variable empty : A.
@@ -48,7 +50,7 @@ Inductive pbtree : Type :=
 (* Predicate for belonging *)
 Theorem pbleaf_or_not :
  forall p, (exists a, p = pbleaf a) \/ (forall a : A, p <> pbleaf a).
-Proof using.
+Proof.
 intros p; case p; simpl in |- *;
  try (intros; right; red in |- *; intros; discriminate).
 intros a; left; exists a; simpl in |- *; auto.
@@ -66,7 +68,6 @@ Local Hint Constructors inpb : core.
 
 (* Equality on partial trees is decidable *) 
 Definition pbtree_dec : forall a b : pbtree, {a = b} + {a <> b}.
-Proof.
 intros a; elim a; simpl in |- *; auto.
 intros a0 b; case b; try (intros; right; red in |- *; intros; discriminate).
 intros a1; case (eqA_dec a0 a1); intros H1.
@@ -91,7 +92,6 @@ Defined.
 
 (* Belonging is decidable *) 
 Definition inpb_dec : forall a b, {inpb a b} + {~ inpb a b}.
-Proof.
 intros a b; elim b.
 intros a0; case a;
  try (intros; right; red in |- *; intros HH; inversion HH; auto; fail).
@@ -116,13 +116,13 @@ Defined.
 
 (* inpb is transitive *)
 Theorem inpb_trans : forall t1 t2 t3, inpb t1 t2 -> inpb t2 t3 -> inpb t1 t3.
-Proof using.
+Proof.
 intros t1 t2 t3 H H1; generalize t1 H; elim H1; clear H H1 t1 t2 t3; auto.
 Qed.
 
 (* A partial tree has always a leaf *)
 Theorem inpb_ex : forall t : pbtree, exists x, inpb (pbleaf x) t.
-Proof using.
+Proof.
 intros t; elim t; simpl in |- *; auto.
 intros a; exists a; auto.
 intros b (a, H); exists a; auto.
@@ -137,7 +137,7 @@ Definition distinct_pbleaves (t : pbtree) : Prop :=
 
 (* A leaf tree has distinct leaves *)
 Theorem distinct_pbleaves_Leaf : forall a : A, distinct_pbleaves (pbleaf a).
-Proof using.
+Proof.
 intros a; red in |- *.
 intros a0 t1 t2 H; inversion H.
 Qed.
@@ -148,7 +148,7 @@ Local Hint Resolve distinct_pbleaves_Leaf : core.
 Theorem distinct_pbleaves_l :
  forall t1 t2 : pbtree,
  distinct_pbleaves (pbnode t1 t2) -> distinct_pbleaves t1.
-Proof using.
+Proof.
 intros t1 t2 H; red in |- *.
 intros a t0 t3 H0 H1 H2.
 apply (H a t0 t3); auto.
@@ -158,7 +158,7 @@ Qed.
 Theorem distinct_pbleaves_r :
  forall t1 t2 : pbtree,
  distinct_pbleaves (pbnode t1 t2) -> distinct_pbleaves t2.
-Proof using.
+Proof.
 intros t1 t2 H; red in |- *.
 intros a t0 t3 H0 H1 H2.
 apply (H a t0 t3); auto.
@@ -167,7 +167,7 @@ Qed.
 (* Direct subtrees of a tree with distinct leaves have distinct leaves *)
 Theorem distinct_pbleaves_pl :
  forall t1 : pbtree, distinct_pbleaves (pbleft t1) -> distinct_pbleaves t1.
-Proof using.
+Proof.
 intros t1 H; red in |- *.
 intros a t0 t3 H0 H1 H2.
 apply (H a t0 t3); auto.
@@ -176,7 +176,7 @@ Qed.
 (* Direct subtrees of a tree with distinct leaves have distinct leaves *)
 Theorem distinct_pbleaves_pr :
  forall t1 : pbtree, distinct_pbleaves (pbright t1) -> distinct_pbleaves t1.
-Proof using.
+Proof.
 intros t1 H; red in |- *.
 intros a t0 t3 H0 H1 H2.
 apply (H a t0 t3); auto.
@@ -184,7 +184,7 @@ Qed.
 
 (* A leaf have distinct leaves *)
 Theorem distinct_pbleaves_pbleaf : forall a : A, distinct_pbleaves (pbleaf a).
-Proof using.
+Proof.
 intros a; red in |- *.
 intros a0 t1 t2 H; inversion H.
 Qed.
@@ -193,7 +193,7 @@ Local Hint Resolve distinct_pbleaves_pbleaf : core.
 (* A left has distinct leaves if its subtree has it *) 
 Theorem distinct_pbleaves_pbleft :
  forall t, distinct_pbleaves t -> distinct_pbleaves (pbleft t).
-Proof using.
+Proof.
 intros t H; red in |- *.
 intros a t1 t2 H0 H1 H2; apply (H a t1 t2); auto.
 inversion H0; auto.
@@ -202,7 +202,7 @@ Qed.
 (* A right has distinct leaves if its subtree has it *) 
 Theorem distinct_pbleaves_pbright :
  forall t, distinct_pbleaves t -> distinct_pbleaves (pbright t).
-Proof using.
+Proof.
 intros t H; red in |- *.
 intros a t1 t2 H0 H1 H2; apply (H a t1 t2); auto.
 inversion H0; auto.
@@ -240,7 +240,7 @@ Fixpoint compute_pbcode (a : pbtree) : code A :=
 
 (* Computed code are not empty *) 
 Theorem compute_pbcode_not_null : forall p, compute_pbcode p <> [].
-Proof using.
+Proof.
 intros p; elim p; simpl in |- *; auto;
  try (intros p0; case (compute_pbcode p0); simpl in |- *; auto); 
  intros; red in |- *; intros HH1; discriminate.
@@ -251,7 +251,7 @@ Local Hint Resolve compute_pbcode_not_null : core.
 Theorem in_pbcompute_inpb :
  forall (t : pbtree) (a : A) (l : list bool),
  In (a, l) (compute_pbcode t) -> inpb (pbleaf a) t.
-Proof using.
+Proof.
 intros t; elim t; simpl in |- *; auto.
 intros a a0 l [H1| H1]; try (case H1; fail).
 injection H1; intros H2 H3; rewrite H3; auto.
@@ -278,7 +278,7 @@ Qed.
 (* Leaves in the tree are keys in the code *) 
 Theorem inpb_compute_ex :
  forall a p, inpb (pbleaf a) p -> exists l, In (a, l) (compute_pbcode p).
-Proof using.
+Proof.
 intros a p; elim p; simpl in |- *; auto.
 intros a0 H; inversion H.
 exists []; auto.
@@ -328,7 +328,7 @@ Theorem pb_unique_prefix1 :
  forall (t : pbtree) (a1 a2 : A) (lb1 lb2 : list bool),
  In (a1, lb1) (compute_pbcode t) ->
  In (a2, lb2) (compute_pbcode t) -> is_prefix lb1 lb2 -> a1 = a2 :>A.
-Proof using.
+Proof.
 intros t; elim t; simpl in |- *; auto.
 intros leaf a1 a2 lb1 lb2 H1 H2.
 case H1; intros H3; [ injection H3 | case H3 ].
@@ -402,7 +402,7 @@ Qed.
 (* The computed code has unique keys *)
 Theorem pb_unique_key :
  forall t, distinct_pbleaves t -> unique_key (compute_pbcode t).
-Proof using.
+Proof.
 intros t; elim t; simpl in |- *; auto.
 intros p H H0.
 apply unique_key_map; auto.
@@ -433,7 +433,7 @@ Qed.
 (* The computed code is prefix *) 
 Theorem pb_unique_prefix :
  forall t : pbtree, distinct_pbleaves t -> unique_prefix (compute_pbcode t).
-Proof using.
+Proof.
 intros t H1; split; try exact (pb_unique_prefix1 t); apply pb_unique_key; auto.
 Qed.
 
@@ -475,7 +475,7 @@ Fixpoint pbadd (a : A) (t : pbtree) (l : list bool) {struct l} : pbtree :=
 (* Adding to  a leaf replace it *)
 Theorem pbadd_prop1 :
  forall a1 a2 l1, compute_pbcode (pbadd a1 (pbleaf a2) l1) = (a1, l1) :: [].
-Proof using.
+Proof.
 intros a1 a2 l1; generalize a1 a2; elim l1; simpl in |- *; auto;
  clear a1 a2 l1.
 intros a; case a; simpl in |- *; auto.
@@ -489,7 +489,7 @@ Theorem pbadd_prop2 :
  pbfree l1 l2 ->
  Permutation (compute_pbcode (pbadd a1 l2 l1))
    ((a1, l1) :: compute_pbcode l2).
-Proof using.
+Proof.
 intros a1 l1 l2 H; generalize a1; elim H; clear H a1 l1 l2; simpl in |- *;
  auto.
 intros b l a1; rewrite pbadd_prop1; simpl in |- *; auto.
@@ -560,7 +560,7 @@ Theorem pbfree_pbadd_prop1 :
  forall a1 l l1,
  ~ is_prefix l l1 ->
  ~ is_prefix l1 l -> pbfree l (pbadd a1 (pbleaf empty) l1).
-Proof using.
+Proof.
 intros a1 l l1; generalize a1 l; elim l1; simpl in |- *; auto; clear a1 l l1.
 intros a1 l H H0; elim H0; auto.
 intros a; case a.
@@ -581,7 +581,7 @@ Theorem pbfree_pbadd_prop2 :
  forall a l1 l2 l3,
  pbfree l1 l3 ->
  ~ is_prefix l2 l1 -> ~ is_prefix l1 l2 -> pbfree l1 (pbadd a l3 l2).
-Proof using.
+Proof.
 intros a l1 l2; generalize a l1; elim l2; simpl in |- *; auto.
 intros a0 l0 l3 H H0; case H0; auto.
 intros a0; case a0.
@@ -628,7 +628,7 @@ Qed.
 (* The free positions have not changed *)
 Theorem distinct_pbleaves_pbadd_prop1 :
  forall a a1 l1, distinct_pbleaves (pbadd a1 (pbleaf a) l1).
-Proof using.
+Proof.
 intros a a1 l1; generalize a a1; elim l1; simpl in |- *; auto; clear a a1 l1.
 intros a2; case a2; auto.
 Qed.
@@ -636,7 +636,7 @@ Qed.
 (* Adding in leaf does not create nodes  *)
 Theorem in_pbleaf_node :
  forall a1 a2 a3 a4 l, ~ inpb (pbnode a1 a2) (pbadd a3 (pbleaf a4) l).
-Proof using.
+Proof.
 intros a1 a2 a3 a4 l; generalize a1 a2 a3 a4; elim l; simpl in |- *; auto;
  clear a1 a2 a3 a4 l.
 intros a1 a2 a3 a4; red in |- *; intros H; inversion H.
@@ -650,7 +650,7 @@ Qed.
 (* Adding in leaf just replace the leaf *)
 Theorem inpbleaf_eq :
  forall a1 a2 a3 l, inpb (pbleaf a1) (pbadd a2 (pbleaf a3) l) -> a1 = a2.
-Proof using.
+Proof.
 intros a1 a2 a3 l; generalize a1 a2 a3; elim l; simpl in |- *; auto;
  clear a1 a2 a3 l.
 intros a1 a2 a3 H; inversion H; auto.
@@ -665,7 +665,7 @@ Qed.
 Theorem inpbleaf_pbadd_inv :
  forall a1 a2 a3 l,
  inpb (pbleaf a1) (pbadd a2 a3 l) -> a1 = a2 \/ inpb (pbleaf a1) a3.
-Proof using.
+Proof.
 intros a1 a2 a3 l; generalize a1 a2 a3; elim l; simpl in |- *; auto;
  clear a1 a2 a3 l.
 intros a1 a2 a3 H0; inversion H0; auto.
@@ -694,7 +694,7 @@ Qed.
 
 (* Adding creates a new leaf *)
 Theorem inpb_pbadd : forall a1 l1 t1, inpb (pbleaf a1) (pbadd a1 t1 l1).
-Proof using.
+Proof.
 intros a1 l1; elim l1; simpl in |- *; auto.
 intros b; case b; simpl in |- *; auto.
 intros l H t1; (case t1; simpl in |- *; auto).
@@ -709,7 +709,7 @@ Local Hint Resolve inpb_pbadd : core.
 Theorem inpb_pbadd_ex :
  forall a1 l1 t1 t,
  inpb t (pbadd a1 t1 l1) -> inpb (pbleaf a1) t \/ inpb t t1.
-Proof using.
+Proof.
 intros a1 l1; elim l1; simpl in |- *; auto.
 intros t1 t H; inversion H; auto.
 intros a l H t1 t; case a; case t1; simpl in |- *; auto.
@@ -755,7 +755,7 @@ Fixpoint all_pbleaves (t : pbtree) : list A :=
 (* a leaf is in the list of all leaves *)
 Theorem all_pbleaves_in :
  forall t a, inpb (pbleaf a) t -> In a (all_pbleaves t).
-Proof using.
+Proof.
 intros t; elim t; simpl in |- *; auto.
 intros a a0 H; inversion H; auto.
 intros p H a H0; inversion H0; auto.
@@ -766,7 +766,7 @@ Qed.
 (* An element of the list of all leaves is a leaf of the tree *)
 Theorem all_pbleaves_inpb :
  forall t a, In a (all_pbleaves t) -> inpb (pbleaf a) t.
-Proof using.
+Proof.
 intros t; elim t; simpl in |- *; auto.
 intros a a0 [H| H]; [ rewrite H | case H ]; auto.
 intros b H b0 H0 a H1; case in_app_or with (1 := H1); auto.
@@ -775,7 +775,7 @@ Qed.
 (* If the list of all leaves is unique, the tree has distinct leaves *)
 Theorem all_pbleaves_unique :
  forall t, ulist (all_pbleaves t) -> distinct_pbleaves t.
-Proof using.
+Proof.
 intros t; elim t; simpl in |- *; auto.
 intros b H b0 H0 H1; red in |- *.
 intros t0 t1 t2 H2; inversion H2.
@@ -789,7 +789,7 @@ Qed.
 (* If the tree has distinct leaves, the list of all leaves is unique *)
 Theorem all_pbleaves_ulist :
  forall t, distinct_pbleaves t -> ulist (all_pbleaves t).
-Proof using.
+Proof.
 intros t; elim t; simpl in |- *; auto.
 intros p H H0; apply H; apply distinct_pbleaves_pl; auto.
 intros p H H0; apply H; apply distinct_pbleaves_pr; auto.
@@ -805,7 +805,7 @@ Qed.
 Theorem all_pbleaves_pbadd :
  forall l1 a1 a2 l,
  In a2 (all_pbleaves (pbadd a1 l l1)) -> a2 = a1 \/ In a2 (all_pbleaves l).
-Proof using.
+Proof.
 intros l1; elim l1; simpl in |- *; auto.
 intros a1 a2 l [H| H]; auto; case H.
 intros a; case a.
@@ -834,7 +834,7 @@ Qed.
 (* Adding in a leaf just creates a singleton list *)
 Theorem all_pbleaves_pbleaf :
  forall l a1 a2, all_pbleaves (pbadd a1 (pbleaf a2) l) = a1 :: [].
-Proof using.
+Proof.
 intros l; elim l; simpl in |- *; auto.
 intros b; case b; simpl in |- *; auto.
 Qed.
@@ -844,7 +844,7 @@ Theorem ulist_pbadd_prop2 :
  forall a1 l1 t,
  ~ inpb (pbleaf a1) t ->
  ulist (all_pbleaves t) -> ulist (all_pbleaves (pbadd a1 t l1)).
-Proof using.
+Proof.
 intros a1 l1; elim l1; simpl in |- *; auto.
 intros b; case b; simpl in |- *; auto.
 intros l H t; case t; simpl in |- *; auto.
@@ -887,7 +887,7 @@ Theorem distinct_pbleaves_pbadd_prop2 :
  forall a1 l1 l,
  ~ inpb (pbleaf a1) l ->
  distinct_pbleaves l -> distinct_pbleaves (pbadd a1 l l1).
-Proof using.
+Proof.
 intros a1 l1 l H H0; apply all_pbleaves_unique.
 apply ulist_pbadd_prop2; auto.
 apply all_pbleaves_ulist; auto.
@@ -904,7 +904,7 @@ Theorem fold_pbadd_prop_left :
                   end) l) =
  pbleft
    (fold_right (fun a (c : pbtree) => pbadd (fst a) c (snd a)) (pbleaf a) l).
-Proof using.
+Proof.
 intros l; elim l.
 intros a H; elim H; simpl in |- *; auto.
 simpl in |- *; intros (a1, l1) l0; case l0.
@@ -925,7 +925,7 @@ Theorem fold_pbadd_prop_right :
                   end) l) =
  pbright
    (fold_right (fun a (c : pbtree) => pbadd (fst a) c (snd a)) (pbleaf a) l).
-Proof using.
+Proof.
 intros l; elim l.
 intros a H; elim H; simpl in |- *; auto.
 simpl in |- *; intros (a1, l1) l0; case l0.
@@ -947,7 +947,7 @@ Theorem fold_pbadd_prop_node :
  pbnode
    (fold_right (fun a (c : pbtree) => pbadd (fst a) c (snd a)) 
       (pbleaf empty) l) a.
-Proof using.
+Proof.
 intros l; elim l.
 intros a H; elim H; simpl in |- *; auto.
 simpl in |- *; intros (a1, l1) l0; case l0.
@@ -968,7 +968,7 @@ Definition pbbuild (l : code A) : pbtree :=
 Theorem pbfree_pbbuild_prop1 :
  forall a l1 l2,
  l2 <> [] -> unique_prefix ((a, l1) :: l2) -> pbfree l1 (pbbuild l2).
-Proof using.
+Proof.
 intros a l1 l2; generalize a l1; elim l2; clear a l1 l2; simpl in |- *; auto.
 intros a l1 H; elim H; auto.
 intros (a1, l1) l; case l.
@@ -1022,7 +1022,7 @@ Qed.
 (* The keys of the code are a permutation of the leaves of the tree *)
 Theorem all_pbleaves_compute_pb :
  forall t, Permutation (map (fst (B:=_)) (compute_pbcode t)) (all_pbleaves t).
-Proof using.
+Proof.
 cut
  (forall b l,
   map (fst (B:=_))
@@ -1046,7 +1046,7 @@ Qed.
 Theorem pbbuild_compute_perm :
  forall c, c <> [] -> unique_prefix c ->
   Permutation (compute_pbcode (pbbuild c)) c.
-Proof using.
+Proof.
 intros c; elim c; simpl in |- *; auto.
 intros H; case H; auto.
 intros (a1, l1) l.
@@ -1103,7 +1103,7 @@ Theorem all_pbleaves_pbbuild :
  c <> [] ->
  unique_prefix c ->
  Permutation (map (fst (B:=_)) c) (all_pbleaves (pbbuild c)).
-Proof using.
+Proof.
 intros c H H0;
  apply Permutation_trans with (map (fst (B:=_)) (compute_pbcode (pbbuild c))).
 apply Permutation_map.
@@ -1115,7 +1115,7 @@ Qed.
 Theorem inpb_pbbuild_inv :
  forall a c,
  c <> [] -> inpb (pbleaf a) (pbbuild c) -> exists l, In (a, l) c.
-Proof using.
+Proof.
 intros a c; generalize a; elim c; simpl in |- *; auto.
 intros a0 H; elim H; auto.
 intros (a1, l1).
@@ -1136,7 +1136,7 @@ Qed.
 (* Built tree from prefix code has distinct leaves *)
 Theorem pbbuild_distinct_pbleaves :
  forall c, unique_prefix c -> distinct_pbleaves (pbbuild c).
-Proof using.
+Proof.
 intros c; elim c; unfold pbbuild in |- *; simpl in |- *; auto.
 intros (a1, l1) l; case l; auto.
 simpl in |- *; intros H H0; apply distinct_pbleaves_pbadd_prop1; auto.
@@ -1156,7 +1156,7 @@ Qed.
 *) 
 Theorem pbbuild_compute_peq :
  forall t, distinct_pbleaves t -> pbbuild (compute_pbcode t) = t.
-Proof using.
+Proof.
 intros t; elim t; simpl in |- *; auto.
 intros p H H0; unfold pbbuild in |- *.
 rewrite fold_pbadd_prop_left; auto.
@@ -1189,7 +1189,7 @@ Theorem pbbuild_true_pbright :
  forall c,
  c <> [] ->
  pbbuild (map (fun x => (fst x, true :: snd x)) c) = pbright (pbbuild c).
-Proof using.
+Proof.
 intros c; elim c; simpl in |- *; auto.
 intros H; case H; auto.
 intros a l; case a; case l.
@@ -1210,7 +1210,7 @@ Theorem pbbuild_pbnode :
    (map (fun x => (fst x, false :: snd x)) c1 ++
     map (fun x => (fst x, true :: snd x)) c2) =
  pbnode (pbbuild c1) (pbbuild c2).
-Proof using.
+Proof.
 intros c1 c2 Hc1 Hc2; unfold pbbuild in |- *.
 rewrite fold_right_app.
 fold pbbuild in |- *.

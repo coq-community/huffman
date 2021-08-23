@@ -24,11 +24,13 @@
 *)
 
 From Huffman Require Import HeightPred.
+
+Set Default Proof Using "Type".
  
 Section SubstPred.
 Variable A : Type.
 
-(* Take two covers an substitute the elements of one by the element of the other *)
+(* Take two covers and substitute the elements of one by the element of the other *)
 Inductive subst_pred :
 list (btree A) -> list (btree A) -> btree A -> btree A -> Prop :=
   | subst_pred_id :
@@ -45,7 +47,7 @@ Local Hint Resolve subst_pred_id subst_pred_node : core.
 Theorem subst_pred_ordered_cover_l :
  forall (t1 t2 : btree A) (l1 l2 : list (btree A)),
  subst_pred l1 l2 t1 t2 -> ordered_cover l1 t1.
-Proof using.
+Proof.
 intros t1 t2 l1 l2 H; elim H; auto.
 Qed.
 
@@ -53,7 +55,7 @@ Qed.
 Theorem subst_pred_ordered_cover_r :
  forall (t1 t2 : btree A) (l1 l2 : list (btree A)),
  subst_pred l1 l2 t1 t2 -> ordered_cover l2 t2.
-Proof using.
+Proof.
 intros t1 t2 l1 l2 H; elim H; auto.
 Qed.
 
@@ -61,7 +63,7 @@ Qed.
 Theorem subst_pred_length :
  forall (t1 t2 : btree A) (l1 l2 : list (btree A)),
  subst_pred l1 l2 t1 t2 -> length l1 = length l2.
-Proof using.
+Proof.
 intros t1 t2 l1 l2 H; elim H; auto.
 intros t0 t3 t4 t5 l0 l3 l4 l5 l6 l7 H0 H1 H2 H3; repeat rewrite app_length; auto.
 Qed.
@@ -71,7 +73,7 @@ Theorem ordered_cover_subst_pred :
  forall (t1 : btree A) (l1 l2 : list (btree A)),
  ordered_cover l1 t1 ->
  length l1 = length l2 -> exists t2 : btree A, subst_pred l1 l2 t1 t2.
-Proof using.
+Proof.
 intros t1 l1 l2 H; generalize l2; elim H; clear t1 l1 l2 H.
 intros t l l2; case l2.
 simpl in |- *; intros; discriminate.
@@ -97,7 +99,7 @@ Theorem height_pred_subst_pred :
  height_pred n ln l1 t1 ->
  length l1 = length l2 ->
  exists t2 : btree A, height_pred n ln l2 t2 /\ subst_pred l1 l2 t1 t2.
-Proof using.
+Proof.
 intros n ln t1 l1 l2 H; generalize l2; elim H; clear H n ln t1 l1 l2; auto.
 intros n t l2; case l2.
 simpl in |- *; intros; discriminate.

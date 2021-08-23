@@ -27,6 +27,8 @@ From Coq Require Export Compare_dec.
 From Huffman Require Export AuxLib Code Build ISort.
 From Huffman Require Export UniqueKey PBTree BTree.
 
+Set Default Proof Using "Type".
+
 Section PBTREE2BTREE.
 Variable A : Type.
 Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
@@ -44,7 +46,7 @@ Fixpoint to_btree (a : pbtree A) : btree A :=
 (* Computing the binary tree preserves the leaves*)
 Theorem to_btree_inb :
  forall a b, inpb (pbleaf a) b -> inb (leaf a) (to_btree b).
-Proof using.
+Proof.
 intros a b; generalize a; elim b; clear a b; simpl in |- *; auto.
 intros a a0 H; inversion H; auto.
 intros p H a H0; apply H; auto; inversion H0; auto.
@@ -55,7 +57,7 @@ Qed.
 (* Leaves do not change *)
 Theorem to_btree_inpb :
  forall a b, inb (leaf a) (to_btree b) -> inpb (pbleaf a) b.
-Proof using.
+Proof.
 intros a b; generalize a; elim b; clear a b; simpl in |- *; auto.
 intros a a0 H; inversion H; auto.
 intros p H p0 H0 a H1.
@@ -65,7 +67,7 @@ Qed.
 (* The list of all leaves does not change *)
 Theorem to_btree_all_leaves :
  forall t, all_leaves (to_btree t) = all_pbleaves t.
-Proof using.
+Proof.
 intros t; elim t; simpl in |- *; auto.
 intros p H p0 H0; apply f_equal2 with (f := app (A:=A)); auto.
 Qed.
@@ -73,7 +75,7 @@ Qed.
 (* Computing the btree preserves the property of having distinct leaves *)
 Theorem to_btree_distinct_leaves :
  forall a : pbtree A, distinct_pbleaves a -> distinct_leaves (to_btree a).
-Proof using.
+Proof.
 intros a H.
 apply all_leaves_unique.
 rewrite to_btree_all_leaves.
@@ -83,7 +85,7 @@ Qed.
 (* The transformation perserves distinct leaves *)
 Theorem to_btree_distinct_pbleaves :
  forall a : pbtree A, distinct_leaves (to_btree a) -> distinct_pbleaves a.
-Proof using.
+Proof.
 intros a H.
 apply all_pbleaves_unique.
 rewrite <- to_btree_all_leaves.
@@ -95,7 +97,7 @@ Theorem to_btree_smaller :
  forall t a,
  length (find_code eqA_dec a (compute_code (to_btree t))) <=
  length (find_code eqA_dec a (compute_pbcode t)).
-Proof using.
+Proof.
 intros t; elim t; simpl in |- *; auto.
 intros p H a.
 apply le_trans with (1 := H a); auto.

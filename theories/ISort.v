@@ -26,6 +26,8 @@
 From Coq Require Import List Sorting.Permutation.
 From Huffman Require Import Ordered.
 
+Set Default Proof Using "Type".
+
 Section ISortExample.
 Variable A : Type.
 Variable order : A -> A -> Prop.
@@ -74,7 +76,7 @@ Qed.
 (* Inserting returns a permutation *)
 Theorem insert_permutation :
  forall (L : list A) (a : A), Permutation (a :: L) (insert a L).
-Proof using.
+Proof.
 intros L; elim L; simpl in |- *; auto.
 intros b l H' a.
 case_eq (order_fun a b); intros H1; auto.
@@ -91,13 +93,13 @@ Fixpoint isort (l : list A) : list A :=
 
 (* Sorting gives an ordered list *)
 Theorem isort_ordered : forall l : list A, ordered order (isort l).
-Proof using order_fun_false order_fun_true. 
+Proof using order_fun_false order_fun_true.
 intros l; elim l; simpl in |- *; auto.
 Qed.
 
 (* The result is a permutation of the original list *)
 Theorem isort_permutation : forall l : list A, Permutation l (isort l).
-Proof using.
+Proof.
 intros l; elim l; clear l; simpl in |- *; auto.
 intros a l H'.
 apply Permutation_trans with (l' := a :: isort l); auto.

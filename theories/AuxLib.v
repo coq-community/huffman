@@ -28,14 +28,15 @@
 
 From Coq Require Export List Arith.
 From Coq Require Import Inverse_Image Wf_nat Sorting.Permutation.
-
 Export ListNotations.
+
+Set Default Proof Using "Type".
 
 (* Some facts about the minus operator *)
 Section Minus.
  
 Theorem lt_minus_O : forall n m, m < n -> 0 < n - m.
-Proof using.
+Proof.
 intros n; elim n; simpl in |- *; auto.
 intros m H1; contradict H1; auto with arith.
 intros n1 Rec m; case m; simpl in |- *; auto.
@@ -43,14 +44,14 @@ intros m1 H1; apply Rec; apply lt_S_n; auto.
 Qed.
  
 Theorem le_minus : forall a b : nat, a - b <= a.
-Proof using.
+Proof.
 intros a; elim a; simpl in |- *; auto.
 intros n H b; case b; simpl in |- *; auto.
 Qed.
  
 Theorem minus_minus_simpl4 :
  forall a b c : nat, b <= c -> c <= a -> a - b - (a - c) = c - b.
-Proof using.
+Proof.
 intros a b c H H0.
 apply plus_minus; auto with arith.
 rewrite minus_plus_simpl_l_reverse with (p := b + c).
@@ -67,7 +68,7 @@ Qed.
  
 Theorem plus_minus_simpl4 :
  forall a b c : nat, b <= a -> c <= b -> a - b + (b - c) = a - c.
-Proof using.
+Proof.
 intros a b c H H0.
 apply plus_minus.
 rewrite (fun x y => plus_comm (x - y)).
@@ -90,7 +91,7 @@ Fixpoint le_bool (a b : nat) {struct b} : bool :=
   end.
  
 Theorem le_bool_correct1 : forall a b : nat, a <= b -> le_bool a b = true.
-Proof using.
+Proof.
 intros a; elim a; simpl in |- *; auto.
 intros b; case b; simpl in |- *; auto.
 intros n H b; case b; simpl in |- *.
@@ -100,7 +101,7 @@ apply le_S_n; auto.
 Qed.
  
 Theorem le_bool_correct2 : forall a b : nat, b < a -> le_bool a b = false.
-Proof using.
+Proof.
 intros a; elim a; simpl in |- *; auto.
 intros b H1; inversion H1.
 intros n H b; case b; simpl in |- *; auto.
@@ -109,7 +110,7 @@ apply lt_S_n; auto.
 Qed.
  
 Theorem le_bool_correct3 : forall a b : nat, le_bool a b = true -> a <= b.
-Proof using.
+Proof.
 intros a; elim a; simpl in |- *; auto.
 intros b; case b; simpl in |- *; auto with arith.
 intros n H b; case b; simpl in |- *; try (intros; discriminate);
@@ -117,7 +118,7 @@ intros n H b; case b; simpl in |- *; try (intros; discriminate);
 Qed.
  
 Theorem le_bool_correct4 : forall a b : nat, le_bool a b = false -> b <= a.
-Proof using.
+Proof.
 intros a; elim a; simpl in |- *; auto.
 intros b; case b; simpl in |- *; try (intros; discriminate); auto with arith.
 intros n H b; case b; simpl in |- *; try (intros; discriminate);
@@ -137,7 +138,7 @@ Variable h : A -> A.
 Theorem fold_left_eta :
  forall l a f1,
  (forall a b, In b l -> f a b = f1 a b) -> fold_left f l a = fold_left f1 l a.
-Proof using.
+Proof.
 intros l; elim l; simpl in |- *; auto.
 intros a l0 H a0 f1 H0.
 rewrite H0; auto.
@@ -146,14 +147,14 @@ Qed.
 Theorem fold_left_map :
  forall (C : Type) a l (k : C -> B),
  fold_left f (map k l) a = fold_left (fun a b => f a (k b)) l a.
-Proof using.
+Proof.
 intros C a l k; generalize a; elim l; simpl in |- *; auto.
 Qed.
  
 Theorem fold_left_init :
  (forall (a : A) (b : B), h (f a b) = f (h a) b) ->
  forall (a : A) (l : list B), fold_left f l (h a) = h (fold_left f l a).
-Proof using.
+Proof.
 intros H a l; generalize a; elim l; clear l a; simpl in |- *; auto.
 intros a l H0 a0.
 rewrite <- H; auto.
@@ -173,7 +174,7 @@ Theorem list_length_ind :
  (forall l1 : list A,
   (forall l2 : list A, length l2 < length l1 -> P l2) -> P l1) ->
  forall l : list A, P l.
-Proof using.
+Proof.
 intros P H l;
  apply well_founded_ind with (R := fun x y : list A => length x < length y);
  auto.
@@ -191,7 +192,7 @@ Program Definition list_length_induction (P : list A -> Type)
 Theorem in_ex_app :
  forall (a : A) (l : list A),
  In a l -> exists l1 : list A, (exists l2 : list A, l = l1 ++ a :: l2).
-Proof using.
+Proof.
 intros a l; elim l; clear l; simpl in |- *; auto.
 intros H; case H.
 intros a1 l H [H1| H1]; auto.
@@ -207,7 +208,7 @@ Theorem app_inv_app :
  l1 ++ l2 = l3 ++ a :: l4 ->
  (exists l5 : list A, l1 = l3 ++ a :: l5) \/
  (exists l5, l2 = l5 ++ a :: l4).
-Proof using.
+Proof.
 intros l1; elim l1; simpl in |- *; auto.
 intros l2 l3 l4 a H; right; exists l3; auto.
 intros a l H l2 l3 l4 a0; case l3; simpl in |- *.
@@ -225,7 +226,7 @@ Theorem app_inv_app2 :
  (exists l5 : list A, l1 = l3 ++ a :: b :: l5) \/
  (exists l5, l2 = l5 ++ a :: b :: l4) \/
  l1 = l3 ++ a :: [] /\ l2 = b :: l4.
-Proof using.
+Proof.
 intros l1; elim l1; simpl in |- *; auto.
 intros l2 l3 l4 a b H; right; left; exists l3; auto.
 intros a l H l2 l3 l4 a0 b; case l3; simpl in |- *.
@@ -250,7 +251,7 @@ Theorem same_length_ex :
    (exists l5,
       (exists b : B,
          length l1 = length l4 /\ length l2 = length l5 /\ l3 = l4 ++ b :: l5)).
-Proof using.
+Proof.
 intros a l1; elim l1; simpl in |- *; auto.
 intros l2 l3; case l3; simpl in |- *; try (intros; discriminate).
 intros b l H; exists []; exists l; exists b; repeat (split; auto).
@@ -266,7 +267,7 @@ Qed.
 Theorem in_map_inv :
  forall (b : B) (l : list A),
  In b (map f l) -> exists a : A, In a l /\ b = f a.
-Proof using.
+Proof.
 intros b l; elim l; simpl in |- *; auto.
 intros tmp; case tmp.
 intros a0 l0 H [H1| H1]; auto.
@@ -277,7 +278,7 @@ Qed.
 Theorem in_map_fst_inv :
  forall a (l : list (B * C)),
  In a (map (fst (B:=_)) l) -> exists c, In (a, c) l.
-Proof using.
+Proof.
 intros a l; elim l; simpl in |- *; auto.
 intros H; case H.
 intros a0 l0 H [H0| H0]; auto.
@@ -289,14 +290,14 @@ Qed.
 Theorem in_flat_map_in :
  forall (l : list B) (f : B -> list C) a b,
  In a (f b) -> In b l -> In a (flat_map f l).
-Proof using.
+Proof.
 intros; apply in_flat_map; exists b; split; auto.
 Qed.
  
 Theorem in_flat_map_ex :
  forall (l : list B) (f : B -> list C) a,
  In a (flat_map f l) -> exists b, In b l /\ In a (f b).
-Proof using.
+Proof.
 intros; apply in_flat_map; auto.
 Qed.
  
@@ -322,7 +323,7 @@ Theorem map2_app :
  forall l1 l2 l3 l4,
  length l1 = length l2 ->
  map2 (l1 ++ l3) (l2 ++ l4) = map2 l1 l2 ++ map2 l3 l4.
-Proof using.
+Proof.
 intros l1; elim l1; auto.
 intros l2; case l2; simpl in |- *; auto; intros; discriminate.
 intros a l H l2 l3 l4; case l2.
@@ -344,7 +345,7 @@ Variable A : Type.
 Theorem firstn_le_app1 :
  forall (n : nat) (l1 l2 : list A),
  length l1 <= n -> firstn n (l1 ++ l2) = l1 ++ firstn (n - length l1) l2.
-Proof using.
+Proof.
 intros n; elim n; simpl in |- *; auto.
 intros l1; case l1; simpl in |- *; auto.
 intros b l l2 H; contradict H; auto with arith.
@@ -355,7 +356,7 @@ Qed.
 Theorem firstn_le_app2 :
  forall (n : nat) (l1 l2 : list A),
  n <= length l1 -> firstn n (l1 ++ l2) = firstn n l1.
-Proof using.
+Proof.
 intros n; elim n; simpl in |- *; auto.
 intros n0 H l1 l2; case l1; simpl in |- *.
 intros H1; contradict H1; auto with arith.
@@ -365,7 +366,7 @@ Qed.
 
 Theorem firstn_le_length_eq :
  forall (n : nat) (l1 : list A), n <= length l1 -> length (firstn n l1) = n.
-Proof using.
+Proof.
 intros n l1; generalize n; elim l1; clear n l1; simpl in |- *; auto.
 intros n; case n; simpl in |- *; auto.
 intros n1 H1; contradict H1; auto with arith.
@@ -375,7 +376,7 @@ Qed.
 Theorem skipn_le_app1 :
  forall (n : nat) (l1 l2 : list A),
  length l1 <= n -> skipn n (l1 ++ l2) = skipn (n - length l1) l2.
-Proof using.
+Proof.
 intros n; elim n; simpl in |- *; auto.
 intros l1; case l1; simpl in |- *; auto.
 intros b l l2 H; contradict H; auto with arith.
@@ -385,7 +386,7 @@ Qed.
 Theorem skipn_le_app2 :
  forall (n : nat) (l1 l2 : list A),
  n <= length l1 -> skipn n (l1 ++ l2) = skipn n l1 ++ l2.
-Proof using.
+Proof.
 intros n; elim n; simpl in |- *; auto.
 intros n0 H l1; case l1; simpl in |- *; auto with arith.
 intros l2 H1; contradict H1; auto with arith.
@@ -394,7 +395,7 @@ Qed.
 (* skipn_length in >= 8.10 *)
 Theorem length_skipn :
  forall (n : nat) (l1 : list A), length (skipn n l1) = length l1 - n.
-Proof using.
+Proof.
 intros n; elim n; simpl in |- *; auto with arith.
 intros n0 H l1; case l1; simpl in |- *; auto.
 Qed.
@@ -402,7 +403,7 @@ Qed.
 (* skipn_all in >= 8.10 *)
 Theorem skipn_length_all :
  forall l : list A, skipn (length l) l = [].
-Proof using.
+Proof.
 intros l; elim l; simpl in |- *; auto.
 Qed.
 
@@ -419,7 +420,7 @@ Theorem exist_first_max :
       (exists l2 : list nat,
          l = l1 ++ a :: l2 /\
          (forall n1, In n1 l1 -> n1 < a) /\ (forall n1, In n1 l2 -> n1 <= a))).
-Proof using.
+Proof.
 intros l; elim l; simpl in |- *; auto.
 intros H; case H; auto.
 intros a l0; case l0.
@@ -474,7 +475,7 @@ Theorem find_min_correct :
  | None => l = []
  | Some (a, b) => (In b l /\ a = f b) /\ (forall c : A, In c l -> f b <= f c)
  end.
-Proof using.
+Proof.
 intros l; elim l; simpl in |- *; auto.
 intros a l0; case (find_min l0); simpl in |- *.
 intros p; case p; simpl in |- *.
@@ -513,7 +514,7 @@ Theorem find_max_correct :
  | None => l = []
  | Some (a, b) => (In b l /\ a = f b) /\ (forall c : A, In c l -> f c <= f b)
  end.
-Proof using.
+Proof.
 intros l; elim l; simpl in |- *; auto.
 intros a l0; case (find_max l0); simpl in |- *.
 intros p; case p; simpl in |- *.
@@ -571,7 +572,7 @@ Fixpoint split_one (l : list A) : list (A * list A) :=
 Theorem split_one_permutation :
  forall (a : A) (l1 l2 : list A),
  In (a, l1) (split_one l2) -> Permutation (a :: l1) l2.
-Proof using.
+Proof.
 intros a l1 l2; generalize a l1; elim l2; clear a l1 l2; simpl in |- *; auto.
 intros a l1 H1; case H1.
 intros a l H a0 l1 [H0| H0].
@@ -590,7 +591,7 @@ Qed.
 Theorem split_one_in_ex :
  forall (a : A) (l1 : list A),
  In a l1 -> exists l2 : list A, In (a, l2) (split_one l1).
-Proof using.
+Proof.
 intros a l1; elim l1; simpl in |- *; auto.
 intros H; case H.
 intros a0 l H [H0| H0]; auto.
@@ -621,7 +622,7 @@ Definition all_permutations (l : list A) :=
 Lemma all_permutations_aux_permutation :
   forall (n : nat) (l1 l2 : list A),
   n = length l2 -> In l1 (all_permutations_aux l2 n) -> Permutation l1 l2.
-Proof using.
+Proof.
 intros n; elim n; simpl in |- *; auto.
 intros l1 l2; case l2.
 simpl in |- *; intros H0 [H1| H1].
@@ -648,7 +649,7 @@ Qed.
 (* All the elements of the list are permutations *) 
 Theorem all_permutations_permutation :
  forall l1 l2 : list A, In l1 (all_permutations l2) -> Permutation l1 l2.
-Proof using.
+Proof.
 intros l1 l2 H; apply all_permutations_aux_permutation with (n := length l2);
  auto.
 Qed.
@@ -656,7 +657,7 @@ Qed.
 Lemma permutation_all_permutations_aux :
   forall (n : nat) (l1 l2 : list A),
   n = length l2 -> Permutation l1 l2 -> In l1 (all_permutations_aux l2 n).
-Proof using.
+Proof.
 intros n; elim n; simpl in |- *; auto.
 intros l1 l2; case l2.
 intros H H0; apply Permutation_sym in H0; rewrite Permutation_nil with (1 := H0); auto with datatypes.
@@ -685,7 +686,7 @@ Qed.
 (* A permutation is in the list *) 
 Theorem permutation_all_permutations :
  forall l1 l2 : list A, Permutation l1 l2 -> In l1 (all_permutations l2).
-Proof using.
+Proof.
 intros l1 l2 H; unfold all_permutations in |- *;
  apply permutation_all_permutations_aux; auto.
 Qed.
@@ -704,7 +705,7 @@ Defined.
 Theorem Permutation_transposition :
  forall (a b : A) l1 l2,
  Permutation (a :: l1 ++ b :: l2) (b :: l1 ++ a :: l2).
-Proof using.
+Proof.
 intros a b l1 l2.
 assert (H_eq: b :: l1 ++ a :: l2 = (b :: l1) ++ a :: l2) by reflexivity.
 rewrite H_eq.
