@@ -50,6 +50,8 @@ tested_coq_nix_versions:
 - coq_version: 'master'
 - coq_version: 'v8.14'
 
+ci_cron_schedule: '20 4 * * *'
+
 namespace: Huffman
 
 keywords:
