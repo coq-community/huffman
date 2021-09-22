@@ -43,12 +43,12 @@ supported_coq_versions:
 
 tested_coq_opam_versions:
 - version: dev
+- version: '8.14'
 - version: '8.13'
 - version: '8.12'
 
 tested_coq_nix_versions:
 - coq_version: 'master'
-- coq_version: 'v8.14'
 
 ci_cron_schedule: '20 4 * * *'
 
