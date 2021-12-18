@@ -55,7 +55,7 @@ Proof.
 intros l1 l2 l3 l4 H; unfold prod2list in |- *.
 rewrite map2_app; auto.
 rewrite fold_left_app.
-rewrite plus_comm.
+rewrite Nat.add_comm.
 apply sym_equal.
 repeat
  rewrite
@@ -63,7 +63,7 @@ repeat
  auto.
 apply sym_equal; rewrite <- fold_plus_split with (f := fun x : nat => x);
  auto.
-apply plus_comm.
+apply Nat.add_comm.
 Qed.
 
 (* Permuting two choosen elements lower the product *)
@@ -85,28 +85,29 @@ intros a b c d l1 l2 l3 l4 l5 l6 H H0 H1 H2 H3;
       (l4 ++ (c :: []) ++ l5 ++ (d :: []) ++ l6)) 
   in |- *.
 repeat rewrite prod2list_app; auto.
-apply plus_le_compat; auto with arith.
-repeat rewrite plus_assoc; apply plus_le_compat; auto.
-repeat rewrite (fun x y z => plus_comm (prod2list (x :: y) z)).
-repeat rewrite plus_assoc_reverse; apply plus_le_compat; auto.
+apply Nat.add_le_mono; auto with arith.
+repeat rewrite Nat.add_assoc; apply Nat.add_le_mono; auto.
+repeat rewrite (fun x y z => Nat.add_comm (prod2list (x :: y) z)).
+repeat rewrite <- Nat.add_assoc; apply Nat.add_le_mono; auto.
 unfold prod2list in |- *; simpl in |- *.
-rewrite le_plus_minus with (1 := H3); auto.
-rewrite le_plus_minus with (1 := H2); auto.
+rewrite <- Nat.sub_add with (1 := H3); auto.
+rewrite <- Nat.sub_add with (1 := H2); auto.
 replace
- (a * (sum_leaves f c + (sum_leaves f d - sum_leaves f c)) + weight_tree f d +
-  ((a + (b - a)) * sum_leaves f c + weight_tree f c)) with
- (a * sum_leaves f c + weight_tree f c +
+  (a * (sum_leaves f d - sum_leaves f c + sum_leaves f c) + weight_tree f d +
+  ((b - a + a) * sum_leaves f c + weight_tree f c)) with
+(a * sum_leaves f c + weight_tree f c +
   (a * (sum_leaves f d - sum_leaves f c) + (a + (b - a)) * sum_leaves f c +
    weight_tree f d)); [ idtac | ring ].
-apply plus_le_compat; auto with arith.
-apply plus_le_compat; auto with arith.
-repeat rewrite mult_plus_distr_l || rewrite mult_plus_distr_r;
+apply Nat.add_le_mono; auto with arith.
+apply Nat.add_le_mono; auto with arith.
+repeat rewrite Nat.mul_add_distr_l || rewrite Nat.mul_add_distr_r;
  auto with arith.
 replace
  (a * (sum_leaves f d - sum_leaves f c) +
   (a * sum_leaves f c + (b - a) * sum_leaves f c)) with
  (a * sum_leaves f c + (b - a) * sum_leaves f c +
-  (a * (sum_leaves f d - sum_leaves f c) + 0)); [ auto with arith | ring ].
+  (a * (sum_leaves f d - sum_leaves f c) + 0)); [ ring_simplify | ring ].
+auto with arith.
 Qed.
 
 (* Permuting two choosen elements lower the product *)
@@ -128,26 +129,20 @@ intros a b c d l1 l2 l3 l4 l5 l6 H H0 H1 H2 H3;
       (l4 ++ (c :: []) ++ l5 ++ (d :: []) ++ l6)) 
   in |- *.
 repeat rewrite prod2list_app; auto.
-apply plus_le_compat; auto with arith.
-repeat rewrite plus_assoc; apply plus_le_compat; auto.
-repeat rewrite (fun x y z => plus_comm (prod2list (x :: y) z)).
-repeat rewrite plus_assoc_reverse; apply plus_le_compat; auto.
+apply Nat.add_le_mono; auto with arith.
+repeat rewrite Nat.add_assoc; apply Nat.add_le_mono; auto.
+repeat rewrite (fun x y z => Nat.add_comm (prod2list (x :: y) z)).
+repeat rewrite <- Nat.add_assoc; apply Nat.add_le_mono; auto.
 unfold prod2list in |- *; simpl in |- *.
-rewrite le_plus_minus with (1 := H3); auto.
-rewrite le_plus_minus with (1 := H2); auto.
+rewrite <- Nat.sub_add with (1 := H3); auto.
+rewrite <- Nat.sub_add with (1 := H2); auto.
 replace
- ((b + (a - b)) * (sum_leaves f d + (sum_leaves f c - sum_leaves f d)) +
+ ((a - b + b) * (sum_leaves f c - sum_leaves f d + sum_leaves f d) +
   weight_tree f c + (b * sum_leaves f d + weight_tree f d)) with
  ((b + (a - b)) * sum_leaves f d + weight_tree f d +
   ((b + (a - b)) * (sum_leaves f c - sum_leaves f d) + b * sum_leaves f d +
    weight_tree f c)); [ idtac | ring ].
-apply plus_le_compat; auto with arith.
-apply plus_le_compat; auto with arith.
-repeat rewrite mult_plus_distr_l || rewrite mult_plus_distr_r;
- auto with arith.
-replace (b * sum_leaves f d + b * (sum_leaves f c - sum_leaves f d)) with
- (b * (sum_leaves f c - sum_leaves f d) + 0 + b * sum_leaves f d);
- [ auto with arith | ring ].
+ring_simplify; auto with arith.
 Qed.
 
 (* Permuting two choosen elements with same integer does not change the product *)
@@ -218,7 +213,7 @@ repeat rewrite app_ass; simpl in |- *.
 apply prod2list_le_l; auto.
 change (sum_order f b1 b) in |- *.
 apply ordered_trans with (2 := H4); auto.
-unfold sum_order in |- *; intros a0 b0 c H5 H6; apply le_trans with (1 := H5);
+unfold sum_order in |- *; intros a0 b0 c H5 H6; apply Nat.le_trans with (1 := H5);
  auto.
 apply H1; rewrite HH6; auto with datatypes.
 simpl in HH2; case HH2; intros HH3.
@@ -240,7 +235,7 @@ rewrite HH7.
 apply prod2list_le_r; auto.
 change (sum_order f b1 b) in |- *.
 apply ordered_trans with (2 := H4); auto.
-unfold sum_order in |- *; intros a0 b0 c H5 H6; apply le_trans with (1 := H5);
+unfold sum_order in |- *; intros a0 b0 c H5 H6; apply Nat.le_trans with (1 := H5);
  auto.
 apply H2; rewrite HH7; auto with datatypes.
 Qed.
@@ -286,16 +281,16 @@ apply Permutation_trans with ((b1 :: c1 :: l9) ++ l8); auto.
 simpl in |- *; apply perm_skip; auto.
 apply Permutation_trans with (1 := HH7).
 apply Permutation_trans with ((c1 :: l9) ++ l8); auto.
-apply le_trans with (2 := HH4).
+apply Nat.le_trans with (2 := HH4).
 change
   (prod2list (l1 ++ (a :: []) ++ a :: l2) (l8 ++ (b1 :: []) ++ c1 :: l9) <=
    prod2list (l1 ++ (a :: []) ++ a :: l2) (l6 ++ (b1 :: []) ++ c2 :: l7))
  in |- *.
 generalize HH8; repeat rewrite prod2list_app; auto with arith.
 intros HH9.
-repeat rewrite plus_assoc.
-repeat rewrite (fun x => plus_comm (prod2list l1 x)).
-repeat rewrite plus_assoc_reverse; auto with arith.
+repeat rewrite Nat.add_assoc.
+repeat rewrite (fun x => Nat.add_comm (prod2list l1 x)).
+repeat rewrite <- Nat.add_assoc; auto with arith.
 Qed.
  
 End Prod2List.

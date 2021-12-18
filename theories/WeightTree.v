@@ -97,8 +97,8 @@ Theorem ordered_sum_leaves_eq :
 Proof.
 intros A f l1 l2 H H0 H1.
 apply ordered_perm_antisym_eq with (order := le).
-exact le_trans.
-exact le_antisym.
+exact Nat.le_trans.
+exact Nat.le_antisymm.
 apply Permutation_map; auto.
 apply ordered_map_inv; auto.
 apply ordered_map_inv; auto.

@@ -37,7 +37,7 @@ intros B l; elim l; simpl in |- *; auto.
 intros a l0 H c f.
 rewrite <- (H (f a)).
 rewrite <- (H (c + f a)).
-rewrite plus_assoc_reverse; auto.
+rewrite Nat.add_assoc; auto.
 Qed.
 
 Theorem fold_plus_permutation :
@@ -48,7 +48,7 @@ Theorem fold_plus_permutation :
 Proof.
 intros B l1 l2 c f H; generalize c f; elim H; clear H l1 l2 c f;
  simpl in |- *; auto.
-intros a b L c f; repeat rewrite <- plus_assoc; rewrite (plus_comm (f a));
+intros a b L c f; repeat rewrite <- Nat.add_assoc; rewrite (Nat.add_comm (f a));
  auto.
 intros L1 L2 L3 H H0 H1 H2 c f; apply trans_equal with (1 := H0 c f); auto.
 Qed.

@@ -249,8 +249,8 @@ apply trans_equal with (1 := H1).
 rewrite fold_left_permutation with (2 := H); simpl in |- *; auto.
 rewrite Permutation_length with (1 := H); simpl in |- *; auto.
 rewrite fold_left_init with (h := S); simpl in |- *; auto.
-intros a b1 b2; repeat rewrite plus_assoc_reverse.
-apply f_equal2 with (f := plus); auto; apply plus_comm.
+intros a b1 b2; repeat rewrite <- Nat.add_assoc.
+apply f_equal2 with (f := plus); auto; apply Nat.add_comm.
 Qed.
 
 (* A local function to compute all covers of a certain length *)

@@ -125,7 +125,7 @@ Proof.
 intros n n1 ln t l H; generalize n1; elim H; clear H n ln t l n1;
  auto with arith.
 intros n t n1 [H2| H2]; [ rewrite H2 | case H2 ]; auto.
-intros n ln1 ln2 t1 t2 l1 l2 H H0 H1 H2 n1 H3; apply le_trans with (S n);
+intros n ln1 ln2 t1 t2 l1 l2 H H0 H1 H2 n1 H3; apply Nat.le_trans with (S n);
  auto with arith.
 case in_app_or with (1 := H3); auto.
 Qed.
@@ -140,7 +140,7 @@ Theorem height_pred_larger_strict :
 Proof.
 intros n n1 ln t l H; generalize n1; elim H; clear H n ln t l n1; auto.
 intros n ln1 ln2 t1 t2 l1 l2 H H0 H1 H2 n1 H3; left;
- apply lt_le_trans with (S n); auto.
+ apply Nat.lt_le_trans with (S n); auto.
 case in_app_or with (1 := H3).
 intros H4; apply height_pred_larger with (1 := H); auto.
 intros H4; apply height_pred_larger with (1 := H1); auto.
@@ -192,7 +192,7 @@ generalize (height_pred_length _ _ _ _ H1); case l2; simpl in |- *; auto;
  intros; discriminate.
 intros n0 ln5 E1 H1; case height_pred_larger_strict with (n1 := n0) (1 := H1);
  simpl in |- *; auto with datatypes.
-intros HH6; contradict HH6; apply le_not_lt; rewrite <- HH5; apply H5;
+intros HH6; contradict HH6; apply Nat.le_ngt; rewrite <- HH5; apply H5;
  rewrite E1; auto with datatypes.
 intros (H8, H9); left; exists []; injection H8.
 intros HH7 HH8; rewrite HH5; rewrite <- HH8; rewrite <- HH7; rewrite E1;
@@ -212,7 +212,7 @@ cut (ln3 = [] /\ ln4 = [] /\ a = S n);
     | intros n0 l; case l; simpl in |- *; intros; discriminate ] ].
 case height_pred_larger_ex with (1 := H); auto.
 intros n1; rewrite <- HH5; intros (HH6, HH7).
-contradict HH7; apply lt_not_le; apply H4; rewrite E1; auto with datatypes.
+contradict HH7; apply Nat.lt_nge; apply H4; rewrite E1; auto with datatypes.
 Qed.
 
 (* The first maximum height in the list is immediately repeated once *)
@@ -324,13 +324,13 @@ cut (length ln2 = length l2);
  [ intros Eq3 | apply height_pred_length with (1 := H1) ].
 cut (length ln3 = length l3);
  [ intros Eq4
- | apply plus_reg_l with (length (ln0 ++ a :: b :: []));
+ | apply Nat.add_cancel_l with (length (ln0 ++ a :: b :: []));
     rewrite <- app_length; rewrite app_ass; simpl in |- *;
     rewrite <- H3; repeat rewrite app_length; simpl in |- *;
     rewrite Eq2; rewrite Eq3; rewrite <- app_length;
     rewrite H7; repeat rewrite app_length; simpl in |- *;
-    repeat rewrite (fun x y => plus_comm x (S y));
-    simpl in |- *; rewrite plus_comm; auto ].
+    repeat rewrite (fun x y => Nat.add_comm x (S y));
+    simpl in |- *; rewrite Nat.add_comm; auto ].
 case app_inv_app2 with (1 := H3); auto.
 intros (ln4, Hp1).
 cut (ln3 = ln4 ++ ln2);
@@ -357,13 +357,15 @@ apply sym_equal;
  apply trans_equal with (2 := firstn_skipn (length ln4) l3).
 apply f_equal2 with (f := app (A:=btree A)); auto.
 apply trans_equal with (skipn (length l1 - length l1) l2).
-rewrite <- minus_n_n; simpl in |- *; auto.
+rewrite Nat.sub_diag; simpl in |- *; auto.
 rewrite <- skipn_le_app1; auto.
 rewrite H7.
 rewrite <- Eq2; rewrite Hp1.
 rewrite skipn_le_app1.
 rewrite app_length.
-rewrite H6; rewrite minus_plus; simpl in |- *; auto.
+rewrite H6.
+rewrite <- Nat.add_comm.
+rewrite Nat.add_sub. simpl in |- *; auto.
 rewrite <- H6; rewrite app_length; simpl in |- *; auto with arith.
 intros [(ln4, HH)| (HH1, HH2)].
 cut (ln0 = ln1 ++ ln4);
@@ -384,7 +386,7 @@ apply sym_equal;
  apply trans_equal with (2 := firstn_skipn (length l1) l0).
 apply f_equal2 with (f := app (A:=btree A)); auto.
 apply trans_equal with (firstn (length l1) (l1 ++ l2)).
-rewrite firstn_le_app1; auto; rewrite <- minus_n_n; simpl in |- *;
+rewrite firstn_le_app1; auto; rewrite Nat.sub_diag; simpl in |- *;
  auto with datatypes.
 rewrite H7; rewrite firstn_le_app2; auto.
 rewrite <- H6; rewrite <- Eq2; rewrite E1; rewrite app_length;
@@ -395,7 +397,7 @@ intros (n1, (HH3, HH4)); contradict HH4; auto with arith.
 intros [(n1, (HH3, HH4))| ((HH3, (HH4, HH5)), HH6)]; [ case HH3 | idtac ].
 case height_pred_larger_strict with (1 := H1) (n1 := b); auto.
 rewrite HH2; auto with datatypes.
-rewrite <- HH4; intros HH7; contradict HH7; apply le_not_lt;
+rewrite <- HH4; intros HH7; contradict HH7; apply Nat.le_ngt;
  auto with arith datatypes.
 intros (H8, H9); rewrite HH4; rewrite HH3; simpl in |- *.
 cut (l0 = []); [ intros HM1; rewrite HM1 | idtac ].

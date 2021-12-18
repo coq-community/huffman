@@ -60,7 +60,7 @@ Proof using empty frequency_more_than_one.
 intros c t H1 H2 H3; unfold weight in |- *.
 rewrite restrict_code_encode_length with (c := c).
 apply
- le_trans
+ Nat.le_trans
   with
     (length
        (encode eqA_dec
@@ -135,7 +135,7 @@ generalize
  (to_btree_smaller _ eqA_dec (pbbuild empty (restrict_code eqA_dec m c))).
 intros H4; pattern m at 2 4 in |- *; elim m; simpl in |- *; auto.
 intros a0 l H5; repeat rewrite app_length.
-apply plus_le_compat; auto.
+apply Nat.add_le_mono; auto.
 apply Permutation_sym; apply pbbuild_compute_perm.
 apply restrict_not_null with (eqA_dec := eqA_dec); auto.
 apply not_null_m; auto.

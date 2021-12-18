@@ -212,7 +212,7 @@ case
  prod2list_reorder2
   with (l1 := ln1) (l2 := ln3) (5 := HC1) (6 := HC2) (a := a);
  auto with datatypes.
-intros b H2; apply lt_le_weak; auto with arith.
+intros b H2; apply Nat.lt_le_incl; auto with arith.
 intros l5 (l6, (HB1, (HB2, (HB3, HB4)))).
 case height_pred_subst_pred with (1 := Ht3) (l2 := l5 ++ b1 :: c1 :: l6);
  auto.
@@ -230,9 +230,9 @@ case l5; simpl in |- *; intros; discriminate.
 intros HD4 HD5.
 split; auto.
 apply build_cover with (1 := H1).
-intros t0 H2; apply le_trans with (weight_tree f t1); auto.
+intros t0 H2; apply Nat.le_trans with (weight_tree f t1); auto.
 rewrite (build_same_weight_tree l0 t t7); auto.
-apply le_trans with (weight_tree f t6).
+apply Nat.le_trans with (weight_tree f t6).
 apply HD5; auto.
 apply ordered_cover_cover.
 apply (height_pred_ordered_cover A 0 (ln1 ++ pred a :: ln3)); auto.

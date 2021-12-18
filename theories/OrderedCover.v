@@ -74,7 +74,7 @@ case H with (2 := HH1); auto.
 rewrite Permutation_length with (1 := HH3).
 generalize HH2; rewrite app_length; case l3; simpl in |- *; auto with arith.
 intros HH4; case cover_not_nil with (1 := HH4); auto.
-intros; rewrite plus_comm; simpl in |- *; auto with arith.
+intros; rewrite Nat.add_comm; simpl in |- *; auto with arith.
 intros l4 (HP1, HP2).
 case H with (2 := HH2); auto.
 rewrite Permutation_length with (1 := HH3).
