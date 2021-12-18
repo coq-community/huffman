@@ -39,7 +39,7 @@ license:
 
 supported_coq_versions:
   text: 8.12 or later
-  opam: '{(>= "8.12" & < "8.15~") | (= "dev")}'
+  opam: '{(>= "8.12" & < "8.16~") | (= "dev")}'
 
 tested_coq_opam_versions:
 - version: dev
@@ -49,8 +49,9 @@ tested_coq_opam_versions:
 
 tested_coq_nix_versions:
 - coq_version: 'master'
+- coq_version: 'v8.15'
 
-ci_cron_schedule: '20 4 * * *'
+ci_cron_schedule: '10 1 * * 0'
 
 namespace: Huffman
 

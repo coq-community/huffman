@@ -121,8 +121,8 @@ simpl in |- *.
 simpl in H11; injection H11; auto.
 intros; apply f_equal2 with (f := cons (A:=nat)); auto.
 apply ordered_perm_antisym_eq with (order := le).
-exact le_trans.
-exact le_antisym.
+exact Nat.le_trans.
+exact Nat.le_antisymm.
 apply Permutation_trans with (map (sum_leaves f) l1).
 generalize
  (Permutation_map (sum_leaves f) (Permutation_sym H6)); 

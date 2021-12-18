@@ -13,3 +13,4 @@ docs
 *.vio
 *.vok
 *.vos
+.lia.cache

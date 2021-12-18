@@ -100,7 +100,7 @@ Theorem to_btree_smaller :
 Proof.
 intros t; elim t; simpl in |- *; auto.
 intros p H a.
-apply le_trans with (1 := H a); auto.
+apply Nat.le_trans with (1 := H a); auto.
 case (inpb_dec eqA_dec (pbleaf a) p); intros H1.
 case inpb_compute_ex with (1 := H1).
 intros x Hx; rewrite in_find_map with (l := x); simpl in |- *; auto.
@@ -111,7 +111,7 @@ apply in_pbcompute_inpb with (1 := H1).
 intros p1; contradict H1; auto.
 apply in_pbcompute_inpb with (1 := H1).
 intros p H a.
-apply le_trans with (1 := H a); auto.
+apply Nat.le_trans with (1 := H a); auto.
 case (inpb_dec eqA_dec (pbleaf a) p); intros H1.
 case inpb_compute_ex with (1 := H1).
 intros x Hx; rewrite in_find_map with (l := x); simpl in |- *; auto.

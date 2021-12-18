@@ -31,53 +31,13 @@ From Coq Require Import Inverse_Image Wf_nat Sorting.Permutation.
 Export ListNotations.
 
 Set Default Proof Using "Type".
-
-(* Some facts about the minus operator *)
-Section Minus.
- 
-Theorem lt_minus_O : forall n m, m < n -> 0 < n - m.
-Proof.
-intros n; elim n; simpl in |- *; auto.
-intros m H1; contradict H1; auto with arith.
-intros n1 Rec m; case m; simpl in |- *; auto.
-intros m1 H1; apply Rec; apply lt_S_n; auto.
-Qed.
  
 Theorem le_minus : forall a b : nat, a - b <= a.
 Proof.
 intros a; elim a; simpl in |- *; auto.
 intros n H b; case b; simpl in |- *; auto.
 Qed.
- 
-Theorem minus_minus_simpl4 :
- forall a b c : nat, b <= c -> c <= a -> a - b - (a - c) = c - b.
-Proof.
-intros a b c H H0.
-apply plus_minus; auto with arith.
-rewrite minus_plus_simpl_l_reverse with (p := b + c).
-repeat rewrite plus_assoc_reverse.
-rewrite <- le_plus_minus; auto with arith.
-repeat rewrite plus_assoc.
-rewrite (plus_comm b c).
-repeat rewrite plus_assoc_reverse.
-rewrite <- le_plus_minus; auto with arith.
-repeat rewrite (fun x => plus_comm x a).
-rewrite <- minus_plus_simpl_l_reverse; auto with arith.
-apply le_trans with (1 := H); auto.
-Qed.
- 
-Theorem plus_minus_simpl4 :
- forall a b c : nat, b <= a -> c <= b -> a - b + (b - c) = a - c.
-Proof.
-intros a b c H H0.
-apply plus_minus.
-rewrite (fun x y => plus_comm (x - y)).
-rewrite plus_assoc.
-rewrite <- le_plus_minus; auto.
-rewrite <- le_plus_minus; auto.
-Qed.
- 
-End Minus.
+
 #[export] Hint Resolve le_minus: arith.
 
 (*A function to compare naturals *)
@@ -106,7 +66,7 @@ intros a; elim a; simpl in |- *; auto.
 intros b H1; inversion H1.
 intros n H b; case b; simpl in |- *; auto.
 intros n0 H0; apply H.
-apply lt_S_n; auto.
+apply Nat.succ_lt_mono; auto.
 Qed.
  
 Theorem le_bool_correct3 : forall a b : nat, le_bool a b = true -> a <= b.
@@ -431,14 +391,14 @@ intros n1 H1; case H1.
 intros n l1 H H0; case H; clear H; auto.
 red in |- *; intros H1; discriminate; auto.
 intros a1 (l2, (l3, (HH1, (HH2, HH3)))).
-case (le_or_lt a1 a); intros HH4; auto.
+case (Nat.le_gt_cases a1 a); intros HH4; auto.
 exists a; exists []; exists (n :: l1);
  repeat (split; auto with datatypes).
 intros n1 H1; case H1.
 rewrite HH1.
-intros n1 H1; apply le_trans with (2 := HH4); case in_app_or with (1 := H1);
+intros n1 H1; apply Nat.le_trans with (2 := HH4); case in_app_or with (1 := H1);
  auto with arith.
-intros H2; apply lt_le_weak; auto.
+intros H2; apply Nat.lt_le_incl; auto.
 simpl in |- *; intros [H2| H2]; [ rewrite H2 | idtac ]; auto.
 exists a1; exists (a :: l2); exists l3;
  repeat (split; simpl in |- *; auto with datatypes).
@@ -486,7 +446,7 @@ rewrite <- H2; rewrite <- H5; auto.
 intros H4; split; auto.
 intros c [H5| H5]; auto.
 rewrite <- H5; auto.
-apply le_trans with (f b); auto.
+apply Nat.le_trans with (f b); auto.
 rewrite <- H2; auto with arith.
 intros H; rewrite H; split; simpl in |- *; auto.
 intros c [H1| H1]; rewrite H1 || case H1; auto.
@@ -522,12 +482,12 @@ intros n b ((H1, H2), H3); case (le_lt_dec n (f a)); simpl in |- *.
 intros H4; split; auto.
 intros c [H5| H5]; auto.
 rewrite <- H5; auto.
-apply le_trans with (f b); auto.
+apply Nat.le_trans with (f b); auto.
 rewrite <- H2; auto with arith.
 intros H4; split; auto.
 intros c [H5| H5]; auto.
 rewrite <- H5; auto.
-apply le_trans with (f b); auto.
+apply Nat.le_trans with (f b); auto.
 rewrite <- H2; auto with arith.
 intros H; rewrite H; split; simpl in |- *; auto.
 intros c [H1| H1]; rewrite H1 || case H1; auto.

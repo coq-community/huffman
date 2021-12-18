@@ -74,8 +74,8 @@ Theorem number_of_nodes_inb_le :
  forall t1 t2, inb t1 t2 -> number_of_nodes t1 <= number_of_nodes t2.
 Proof.
 intros t1 t2 H; elim H; clear H t1 t2; simpl in |- *; auto.
-intros t t1 t2 H H0; apply le_trans with (1 := H0); auto with arith.
-intros t t1 t2 H H0; apply le_trans with (1 := H0); auto with arith.
+intros t t1 t2 H H0; apply Nat.le_trans with (1 := H0); auto with arith.
+intros t t1 t2 H H0; apply Nat.le_trans with (1 := H0); auto with arith.
 Qed.
 
 (* Belonging is anisymmetric *)
@@ -246,7 +246,7 @@ Proof.
 intros t; elim t; simpl in |- *; auto with arith.
 intros b H b0 H0; rewrite app_length.
 replace 0 with (0 + 0); auto with arith.
-apply plus_lt_compat.
+apply Nat.add_lt_mono.
 generalize H; elim (compute_code b); simpl in |- *; auto with arith.
 generalize H0; elim (compute_code b0); simpl in |- *; auto with arith.
 Qed.
