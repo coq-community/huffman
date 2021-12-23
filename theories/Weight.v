@@ -154,9 +154,9 @@ Definition restrict_code (m : list A) (c : code A) :
   map (fun x => (fst x, find_code eqA_dec (fst x) c))
     (frequency_list eqA_dec m).
 
-Theorem ulist_unique_key :
+Theorem NoDup_unique_key :
  forall (A B : Type) (l : list (A * B)),
- ulist (map (fst (B:=_)) l) -> unique_key l.
+ NoDup (map (fst (B:=_)) l) -> unique_key l.
 Proof.
 intros AA BB l; elim l; simpl in |- *; auto.
 intros a; case a.
@@ -165,20 +165,20 @@ intros b0; red in |- *; intros H1; absurd (In a0 (map (fst (B:=_)) l0)); auto.
 inversion H0; auto.
 change (In (fst (a0, b0)) (map (fst (B:=_)) l0)) in |- *; auto with datatypes.
 apply in_map; auto.
-apply H; apply ulist_inv with (1 := H0); auto.
+apply H; apply NoDup_cons_iff with (1 := H0); auto.
 Qed.
  
 Theorem restrict_code_unique_key :
  forall (m : list A) (c : code A), unique_key (restrict_code m c).
 Proof.
-intros m c; apply ulist_unique_key.
+intros m c; apply NoDup_unique_key.
 unfold restrict_code in |- *.
 replace
  (map (fst (B:=_))
     (map (fun x : A * nat => (fst x, find_code eqA_dec (fst x) c))
        (frequency_list eqA_dec m))) with
  (map (fst (B:=_)) (frequency_list eqA_dec m)).
-apply unique_key_ulist; auto.
+apply unique_key_NoDup; auto.
 elim (frequency_list eqA_dec m); simpl in |- *; auto with datatypes.
 intros a l H; apply f_equal2 with (f := cons (A:=A)); auto.
 Qed.

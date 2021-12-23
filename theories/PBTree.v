@@ -774,26 +774,26 @@ Qed.
 
 (* If the list of all leaves is unique, the tree has distinct leaves *)
 Theorem all_pbleaves_unique :
- forall t, ulist (all_pbleaves t) -> distinct_pbleaves t.
+ forall t, NoDup (all_pbleaves t) -> distinct_pbleaves t.
 Proof.
 intros t; elim t; simpl in |- *; auto.
 intros b H b0 H0 H1; red in |- *.
 intros t0 t1 t2 H2; inversion H2.
 intros H4 H7; case (inpb_ex t0); intros a HH.
-apply ulist_app_inv with (a := a) (1 := H1); auto; apply all_pbleaves_in;
+apply NoDup_app_inv with (a := a) (1 := H1); auto; apply all_pbleaves_in;
  apply inpb_trans with (1 := HH); auto.
-apply H; auto; try apply ulist_app_inv_l with (1 := H1).
-apply H0; auto; try apply ulist_app_inv_r with (1 := H1).
+apply H; auto; try apply NoDup_app_inv_l with (1 := H1).
+apply H0; auto; try apply NoDup_app_inv_r with (1 := H1).
 Qed.
 
 (* If the tree has distinct leaves, the list of all leaves is unique *)
-Theorem all_pbleaves_ulist :
- forall t, distinct_pbleaves t -> ulist (all_pbleaves t).
+Theorem all_pbleaves_NoDup :
+ forall t, distinct_pbleaves t -> NoDup (all_pbleaves t).
 Proof.
-intros t; elim t; simpl in |- *; auto.
+intros t; elim t; simpl in |- *; auto using NoDup_cons,NoDup_nil.
 intros p H H0; apply H; apply distinct_pbleaves_pl; auto.
 intros p H H0; apply H; apply distinct_pbleaves_pr; auto.
-intros b H b0 H0 H1; apply ulist_app; auto.
+intros b H b0 H0 H1; apply NoDup_app; auto.
 apply H; apply distinct_pbleaves_l with (1 := H1).
 apply H0; apply distinct_pbleaves_r with (1 := H1).
 intros a H2 H3; case (H1 (pbleaf a) b b0); auto.
@@ -840,43 +840,43 @@ intros b; case b; simpl in |- *; auto.
 Qed.
 
 (* Adding a new leaf preserves the uniqueness of the list of all leaves *)
-Theorem ulist_pbadd_prop2 :
+Theorem NoDup_pbadd_prop2 :
  forall a1 l1 t,
  ~ inpb (pbleaf a1) t ->
- ulist (all_pbleaves t) -> ulist (all_pbleaves (pbadd a1 t l1)).
+ NoDup (all_pbleaves t) -> NoDup (all_pbleaves (pbadd a1 t l1)).
 Proof.
-intros a1 l1; elim l1; simpl in |- *; auto.
+intros a1 l1; elim l1; simpl in |- *; auto using NoDup_cons,NoDup_nil.
 intros b; case b; simpl in |- *; auto.
 intros l H t; case t; simpl in |- *; auto.
-intros a H0 H1; rewrite all_pbleaves_pbleaf; simpl in |- *; auto.
+intros a H0 H1; rewrite all_pbleaves_pbleaf; simpl in |- *; auto using NoDup_cons,NoDup_nil.
 rewrite all_pbleaves_pbleaf; intros p H0 H1.
-apply ulist_app; simpl in |- *; auto.
+apply NoDup_app; simpl in |- *; auto using NoDup_cons,NoDup_nil.
 intros a H2 [H3| H3]; auto; (case H0; rewrite H3); auto.
 apply all_pbleaves_inpb; auto.
-intros p p0 H0 H1; apply ulist_app; auto.
-apply ulist_app_inv_l with (1 := H1); auto.
+intros p p0 H0 H1; apply NoDup_app; auto.
+apply NoDup_app_inv_l with (1 := H1); auto.
 apply H.
 contradict H0; auto.
-apply ulist_app_inv_r with (1 := H1); auto.
+apply NoDup_app_inv_r with (1 := H1); auto.
 intros a H2 H3; case all_pbleaves_pbadd with (1 := H3).
 intros H4; contradict H0; rewrite <- H4; apply all_pbleaves_inpb;
  simpl in |- *; auto with datatypes.
-intros H4; apply ulist_app_inv with (1 := H1) (a := a); auto.
+intros H4; apply NoDup_app_inv with (1 := H1) (a := a); auto.
 intros l H t; case t; simpl in |- *; auto.
-intros a H0 H1; rewrite all_pbleaves_pbleaf; simpl in |- *; auto.
+intros a H0 H1; rewrite all_pbleaves_pbleaf; simpl in |- *; auto using NoDup_cons,NoDup_nil.
 rewrite all_pbleaves_pbleaf; intros p H0 H1.
-apply ulist_app; simpl in |- *; auto.
+apply NoDup_app; simpl in |- *; auto using NoDup_cons,NoDup_nil.
 intros a [H3| H3] H2; auto; (case H0; rewrite H3); auto.
 apply all_pbleaves_inpb; auto.
-intros p p0 H0 H1; apply ulist_app; auto.
+intros p p0 H0 H1; apply NoDup_app; auto.
 apply H.
 contradict H0; auto.
-apply ulist_app_inv_l with (1 := H1); auto.
-apply ulist_app_inv_r with (1 := H1); auto.
+apply NoDup_app_inv_l with (1 := H1); auto.
+apply NoDup_app_inv_r with (1 := H1); auto.
 intros a H2 H3; case all_pbleaves_pbadd with (1 := H2).
 intros H4; contradict H0; rewrite <- H4; apply all_pbleaves_inpb;
  simpl in |- *; auto with datatypes.
-intros H4; apply ulist_app_inv with (1 := H1) (a := a); auto.
+intros H4; apply NoDup_app_inv with (1 := H1) (a := a); auto.
 Qed.
 
 (*
@@ -889,8 +889,8 @@ Theorem distinct_pbleaves_pbadd_prop2 :
  distinct_pbleaves l -> distinct_pbleaves (pbadd a1 l l1).
 Proof.
 intros a1 l1 l H H0; apply all_pbleaves_unique.
-apply ulist_pbadd_prop2; auto.
-apply all_pbleaves_ulist; auto.
+apply NoDup_pbadd_prop2; auto.
+apply all_pbleaves_NoDup; auto.
 Qed.
 
 (* Adding always on the left creates a left tree *)
