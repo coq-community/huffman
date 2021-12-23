@@ -40,53 +40,6 @@ Qed.
 
 #[export] Hint Resolve le_minus: arith.
 
-(*A function to compare naturals *)
-Section LeBool.
- 
-Fixpoint le_bool (a b : nat) {struct b} : bool :=
-  match a, b with
-  | O, _ => true
-  | S a1, S b1 => le_bool a1 b1
-  | _, _ => false
-  end.
- 
-Theorem le_bool_correct1 : forall a b : nat, a <= b -> le_bool a b = true.
-Proof.
-intros a; elim a; simpl in |- *; auto.
-intros b; case b; simpl in |- *; auto.
-intros n H b; case b; simpl in |- *.
-intros H1; inversion H1.
-intros n0 H0; apply H.
-apply le_S_n; auto.
-Qed.
- 
-Theorem le_bool_correct2 : forall a b : nat, b < a -> le_bool a b = false.
-Proof.
-intros a; elim a; simpl in |- *; auto.
-intros b H1; inversion H1.
-intros n H b; case b; simpl in |- *; auto.
-intros n0 H0; apply H.
-apply Nat.succ_lt_mono; auto.
-Qed.
- 
-Theorem le_bool_correct3 : forall a b : nat, le_bool a b = true -> a <= b.
-Proof.
-intros a; elim a; simpl in |- *; auto.
-intros b; case b; simpl in |- *; auto with arith.
-intros n H b; case b; simpl in |- *; try (intros; discriminate);
- auto with arith.
-Qed.
- 
-Theorem le_bool_correct4 : forall a b : nat, le_bool a b = false -> b <= a.
-Proof.
-intros a; elim a; simpl in |- *; auto.
-intros b; case b; simpl in |- *; try (intros; discriminate); auto with arith.
-intros n H b; case b; simpl in |- *; try (intros; discriminate);
- auto with arith.
-Qed.
- 
-End LeBool.
-
 (* Properties of the fold operator *)
 Section Fold.
 

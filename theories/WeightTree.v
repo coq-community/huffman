@@ -36,18 +36,19 @@ Fixpoint sum_leaves (t : btree A) : nat :=
 
 Definition sum_order x y := sum_leaves x <= sum_leaves y.
 
-Definition le_sum x y := le_bool (sum_leaves x) (sum_leaves y).
+Definition le_sum x y := sum_leaves x <=? sum_leaves y.
  
 Theorem le_sum_correct1 :
  forall a b1 : btree A, le_sum a b1 = true -> sum_order a b1.
 Proof.
-intros a b1; apply (le_bool_correct3 (sum_leaves a) (sum_leaves b1)).
+intros a b1; apply (leb_complete (sum_leaves a) (sum_leaves b1)).
 Qed.
  
 Theorem le_sum_correct2 :
  forall a b1 : btree A, le_sum a b1 = false -> sum_order b1 a.
 Proof.
-intros a b1; apply (le_bool_correct4 (sum_leaves a) (sum_leaves b1)).
+intros a b1 Hsum; apply Nat.leb_gt in Hsum.
+unfold sum_order; auto with arith.
 Qed.
  
 Fixpoint weight_tree (t : btree A) : nat :=

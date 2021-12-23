@@ -171,7 +171,7 @@ match l1 with
 | (n1, c1) :: (n2, c2) :: l0 => fun _ _ _ _ _ =>
   let (c3, _) :=
    huffman_aux_rec
-     (insert (fun x y => le_bool (fst x) (fst y))
+     (insert (fun x y => fst x <=? fst y)
       (n1 + n2,
        map (fun x => (fst x, false :: snd x)) c1 ++
         map (fun x => (fst x, true :: snd x)) c2) l0) _ _ _ _ _ _
@@ -208,8 +208,8 @@ Next Obligation.
 Qed.
 Next Obligation.
   apply insert_ordered; auto.
-  intros a b H5; apply le_bool_correct3; auto.
-  intros a b H5; apply le_bool_correct4; auto.
+  intros a b H5; apply leb_complete; auto.
+  intros a b H5; apply Nat.leb_gt in H5; auto with arith.
   apply ordered_inv with (a := (n2, c2)).
   apply ordered_inv with (a := (n1, c1)); auto.
 Qed.
@@ -337,7 +337,7 @@ Program Definition huffman :
    in_alphabet m c1 -> weight eqA_dec m c <= weight eqA_dec m c1)} :=
 let (c, _) :=
   huffman_aux
-    (isort (fun x y => le_bool (fst x) (fst y))
+    (isort (fun x y => fst x <=? fst y)
       (map (fun x => (snd x, (fst x, []) :: [])) (frequency_list eqA_dec m))) _ _ _ _ _
 in exist _ c _.
 Next Obligation.
@@ -353,7 +353,7 @@ Next Obligation.
       with
         ((snd p, (fst p, []) :: [])
            :: isort
-           (fun x y : nat * list (A * list bool) => le_bool (fst x) (fst y))
+           (fun x y : nat * list (A * list bool) => fst x <=? fst y)
            (map (fun x : A * nat => (snd x, (fst x, []) :: [])) l));
     auto with datatypes.
   (* FIXME: prove by contradict instead *)
@@ -361,8 +361,8 @@ Next Obligation.
 Qed.
 Next Obligation.
   apply isort_ordered; auto.
-  intros a b H0; apply le_bool_correct3; auto.
-  intros a b H0; apply le_bool_correct4; auto.
+  intros a b H0; apply leb_complete; auto.
+  intros a b H0; apply Nat.leb_gt in H0; auto with arith.
 Qed.
 Next Obligation.
   cut
