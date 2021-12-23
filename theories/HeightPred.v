@@ -32,7 +32,7 @@ Set Default Proof Using "Type".
 Section HeightPred.
 Variable A : Type.
 Variable f : A -> nat.
-Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
+Variable A_eq_dec : forall a b : A, {a = b} + {a <> b}.
 
 (* 
   A predicate that associates an initial height, a list of
@@ -471,8 +471,8 @@ Qed.
 Theorem weight_tree_compute :
  forall (m : list A) t,
  distinct_leaves t ->
- (forall a : A, f a = number_of_occurrences eqA_dec a m) ->
- length (encode eqA_dec (compute_code t) m) = weight_tree f t.
+ (forall a : A, f a = number_of_occurrences A_eq_dec a m) ->
+ length (encode A_eq_dec (compute_code t) m) = weight_tree f t.
 Proof.
 intros m t H0 H.
 rewrite frequency_length; auto.
@@ -484,7 +484,7 @@ rewrite
                with
                (f := 
                  fun (a : nat) (b : A * list bool) =>
-                 a + number_of_occurrences eqA_dec (fst b) m * length (snd b))
+                 a + number_of_occurrences A_eq_dec (fst b) m * length (snd b))
               (f1 := 
                 fun (a : nat) (b : A * list bool) =>
                 a + (fun b => f (fst b) * length (snd b)) b); 

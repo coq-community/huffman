@@ -35,7 +35,7 @@ Section Code.
 (* Arbitrary set *)
 Variable A : Type.
 (* Equality is decidable *)
-Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
+Variable A_eq_dec : forall a b : A, {a = b} + {a <> b}.
 
 Local Hint Constructors Permutation : core.
 Local Hint Resolve Permutation_refl : core.
@@ -93,7 +93,7 @@ Definition code_dec :
   {(exists l : list bool, In (a, l) c)} +
   {(forall l : list bool, ~ In (a, l) c)}.
 intros c a; elim c; simpl in |- *; auto.
-intros (a1, l1) l H; case (eqA_dec a1 a); intros H1.
+intros (a1, l1) l H; case (A_eq_dec a1 a); intros H1.
 left; exists l1; rewrite H1; auto.
 case H.
 intros e; left; case e; intros l2 H2; exists l2; auto.
@@ -260,7 +260,7 @@ Fixpoint find_code (a : A) (l : code) {struct l} : list bool :=
   match l with
   | [] => []
   | (b, c) :: l1 =>
-      match eqA_dec a b with
+      match A_eq_dec a b with
       | left _ => c
       | right _ => find_code a l1
       end
@@ -274,7 +274,7 @@ Proof.
 intros c a b l; elim c; simpl in |- *; auto.
 intros; discriminate.
 intros a0; case a0.
-intros a1; case (eqA_dec a a1); simpl in |- *; auto.
+intros a1; case (A_eq_dec a a1); simpl in |- *; auto.
 intros e l0 l1 H H0; left;
  apply f_equal2 with (f := pair (A:=A) (B:=list bool)); 
  auto.
@@ -288,7 +288,7 @@ Proof.
 intros c a l; generalize a l; elim c; clear a l c; simpl in |- *; auto.
 intros a l H H0; case H0.
 intros a; case a.
-intros a0 l l0 H a1 l1 H0 H1; case (eqA_dec a1 a0).
+intros a0 l l0 H a1 l1 H0 H1; case (A_eq_dec a1 a0).
 intros H2; case H1; intros H3.
 injection H3; auto.
 apply unique_key_in_inv with (l := (a0, l) :: l0) (a := a0); simpl in |- *;
@@ -306,7 +306,7 @@ Theorem not_in_find_code :
 Proof.
 intros a l; elim l; simpl in |- *; auto.
 intros (a1, l1) l0 H H0.
-case (eqA_dec a a1); auto.
+case (A_eq_dec a a1); auto.
 intros H1; case (H0 l1); rewrite H1; auto.
 intros H1; apply H; intros p; red in |- *; intros Hp; case (H0 p); auto.
 Qed.
@@ -322,7 +322,7 @@ Theorem find_code_app :
  end.
 Proof.
 intros a l1; generalize a; elim l1; simpl in |- *; auto; clear a l1.
-intros (a1, l1) l H a l2 H1; case (eqA_dec a a1); auto.
+intros (a1, l1) l H a l2 H1; case (A_eq_dec a a1); auto.
 generalize H1; case l1; auto.
 intros H0; case (H0 a1); simpl in |- *; auto.
 cut (not_null l); simpl in |- *; auto.
@@ -336,14 +336,14 @@ Theorem find_code_permutation :
 Proof.
 intros a c1 c2 H; elim H; simpl in |- *; auto.
 intros a0; case a0.
-intros a1; case (eqA_dec a a1); auto.
+intros a1; case (A_eq_dec a a1); auto.
 intros n l L1 L2 H0 H1 H2; apply H1.
 apply unique_prefix_inv with (1 := H2).
 intros a0; case a0.
 intros a1 l1.
-case (eqA_dec a a1).
+case (A_eq_dec a a1).
 intros Ha1 b; case b; auto.
-intros a2 l2 L HL; case (eqA_dec a a2); auto.
+intros a2 l2 L HL; case (A_eq_dec a a2); auto.
 intros e.
 case unique_key_in with (1 := unique_prefix2 _ HL) (b2 := l1); auto.
 rewrite <- Ha1; rewrite e; simpl in |- *; auto.
@@ -369,9 +369,9 @@ Proof.
 intros p; elim p; simpl in |- *; auto.
 intros a l b H; case H.
 intros (a1, l1) l H a0 l0 b [H0| H0]; auto.
-case (eqA_dec a0 a1); auto.
+case (A_eq_dec a0 a1); auto.
 intros HH; case HH; injection H0; auto.
-case (eqA_dec a0 a1); auto.
+case (A_eq_dec a0 a1); auto.
 intros n; apply (H a0 l0 b); auto.
 Qed.
 
@@ -389,7 +389,7 @@ Theorem not_in_find_map :
                                 end) p) = [].
 Proof.
 intros p; elim p; simpl in |- *; auto.
-intros (a1, l1) l H a0 b H0; case (eqA_dec a0 a1); auto.
+intros (a1, l1) l H a0 b H0; case (A_eq_dec a0 a1); auto.
 intros e; case (H0 l1); rewrite e; auto.
 intros n; apply (H a0 b); auto.
 intros l0; red in |- *; intros H1; case (H0 l0); auto.
@@ -480,7 +480,7 @@ Theorem encode_cons_inv :
 Proof.
 intros a l1 l m1; generalize a l1 l; elim m1; simpl in |- *; auto;
  clear a l1 l m1.
-intros a l H a0 l1 l0 H0; case (eqA_dec a a0); simpl in |- *; auto.
+intros a l H a0 l1 l0 H0; case (A_eq_dec a a0); simpl in |- *; auto.
 intros H1; case H0; auto.
 intros e; rewrite H; auto.
 Qed.
@@ -605,28 +605,28 @@ Qed.
 (* A unique prefix code in an alphabet of at least 2 elements is non-empty *)
 Theorem frequency_not_null :
  forall m (c : code),
- 1 < length (frequency_list eqA_dec m) ->
+ 1 < length (frequency_list A_eq_dec m) ->
  unique_prefix c -> in_alphabet m c -> not_null c.
 Proof.
 intros m c H H0 H1.
-case_eq (frequency_list eqA_dec m); auto.
+case_eq (frequency_list A_eq_dec m); auto.
 intros H2; rewrite H2 in H; contradict H; simpl in |- *; auto with arith.
 intros p l; case p; case l; simpl in |- *; auto.
 intros a n H2; rewrite H2 in H; contradict H; simpl in |- *; auto with arith.
 intros p0 l0; case p0; intros b nb a na H2.
 apply unique_prefix_not_null with a b; auto.
 intros H3; absurd (In (fst (a, na)) (fst (b, nb) :: map (fst (B:=_)) l0)).
-cut (NoDup (map (fst (B:=_)) (frequency_list eqA_dec m))).
+cut (NoDup (map (fst (B:=_)) (frequency_list A_eq_dec m))).
 rewrite H2; simpl in |- *; intros H4; inversion H4.
 case H7; rewrite H3; auto with datatypes.
 apply unique_key_NoDup.
 apply frequency_list_unique.
 simpl in |- *; rewrite H3; auto with datatypes.
 case (H1 a); auto.
-apply frequency_list_in with eqA_dec na; rewrite H2; auto with datatypes.
+apply frequency_list_in with A_eq_dec na; rewrite H2; auto with datatypes.
 intros l1 Hl1; apply in_alphabet_cons with l1; auto.
 case (H1 b); auto.
-apply frequency_list_in with eqA_dec nb; rewrite H2; auto with datatypes.
+apply frequency_list_in with A_eq_dec nb; rewrite H2; auto with datatypes.
 intros l2 Hl2; apply in_alphabet_cons with l2; auto.
 Qed.
  

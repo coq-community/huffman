@@ -33,7 +33,7 @@ Set Default Proof Using "Type".
 Section PBTree.
 Variable A : Type.
 Variable empty : A.
-Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
+Variable A_eq_dec : forall a b : A, {a = b} + {a <> b}.
 
 Local Hint Constructors Permutation : core.
 Local Hint Resolve Permutation_refl : core.
@@ -70,7 +70,7 @@ Local Hint Constructors inpb : core.
 Definition pbtree_dec : forall a b : pbtree, {a = b} + {a <> b}.
 intros a; elim a; simpl in |- *; auto.
 intros a0 b; case b; try (intros; right; red in |- *; intros; discriminate).
-intros a1; case (eqA_dec a0 a1); intros H1.
+intros a1; case (A_eq_dec a0 a1); intros H1.
 left; rewrite H1; auto.
 right; red in |- *; contradict H1; inversion H1; auto.
 intros p H b; case b; try (intros; right; red in |- *; intros; discriminate).
@@ -95,7 +95,7 @@ Definition inpb_dec : forall a b, {inpb a b} + {~ inpb a b}.
 intros a b; elim b.
 intros a0; case a;
  try (intros; right; red in |- *; intros HH; inversion HH; auto; fail).
-intros a1; case (eqA_dec a1 a0); intros HH.
+intros a1; case (A_eq_dec a1 a0); intros HH.
 left; rewrite HH; auto.
 right; contradict HH; inversion HH; auto.
 intros p Hp; case Hp; auto; intros HH.

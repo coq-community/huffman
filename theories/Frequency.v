@@ -30,7 +30,7 @@ Set Default Proof Using "Type".
  
 Section Frequency.
 Variable A : Type.
-Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
+Variable A_eq_dec : forall a b : A, {a = b} + {a <> b}.
 
 Local Hint Constructors Permutation : core.
 Local Hint Resolve Permutation_refl : core.
@@ -50,7 +50,7 @@ Fixpoint add_frequency_list (a : A) (l : list (A * nat)) {struct l} :
   match l with
   | [] => (a, 1) :: []
   | (b, n) :: l1 =>
-      match eqA_dec a b with
+      match A_eq_dec a b with
       | left _ => (a, S n) :: l1
       | right _ => (b, n) :: add_frequency_list a l1
       end
@@ -67,7 +67,7 @@ Theorem add_frequency_list_perm :
 Proof.
 intros a l; generalize a; elim l; simpl in |- *; clear a l; auto.
 intros (a, n) l H b.
-case (eqA_dec b a); auto.
+case (A_eq_dec b a); auto.
 intros e; simpl in |- *; rewrite e; auto.
 simpl in |- *.
 intros e;
@@ -95,7 +95,7 @@ Proof.
 intros a1 a2 b1 l; elim l; simpl in |- *; auto.
 intros [H1| H1]; auto; injection H1; auto.
 intros (a3, b3) l1 Rec; simpl in |- *; auto.
-case (eqA_dec a2 a3); simpl in |- *; auto.
+case (A_eq_dec a2 a3); simpl in |- *; auto.
 intros e H; cut (In (a1, b1) ((a2, S b3) :: l1)); auto.
 simpl in |- *; intros [H1| H1]; auto.
 injection H1; auto.
@@ -107,7 +107,7 @@ Theorem add_frequency_list_unique_key :
  forall (a : A) l, unique_key l -> unique_key (add_frequency_list a l).
 Proof.
 intros a l; elim l; simpl in |- *; auto.
-intros (a1, n1) l1 Rec H; case (eqA_dec a a1).
+intros (a1, n1) l1 Rec H; case (A_eq_dec a a1).
 intros e; apply unique_key_perm with (l1 := (a, S n1) :: l1); auto.
 apply unique_key_cons; auto.
 intros b; red in |- *; intros H0; case (unique_key_in _ _ _ _ b _ H); auto.
@@ -127,7 +127,7 @@ Theorem add_frequency_list_1 :
 Proof.
 intros a l; generalize a; elim l; clear a l; simpl in |- *; auto.
 intros (a1, l1) l0 H a H0.
-case (eqA_dec a a1); auto.
+case (A_eq_dec a a1); auto.
 intros H1; case (H0 l1); left;
  apply f_equal2 with (f := pair (A:=A) (B:=nat)); auto.
 intros n; apply in_cons; auto; apply H; auto.
@@ -140,7 +140,7 @@ Theorem add_frequency_list_in :
  unique_key m -> In (a, n) m -> In (a, S n) (add_frequency_list a m).
 Proof.
 intros m; elim m; clear m; simpl in |- *; auto.
-intros (a1, l1) l Rec a n H H1; case (eqA_dec a a1); simpl in |- *; auto.
+intros (a1, l1) l Rec a n H H1; case (A_eq_dec a a1); simpl in |- *; auto.
 intros H2; case H1; auto.
 intros H3; left; apply f_equal2 with (f := pair (A:=A) (B:=nat));
  injection H3; auto.
@@ -156,7 +156,7 @@ Theorem add_frequency_list_not_in :
  forall m a b n, a <> b -> In (a, n) m -> In (a, n) (add_frequency_list b m).
 Proof.
 intros m; elim m; clear m; simpl in |- *; auto.
-intros (a1, l1) l H a0 b n H0 [H1| H1]; case (eqA_dec b a1); simpl in |- *;
+intros (a1, l1) l H a0 b n H0 [H1| H1]; case (A_eq_dec b a1); simpl in |- *;
  auto.
 intros H2; case H0; injection H1; auto.
 intros; apply trans_equal with (2 := sym_equal H2); auto.
@@ -207,11 +207,11 @@ intros l; elim l; simpl in |- *; auto.
 intros a l0 H a0 [H0| H0]; auto.
 rewrite H0; elim (frequency_list l0); simpl in |- *; auto.
 intros (a1, l1) l2; simpl in |- *; auto.
-case (eqA_dec a0 a1); simpl in |- *; auto.
+case (A_eq_dec a0 a1); simpl in |- *; auto.
 cut (In a0 (map (fst (A:=A) (B:=nat)) (frequency_list l0))); auto.
 elim (frequency_list l0); simpl in |- *; auto.
 intros (a1, l1) l2; simpl in |- *; auto.
-case (eqA_dec a a1); simpl in |- *; auto.
+case (A_eq_dec a a1); simpl in |- *; auto.
 intros e H1 [H2| H2]; auto; left; rewrite <- H2; auto.
 intros e H1 [H2| H2]; auto.
 Qed.
@@ -231,7 +231,7 @@ Fixpoint number_of_occurrences (a : A) (l : list A) {struct l} : nat :=
   match l with
   | [] => 0
   | b :: l1 =>
-      match eqA_dec a b with
+      match A_eq_dec a b with
       | left _ => S (number_of_occurrences a l1)
       | right _ => number_of_occurrences a l1
       end
@@ -242,7 +242,7 @@ Theorem number_of_occurrences_O :
  forall a l, ~ In a l -> number_of_occurrences a l = 0.
 Proof.
 intros a l; elim l; simpl in |- *; auto.
-intros a0 l0 H H0; case (eqA_dec a a0); auto.
+intros a0 l0 H H0; case (A_eq_dec a a0); auto.
 intros H1; case H0; auto.
 Qed.
 
@@ -255,7 +255,7 @@ Proof.
 intros m; elim m; simpl in |- *; auto.
 intros a; exists []; split; auto with datatypes.
 intros a l H a0.
-case (eqA_dec a0 a); simpl in |- *; intros H1.
+case (A_eq_dec a0 a); simpl in |- *; intros H1.
 case (H a0); intros m1 (H2, H3).
 exists m1; split; auto.
 pattern a0 at 1 in |- *; rewrite H1; auto.
@@ -277,7 +277,7 @@ Theorem number_of_occurrences_app :
  number_of_occurrences a l1 + number_of_occurrences a l2.
 Proof.
 intros l1; elim l1; simpl in |- *; auto.
-intros a l H l2 a0; case (eqA_dec a0 a); intros H1; simpl in |- *; auto.
+intros a l H l2 a0; case (A_eq_dec a0 a); intros H1; simpl in |- *; auto.
 Qed.
 
 (* Permutation preserves the number of occurrences *)
@@ -286,10 +286,10 @@ Theorem number_of_occurrences_permutation :
  Permutation l1 l2 -> number_of_occurrences a l1 = number_of_occurrences a l2.
 Proof.
 intros l1 l2 a H; generalize a; elim H; clear H a l1 l2; simpl in |- *; auto.
-intros a L1 L2 H H0 a0; case (eqA_dec a a0); simpl in |- *; auto;
- case (eqA_dec a0 a); simpl in |- *; auto.
-intros a b L a0; case (eqA_dec a0 a); simpl in |- *; auto;
- case (eqA_dec a0 b); simpl in |- *; auto.
+intros a L1 L2 H H0 a0; case (A_eq_dec a a0); simpl in |- *; auto;
+ case (A_eq_dec a0 a); simpl in |- *; auto.
+intros a b L a0; case (A_eq_dec a0 a); simpl in |- *; auto;
+ case (A_eq_dec a0 b); simpl in |- *; auto.
 intros L1 L2 L3 H H0 H1 H2 a; apply trans_equal with (1 := H0 a); auto.
 Qed.
 
@@ -298,8 +298,8 @@ Theorem frequency_number_of_occurrences :
  forall a m, In a m -> In (a, number_of_occurrences a m) (frequency_list m).
 Proof.
 intros a m; generalize a; elim m; clear m a; simpl in |- *; auto.
-intros a l H a0 H0; case (eqA_dec a0 a); simpl in |- *; auto.
-intros e; case (In_dec eqA_dec a0 l).
+intros a l H a0 H0; case (A_eq_dec a0 a); simpl in |- *; auto.
+intros e; case (In_dec A_eq_dec a0 l).
 intros H1; rewrite e; apply add_frequency_list_in; auto.
 apply (H a); rewrite <- e; auto.
 intros H1; rewrite number_of_occurrences_O; auto.

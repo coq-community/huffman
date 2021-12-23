@@ -32,13 +32,13 @@ Set Default Proof Using "Type".
 Section Restrict.
 Variable A : Type.
 Variable empty : A.
-Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
+Variable A_eq_dec : forall a b : A, {a = b} + {a <> b}.
 Variable m : list A.
 
 (* Restrict the code putting only codes of element in the frequency list *)
 Definition restrict_code (m : list A) (c : code A) : code A :=
-  map (fun x => (fst x, find_code eqA_dec (fst x) c))
-    (frequency_list eqA_dec m).
+  map (fun x => (fst x, find_code A_eq_dec (fst x) c))
+    (frequency_list A_eq_dec m).
 
 (* The restriction has unique keys *)
 Theorem restrict_code_unique_key :
@@ -48,24 +48,24 @@ intros c; apply NoDup_unique_key.
 unfold restrict_code in |- *.
 replace
  (map (fst (B:=_))
-    (map (fun x : A * nat => (fst x, find_code eqA_dec (fst x) c))
-       (frequency_list eqA_dec m))) with
- (map (fst (B:=_)) (frequency_list eqA_dec m)).
+    (map (fun x : A * nat => (fst x, find_code A_eq_dec (fst x) c))
+       (frequency_list A_eq_dec m))) with
+ (map (fst (B:=_)) (frequency_list A_eq_dec m)).
 apply unique_key_NoDup; auto.
-elim (frequency_list eqA_dec m); simpl in |- *; auto with datatypes.
+elim (frequency_list A_eq_dec m); simpl in |- *; auto with datatypes.
 intros a l H; apply f_equal2 with (f := cons (A:=A)); auto.
 Qed.
 
 (* Doing the restriction does not change the codes *) 
 Theorem restrict_code_in :
  forall (a : A) (c : code A),
- In a m -> find_code eqA_dec a c = find_code eqA_dec a (restrict_code m c).
+ In a m -> find_code A_eq_dec a c = find_code A_eq_dec a (restrict_code m c).
 Proof.
 intros a c H.
 apply sym_equal; apply find_code_correct2; auto.
 apply restrict_code_unique_key.
-generalize (in_frequency_map _ eqA_dec m a H).
-unfold restrict_code in |- *; elim (frequency_list eqA_dec m); simpl in |- *;
+generalize (in_frequency_map _ A_eq_dec m a H).
+unfold restrict_code in |- *; elim (frequency_list A_eq_dec m); simpl in |- *;
  auto with datatypes.
 intros a0; case a0; simpl in |- *; auto with datatypes.
 intros a1 n l H0 [H1| H1]; try rewrite H1; auto.
@@ -77,7 +77,7 @@ Qed.
 *)
 Theorem restrict_code_encode_incl :
  forall (m1 : list A) (c : code A),
- incl m1 m -> encode eqA_dec c m1 = encode eqA_dec (restrict_code m c) m1.
+ incl m1 m -> encode A_eq_dec c m1 = encode A_eq_dec (restrict_code m c) m1.
 Proof.
 intros m1 c; elim m1; simpl in |- *; auto.
 intros a l H H0.
@@ -88,7 +88,7 @@ Qed.
 
 (* The restriction does not change the encoding of the initial message *)
 Theorem restrict_code_encode :
- forall c : code A, encode eqA_dec c m = encode eqA_dec (restrict_code m c) m.
+ forall c : code A, encode A_eq_dec c m = encode A_eq_dec (restrict_code m c) m.
 Proof.
 intros c; apply restrict_code_encode_incl; auto with datatypes.
 Qed.
@@ -127,10 +127,10 @@ Qed.
 (* Restricting do not change the frequency list *)
 Theorem frequency_list_restric_code_map :
  forall c,
- map (fst (B:=_)) (frequency_list eqA_dec m) =
+ map (fst (B:=_)) (frequency_list A_eq_dec m) =
  map (fst (B:=_)) (restrict_code m c).
 Proof.
-intros c; unfold restrict_code in |- *; elim (frequency_list eqA_dec m);
+intros c; unfold restrict_code in |- *; elim (frequency_list A_eq_dec m);
  simpl in |- *; auto.
 intros a0 l H; apply f_equal2 with (f := cons (A:=A)); auto.
 Qed.
@@ -143,12 +143,12 @@ unfold restrict_code in |- *.
 intros a0 l c H H1.
 absurd
  (In
-    ((fun x : A * nat => (fst x, find_code eqA_dec (fst x) c))
-       (a0, number_of_occurrences eqA_dec a0 (a0 :: l))) []);
+    ((fun x : A * nat => (fst x, find_code A_eq_dec (fst x) c))
+       (a0, number_of_occurrences A_eq_dec a0 (a0 :: l))) []);
  auto with datatypes.
 rewrite <- H1.
 apply
- in_map with (f := fun x : A * nat => (fst x, find_code eqA_dec (fst x) c)).
+ in_map with (f := fun x : A * nat => (fst x, find_code A_eq_dec (fst x) c)).
 apply frequency_number_of_occurrences; auto with datatypes.
 Qed.
 
@@ -162,7 +162,7 @@ Theorem restrict_code_pbbuild :
  unique_prefix c ->
  in_alphabet m c ->
  m <> [] ->
- Permutation (map fst (frequency_list eqA_dec m))
+ Permutation (map fst (frequency_list A_eq_dec m))
    (all_pbleaves (pbbuild empty (restrict_code m c))).
 Proof.
 intros c H H0 H1 H2.
