@@ -33,7 +33,7 @@ Set Default Proof Using "Type".
  
 Section Tree.
 Variable A : Type.
-Variable eqA_dec : forall a b : A, {a = b} + {a <> b}.
+Variable A_eq_dec : forall a b : A, {a = b} + {a <> b}.
 Variable empty : A.
 
 (* Definition of binary trees *)
@@ -98,7 +98,7 @@ Qed.
 Definition btree_dec : forall a b : btree, {a = b} + {a <> b}.
 intros a; elim a.
 intros a1 b; case b.
-intros b1; case (eqA_dec a1 b1).
+intros b1; case (A_eq_dec a1 b1).
 intros e; left; rewrite e; auto.
 intros e; right; contradict e; inversion e; auto.
 intros b0 b1; right; red in |- *; intros H; discriminate.
@@ -115,7 +115,7 @@ Defined.
 Definition inb_dec : forall a p, {inb a p} + {~ inb a p}.
 intros a; elim a; simpl in |- *; auto; clear a.
 intros a p; elim p; simpl in |- *; auto; clear p.
-intros a1; case (eqA_dec a a1); intros Ha.
+intros a1; case (A_eq_dec a a1); intros Ha.
 left; rewrite Ha; simpl in |- *; auto.
 right; red in |- *; contradict Ha; inversion Ha; auto.
 intros b [H| H]; auto.
@@ -218,7 +218,7 @@ Qed.
 (* Uniqueleaf is decidable *)
 Definition distinct_leaves_dec :
   forall a, {distinct_leaves a} + {~ distinct_leaves a}.
-intros a; case (NoDup_dec eqA_dec (all_leaves a)); intros H.
+intros a; case (NoDup_dec A_eq_dec (all_leaves a)); intros H.
 left; apply all_leaves_unique; auto.
 right; contradict H; apply all_leaves_NoDup; auto.
 Defined.
