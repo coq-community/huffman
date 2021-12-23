@@ -89,10 +89,10 @@ Qed.
   If the ordered cover is composed of only leaves, they are the
   exact leaves of the tree
 *) 
-Theorem ulist_ordered_cover :
+Theorem NoDup_ordered_cover :
  forall l1 l2 t,
  ordered_cover l1 t ->
- ulist l2 -> l1 = map (fun x : A => leaf x) l2 -> all_leaves t = l2.
+ NoDup l2 -> l1 = map (fun x : A => leaf x) l2 -> all_leaves t = l2.
 Proof.
 intros l1 l2 t H; generalize l2; elim H; clear H l1 l2 t; simpl in |- *; auto.
 intros t l l2; case l2; simpl in |- *; auto.
@@ -109,9 +109,9 @@ cut (l0 = l4 ++ l5); [ intros HH3 | idtac ].
 rewrite HH3.
 apply f_equal2 with (f := app (A:=A)).
 apply H0; auto.
-apply ulist_app_inv_l with (l2 := l5); rewrite <- HH3; auto.
+apply NoDup_app_inv_l with (l2 := l5); rewrite <- HH3; auto.
 apply H2; auto.
-apply ulist_app_inv_r with (l1 := l4); rewrite <- HH3; auto.
+apply NoDup_app_inv_r with (l1 := l4); rewrite <- HH3; auto.
 rewrite HH2 in H4; rewrite HH1 in H4.
 rewrite <- map_app in H4.
 generalize H4; generalize (l4 ++ l5); elim l0; simpl in |- *; auto.

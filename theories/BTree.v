@@ -26,7 +26,7 @@
 *)
 
 From Coq Require Export Compare_dec.
-From Coq Require Import ArithRing.
+From Coq Require Import ArithRing ListDec.
 From Huffman Require Export Code ISort Weight UniqueKey.
 
 Set Default Proof Using "Type".
@@ -190,24 +190,24 @@ Qed.
 
 (* If list of all the leaves of the tree is unique then the tree has distinct leaves *)
 Theorem all_leaves_unique :
- forall t, ulist (all_leaves t) -> distinct_leaves t.
+ forall t, NoDup (all_leaves t) -> distinct_leaves t.
 Proof.
 intros t; elim t; simpl in |- *; auto.
 intros b H b0 H0 H1; red in |- *.
 intros t0 t1 t2 H2; inversion H2.
 intros H4 H7; case (inb_ex t0); intros a HH.
-apply ulist_app_inv with (a := a) (1 := H1); auto; apply all_leaves_in;
+apply NoDup_app_inv with (a := a) (1 := H1); auto; apply all_leaves_in;
  apply inb_trans with (1 := HH); auto.
-apply H; auto; try apply ulist_app_inv_l with (1 := H1).
-apply H0; auto; try apply ulist_app_inv_r with (1 := H1).
+apply H; auto; try apply NoDup_app_inv_l with (1 := H1).
+apply H0; auto; try apply NoDup_app_inv_r with (1 := H1).
 Qed.
 
 (* If the tree has distinct leaves then the list of all the leaves of the tree is unique *)
-Theorem all_leaves_ulist :
- forall t, distinct_leaves t -> ulist (all_leaves t).
+Theorem all_leaves_NoDup :
+ forall t, distinct_leaves t -> NoDup (all_leaves t).
 Proof.
-intros t; elim t; simpl in |- *; auto.
-intros b H b0 H0 H1; apply ulist_app; auto.
+intros t; elim t; simpl in |- *; auto using NoDup_cons,NoDup_nil.
+intros b H b0 H0 H1; apply NoDup_app; auto.
 apply H; apply distinct_leaves_l with (1 := H1).
 apply H0; apply distinct_leaves_r with (1 := H1).
 intros a H2 H3; case (H1 (leaf a) b b0); auto.
@@ -218,9 +218,9 @@ Qed.
 (* Uniqueleaf is decidable *)
 Definition distinct_leaves_dec :
   forall a, {distinct_leaves a} + {~ distinct_leaves a}.
-intros a; case (ulist_dec A eqA_dec (all_leaves a)); intros H.
+intros a; case (NoDup_dec eqA_dec (all_leaves a)); intros H.
 left; apply all_leaves_unique; auto.
-right; contradict H; apply all_leaves_ulist; auto.
+right; contradict H; apply all_leaves_NoDup; auto.
 Defined.
 
 (* Compute the code associated with a binary tree *)

@@ -79,7 +79,7 @@ Proof.
 intros a H.
 apply all_leaves_unique.
 rewrite to_btree_all_leaves.
-apply all_pbleaves_ulist; auto.
+apply all_pbleaves_NoDup; auto.
 Qed.
 
 (* The transformation perserves distinct leaves *)
@@ -89,7 +89,7 @@ Proof.
 intros a H.
 apply all_pbleaves_unique.
 rewrite <- to_btree_all_leaves.
-apply all_leaves_ulist; auto.
+apply all_leaves_NoDup; auto.
 Qed.
 
 (* For each key, the resulting code of the computed tree is always smaller *)

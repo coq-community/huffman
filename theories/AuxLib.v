@@ -260,6 +260,47 @@ Theorem in_flat_map_ex :
 Proof.
 intros; apply in_flat_map; auto.
 Qed.
+
+Theorem NoDup_app :
+ forall l1 l2,
+ NoDup l1 ->
+ NoDup l2 -> (forall a : A, In a l1 -> In a l2 -> False) -> NoDup (l1 ++ l2).
+Proof.
+intros L1; elim L1; simpl in |- *; auto.
+intros a l H l2 H0 H1 H2; apply NoDup_cons; simpl in |- *; auto.
+red in |- *; intros H3; case in_app_or with (1 := H3); auto; intros H4.
+inversion H0; auto.
+apply H2 with a; auto.
+apply H; auto.
+apply NoDup_cons_iff with (1 := H0); auto.
+intros a0 H3 H4; apply (H2 a0); auto.
+Qed.
+
+Theorem NoDup_app_inv :
+ forall l1 l2 (a : A), NoDup (l1 ++ l2) -> In a l1 -> In a l2 -> False.
+Proof.
+intros l1; elim l1; simpl in |- *; auto.
+intros a l H l2 a0 H0 [H1| H1] H2.
+inversion H0; auto.
+case H5; rewrite H1; auto with datatypes.
+apply (H l2 a0); auto.
+apply NoDup_cons_iff with (1 := H0); auto.
+Qed.
+
+Theorem NoDup_app_inv_l :
+ forall (l1 l2 : list A), NoDup (l1 ++ l2) -> NoDup l1.
+Proof.
+intros l1; elim l1; simpl in |- *; auto using NoDup_nil.
+intros a l H l2 H0; inversion H0; apply NoDup_cons; auto.
+contradict H3; auto with datatypes.
+apply H with l2; auto.
+Qed.
+
+Theorem NoDup_app_inv_r : forall l1 l2 : list A, NoDup (l1 ++ l2) -> NoDup l2.
+Proof.
+intros l1; elim l1; simpl in |- *; auto.
+intros a l H l2 H0; inversion H0; auto.
+Qed.
  
 End List.
 

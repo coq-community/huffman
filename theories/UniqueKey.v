@@ -22,7 +22,7 @@
 *)
 
 From Coq Require Import Sorting.Permutation.
-From Huffman Require Export AuxLib UList.
+From Huffman Require Export AuxLib.
 
 Set Default Proof Using "Type".
 
@@ -112,11 +112,11 @@ intros a b c H3 H4; apply (H2 a b c); auto.
 Qed.
  
 (* The list of keys is unique *)
-Theorem unique_key_ulist :
- forall l : list (A * B), unique_key l -> ulist (map (fst (B:=_)) l).
+Theorem unique_key_NoDup :
+ forall l : list (A * B), unique_key l -> NoDup (map (fst (B:=_)) l).
 Proof.
-intros l; elim l; simpl in |- *; auto.
-intros a l0 H H0; apply ulist_cons.
+intros l; elim l; simpl in |- *; auto using NoDup_nil.
+intros a l0 H H0; apply NoDup_cons.
 inversion H0.
 red in |- *; intros H5; case in_map_inv with (1 := H5).
 intros (b2, l2); simpl in |- *; intros (Hb1, Hb2); case (H3 l2); auto.
@@ -125,8 +125,8 @@ apply H; apply unique_key_inv with (1 := H0); auto.
 Qed.
 
 (* A list of keys is unique gives a code with unique keys *)
-Theorem ulist_unique_key :
- forall l : list (A * B), ulist (map (fst (B:=_)) l) -> unique_key l.
+Theorem NoDup_unique_key :
+ forall l : list (A * B), NoDup (map (fst (B:=_)) l) -> unique_key l.
 Proof.
 intros l; elim l; simpl in |- *; auto.
 intros a; case a.
@@ -135,8 +135,8 @@ intros b0; red in |- *; intros H1; absurd (In a0 (map (fst (B:=_)) l0)); auto.
 inversion H0; auto.
 change (In (fst (a0, b0)) (map (fst (B:=_)) l0)) in |- *; auto with datatypes.
 apply in_map; auto.
-apply H; apply ulist_inv with (1 := H0); auto.
-Qed. 
+apply H; apply NoDup_cons_iff with (1 := H0); auto.
+Qed.
 
 End UniqueKey.
 #[export] Hint Constructors unique_key : core.

@@ -14,3 +14,4 @@ docs
 *.vok
 *.vos
 .lia.cache
+.coq-native

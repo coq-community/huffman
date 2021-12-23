@@ -6,7 +6,6 @@ theories/HeightPred.v
 theories/Ordered.v
 theories/SubstPred.v
 theories/OrderedCover.v
-theories/UList.v
 theories/BTree.v
 theories/CoverMin.v
 theories/ISort.v

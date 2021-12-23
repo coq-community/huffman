@@ -44,14 +44,14 @@ Definition restrict_code (m : list A) (c : code A) : code A :=
 Theorem restrict_code_unique_key :
  forall c : code A, unique_key (restrict_code m c).
 Proof.
-intros c; apply ulist_unique_key.
+intros c; apply NoDup_unique_key.
 unfold restrict_code in |- *.
 replace
  (map (fst (B:=_))
     (map (fun x : A * nat => (fst x, find_code eqA_dec (fst x) c))
        (frequency_list eqA_dec m))) with
  (map (fst (B:=_)) (frequency_list eqA_dec m)).
-apply unique_key_ulist; auto.
+apply unique_key_NoDup; auto.
 elim (frequency_list eqA_dec m); simpl in |- *; auto with datatypes.
 intros a l H; apply f_equal2 with (f := cons (A:=A)); auto.
 Qed.

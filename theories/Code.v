@@ -25,7 +25,7 @@
     Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
-From Coq Require Bool.Bool.
+From Coq Require Bool.
 From Coq Require Import Sorting.Permutation.
 From Huffman Require Export AuxLib UniqueKey Frequency.
 
@@ -616,10 +616,10 @@ intros a n H2; rewrite H2 in H; contradict H; simpl in |- *; auto with arith.
 intros p0 l0; case p0; intros b nb a na H2.
 apply unique_prefix_not_null with a b; auto.
 intros H3; absurd (In (fst (a, na)) (fst (b, nb) :: map (fst (B:=_)) l0)).
-cut (ulist (map (fst (B:=_)) (frequency_list eqA_dec m))).
+cut (NoDup (map (fst (B:=_)) (frequency_list eqA_dec m))).
 rewrite H2; simpl in |- *; intros H4; inversion H4.
 case H7; rewrite H3; auto with datatypes.
-apply unique_key_ulist.
+apply unique_key_NoDup.
 apply frequency_list_unique.
 simpl in |- *; rewrite H3; auto with datatypes.
 case (H1 a); auto.

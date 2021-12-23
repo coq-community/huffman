@@ -113,15 +113,15 @@ apply all_leaves_unique; auto.
 apply Permutation_sym in H4.
 case Permutation_map_inv with (1 := H4); auto.
 intros l2 (HH1, HH2).
-rewrite ulist_ordered_cover with (l1 := l1) (l2 := map (fst (B:=_)) l2); auto.
-apply ulist_perm with (l1 := map (fst (B:=_)) (frequency_list eqA_dec m));
+rewrite NoDup_ordered_cover with (l1 := l1) (l2 := map (fst (B:=_)) l2); auto.
+apply Permutation_NoDup with (l := map (fst (B:=_)) (frequency_list eqA_dec m));
  auto.
 apply Permutation_map; auto.
-apply unique_key_ulist; auto.
-apply ulist_perm with (l1 := map (fst (B:=_)) (frequency_list eqA_dec m));
+apply unique_key_NoDup; auto.
+apply Permutation_NoDup with (l := map (fst (B:=_)) (frequency_list eqA_dec m));
  auto.
 apply Permutation_map; auto.
-apply unique_key_ulist; auto.
+apply unique_key_NoDup; auto.
 rewrite HH1; elim l2; simpl in |- *; auto.
 intros a0 l H6; apply f_equal2 with (f := cons (A:=btree A)); auto.
 rewrite
@@ -422,28 +422,28 @@ Next Obligation.
   rewrite <- Hc1; auto.
   apply btree_unique_prefix; auto.
   apply all_leaves_unique; auto.
-  rewrite ulist_ordered_cover with (l1 := l1) (l2 := map (fst (B:=_)) l2); auto.
-  apply ulist_perm with (l1 := map (fst (B:=_)) (frequency_list eqA_dec m));
+  rewrite NoDup_ordered_cover with (l1 := l1) (l2 := map (fst (B:=_)) l2); auto.
+  apply Permutation_NoDup with (l := map (fst (B:=_)) (frequency_list eqA_dec m));
     auto.
   apply Permutation_map; auto.
-  apply unique_key_ulist; auto.
-  apply ulist_perm with (l1 := map (fst (B:=_)) (frequency_list eqA_dec m));
+  apply unique_key_NoDup; auto.
+  apply Permutation_NoDup with (l := map (fst (B:=_)) (frequency_list eqA_dec m));
     auto.
   apply Permutation_map; auto.
-  apply unique_key_ulist; auto.
+  apply unique_key_NoDup; auto.
   rewrite HH1; elim l2; simpl in |- *; auto.
   intros a0 l H6; apply f_equal2 with (f := cons (A:=btree A)); auto.
   split; auto.
   rewrite <- Hc1; auto.
   apply in_alphabet_compute_code; auto.
   intros a H; apply all_leaves_inb.
-  rewrite ulist_ordered_cover with (l1 := l1) (l2 := map (fst (B:=_)) l2); auto.
+  rewrite NoDup_ordered_cover with (l1 := l1) (l2 := map (fst (B:=_)) l2); auto.
   apply Permutation_in with (map (fst (B:=_)) (frequency_list eqA_dec m)); auto.
   apply Permutation_map; auto.
-  apply ulist_perm with (l1 := map (fst (B:=_)) (frequency_list eqA_dec m));
+  apply Permutation_NoDup with (l := map (fst (B:=_)) (frequency_list eqA_dec m));
     auto.
   apply Permutation_map; auto.
-  apply unique_key_ulist; auto.
+  apply unique_key_NoDup; auto.
   rewrite HH1; elim l2; simpl in |- *; auto.
   intros a0 l H6; apply f_equal2 with (f := cons (A:=btree A)); auto.
   intros c1 H H0.
