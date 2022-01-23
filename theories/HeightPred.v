@@ -377,9 +377,9 @@ intros Eq1; rewrite Eq1; rewrite E1; repeat rewrite app_ass.
 apply height_pred_node; auto.
 apply H2 with (b := b); auto.
 intros n1 H8; apply H4; (rewrite E1; auto with datatypes).
-rewrite length_skipn; rewrite <- Eq2; rewrite <- H6;
- rewrite <- length_skipn; rewrite E1; rewrite skipn_le_app2;
- auto; rewrite skipn_length_all; simpl in |- *; auto.
+rewrite skipn_length; rewrite <- Eq2; rewrite <- H6;
+ rewrite <- skipn_length; rewrite E1; rewrite skipn_le_app2;
+ auto; rewrite skipn_all; simpl in |- *; auto.
 apply app_inv_head with (l := l1).
 rewrite <- app_ass; rewrite <- Eq1; auto.
 apply sym_equal;
