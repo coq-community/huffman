@@ -167,8 +167,8 @@ Program Definition huffman_aux_F (l1 : list (nat * code A))
  huffman_aux_type l1 :=
 match l1 with
 | [] => eq_rect [] huffman_aux_type (fun _ _ _ _ _ => False_rect _ _) _ _
-| (n1, c1) :: [] => fun _ _ _ _ _ => exist _ c1 _
-| (n1, c1) :: (n2, c2) :: l0 => fun _ _ _ _ _ =>
+| (n1, c1) :: [] => fun nnil ord cc sl lin => exist _ c1 _
+| (n1, c1) :: (n2, c2) :: l0 => fun nnil ord cc sl lin =>
   let (c3, _) :=
    huffman_aux_rec
      (insert (fun x y => fst x <=? fst y)
@@ -178,9 +178,8 @@ match l1 with
   in exist _ c3 _
 end.
 Next Obligation.
-  simpl in |- *; repeat (split; auto).
-  apply H1 with (a := (n1, c1)); auto with datatypes.
-  apply build_one.
+  split; [|apply build_one].
+  apply cc with (a := (n1, c1)); auto with datatypes.
 Qed.
 Next Obligation.
   rewrite
@@ -224,20 +223,20 @@ Next Obligation.
     auto with datatypes.
   rewrite pbbuild_pbnode; simpl in |- *; auto with datatypes.
   apply f_equal2 with (f := app (A:=A * list bool)); auto.
-  generalize (H1 (n1, c1)); simpl in |- *; intros tmp; rewrite tmp; clear tmp;
+  generalize (cc (n1, c1)); simpl in |- *; intros tmp; rewrite tmp; clear tmp;
     auto with datatypes.
   elim c1; simpl in |- *; auto.
   intros a0; case a0; simpl in |- *; auto.
   intros a1 l1 l2 H7; apply f_equal2 with (f := cons (A:=A * list bool)); auto.
-  generalize (H1 (n2, c2)); simpl in |- *; intros tmp; rewrite tmp; clear tmp;
+  generalize (cc (n2, c2)); simpl in |- *; intros tmp; rewrite tmp; clear tmp;
     auto with datatypes.
   elim c2; simpl in |- *; auto.
   intros a0; case a0; simpl in |- *; auto.
   intros a1 l1 l2 H7; apply f_equal2 with (f := cons (A:=A * list bool));
     auto with datatypes.
-  generalize (H3 (n1, c1)); simpl in |- *; auto with datatypes.
-  generalize (H3 (n2, c2)); simpl in |- *; auto with datatypes.
-  apply Permutation_in with (2 := H4).
+  generalize (lin (n1, c1)); simpl in |- *; auto with datatypes.
+  generalize (lin (n2, c2)); simpl in |- *; auto with datatypes.
+  apply Permutation_in with (2 := H).
   apply Permutation_sym; apply insert_permutation.
 Qed.
 Next Obligation.
@@ -251,11 +250,11 @@ Next Obligation.
     auto with datatypes.
   rewrite pbbuild_pbnode; simpl in |- *; auto with datatypes.
   apply f_equal2 with (f := plus); auto.
-  generalize (H2 (n1, c1)); simpl in |- *; auto with datatypes.
-  generalize (H2 (n2, c2)); simpl in |- *; auto with datatypes.
-  generalize (H3 (n1, c1)); simpl in |- *; auto with datatypes.
-  generalize (H3 (n2, c2)); simpl in |- *; auto with datatypes.
-  apply Permutation_in with (2 := H4).
+  generalize (sl (n1, c1)); simpl in |- *; auto with datatypes.
+  generalize (sl (n2, c2)); simpl in |- *; auto with datatypes.
+  generalize (lin (n1, c1)); simpl in |- *; auto with datatypes.
+  generalize (lin (n2, c2)); simpl in |- *; auto with datatypes.
+  apply Permutation_in with (2 := H).
   apply Permutation_sym; apply insert_permutation.
 Qed.
 Next Obligation.
@@ -267,14 +266,14 @@ Next Obligation.
               map (fun x : A * list bool => (fst x, true :: snd x)) c2) :: l0)).
   simpl in |- *; intros [H6| H6]; try rewrite <- H6; simpl in |- *;
     auto with datatypes.
-  generalize (H3 (n1, c1)); case c1; simpl in |- *; auto with datatypes.
+  generalize (lin (n1, c1)); case c1; simpl in |- *; auto with datatypes.
   intros; discriminate.
-  apply Permutation_in with (2 := H4).
+  apply Permutation_in with (2 := H).
   apply Permutation_sym; apply insert_permutation.
 Qed.
 Next Obligation.
   split; auto.
-  apply build_step with (2 := H5); auto.
+  apply build_step with (2 := H0); auto.
   simpl in |- *; red in |- *.
   exists (map (fun x : nat * code A => to_btree (pbbuild empty (snd x))) l0);
     exists (to_btree (pbbuild empty c1)); exists (to_btree (pbbuild empty c2));
@@ -284,10 +283,10 @@ Next Obligation.
                (map (fun x : nat * code A => to_btree (pbbuild empty (snd x)))
                     ((n1, c1) :: (n2, c2) :: l0))) in |- *.
     apply ordered_map_inv; auto.
-    assert (H2': forall a, In a ((n1, c1) :: (n2, c2) :: l0) ->
+    assert (H2' : forall a, In a ((n1, c1) :: (n2, c2) :: l0) ->
      sum_leaves (fun x : A => number_of_occurrences A_eq_dec x m)
-      (to_btree (pbbuild empty (snd a))) = fst a) by apply H2.
-    generalize H2' H0; elim ((n1, c1) :: (n2, c2) :: l0); (simpl in |- *; auto).
+      (to_btree (pbbuild empty (snd a))) = fst a) by apply sl.
+    generalize H2' ord; elim ((n1, c1) :: (n2, c2) :: l0); (simpl in |- *; auto).
     intros a l1; case a; case l1; simpl in |- *; auto; clear a l1.
     intros p0 l1 n4 c4; case p0; intros n5 c5; simpl in |- *; clear p0; auto.
     intros H6 H7 H8; apply ordered_cons; unfold sum_order in |- *; simpl in |- *;
@@ -320,8 +319,8 @@ Next Obligation.
       auto.
     simpl in |- *; auto.
     rewrite pbbuild_pbnode; auto.
-    generalize (H3 (n1, c1)); simpl in |- *; auto with datatypes.
-    generalize (H3 (n2, c2)); simpl in |- *; auto with datatypes.
+    generalize (lin (n1, c1)); simpl in |- *; auto with datatypes.
+    generalize (lin (n2, c2)); simpl in |- *; auto with datatypes.
 Qed.
 
 Definition huffman_aux : forall l : list (nat * code A), huffman_aux_type l :=
