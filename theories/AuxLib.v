@@ -346,21 +346,6 @@ intros n0 H l1; case l1; simpl in |- *; auto with arith.
 intros l2 H1; contradict H1; auto with arith.
 Qed.
 
-(* skipn_length in >= 8.10 *)
-Theorem length_skipn :
- forall (n : nat) (l1 : list A), length (skipn n l1) = length l1 - n.
-Proof.
-intros n; elim n; simpl in |- *; auto with arith.
-intros n0 H l1; case l1; simpl in |- *; auto.
-Qed.
-
-(* skipn_all in >= 8.10 *)
-Theorem skipn_length_all :
- forall l : list A, skipn (length l) l = [].
-Proof.
-intros l; elim l; simpl in |- *; auto.
-Qed.
-
 End First.
 
 (* Existence of a first max *)
