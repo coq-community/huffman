@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         overrides:
-          - 'coq = "master"'
+          - 'coq = "8.15"'
       fail-fast: false
     steps:
       - name: Determine which commit to test
