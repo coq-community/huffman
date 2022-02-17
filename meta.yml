@@ -4,7 +4,6 @@ shortname: huffman
 organization: coq-community
 community: true
 action: true
-nix: true
 coqdoc: true
 
 synopsis: Coq proof of the correctness of the Huffman coding algorithm
