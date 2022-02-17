@@ -23,7 +23,7 @@ Follow the instructions on https://github.com/coq-community/templates to regener
 [zulip-link]: https://coq.zulipchat.com/#narrow/stream/237663-coq-community-devs.20.26.20users
 
 [coqdoc-shield]: https://img.shields.io/badge/docs-coqdoc-blue.svg
-[coqdoc-link]: https://coq-community.org/huffman
+[coqdoc-link]: https://coq-community.org/huffman/docs/latest/coqdoc/toc.html
 
 
 This projects contains a Coq proof of the correctness of the Huffman coding algorithm,

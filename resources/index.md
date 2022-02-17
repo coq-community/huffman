@@ -1,6 +1,4 @@
 ---
-# This file was generated from `meta.yml`, please do not edit manually.
-# Follow the instructions on https://github.com/coq-community/templates to regenerate.
 title: Huffman
 lang: en
 header-includes:
@@ -13,7 +11,7 @@ header-includes:
 ---
 
 <div style="text-align:left"><img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png" height="25" style="border:0px">
-<a href="https://github.com/coq-community/huffman">View the project on GitHub</a>
+[View the project on GitHub](https://github.com/coq-community/huffman)
 <img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png" height="25" style="border:0px"></div>
 
 ## About
@@ -32,8 +30,12 @@ The current stable release of Huffman can be [downloaded from GitHub](https://gi
 
 ## Documentation
 
+The coqdoc presentations of releases can be browsed online:
 
-Related publications, if any, are listed below.
+- [v8.11.0](docs/v8.11.0/coqdoc/toc.html)
+- [v8.10.0](docs/v8.10.0/coqdoc/toc.html)
+
+Other related publications, if any, are listed below.
 
 - [Formalising Huffman's algorithm](https://hal.archives-ouvertes.fr/hal-02149909) 
 - [A Method for the Construction of Minimum-Redundancy Codes](http://compression.ru/download/articles/huff/huffman_1952_minimum-redundancy-codes.pdf) doi:[10.1109/JRPROC.1952.273898](https://doi.org/10.1109/JRPROC.1952.273898)
@@ -47,4 +49,3 @@ Related publications, if any, are listed below.
 ## Authors and contributors
 
 - Laurent Théry
-
