@@ -5,6 +5,7 @@ organization: coq-community
 community: true
 action: true
 coqdoc: true
+coqdoc_index: 'docs/latest/coqdoc/toc.html'
 
 synopsis: Coq proof of the correctness of the Huffman coding algorithm
 
@@ -41,7 +42,7 @@ supported_coq_versions:
   opam: '{(>= "8.12" & < "8.16~") | (= "dev")}'
 
 tested_coq_opam_versions:
-- version: dev
+- version: 'dev-ocaml-4.13.1-flambda'
 - version: '8.15'
 - version: '8.14'
 - version: '8.13'
@@ -72,8 +73,8 @@ documentation: |-
 
   ### Running extracted code
 
-  To run the extracted algorithm, build the project and then run
-  ```
+  To extract code and obtain the program, run
+  ```shell
   make run_huffman.ml
   ```
 

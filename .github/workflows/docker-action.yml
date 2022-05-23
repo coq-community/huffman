@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         image:
-          - 'coqorg/coq:dev'
+          - 'coqorg/coq:dev-ocaml-4.13.1-flambda'
           - 'coqorg/coq:8.15'
           - 'coqorg/coq:8.14'
           - 'coqorg/coq:8.13'
