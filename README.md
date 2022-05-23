@@ -72,8 +72,8 @@ Coq source files from the latest release.
 
 ### Running extracted code
 
-To run the extracted algorithm, build the project and then run
-```
+To extract code and obtain the program, run
+```shell
 make run_huffman.ml
 ```
 
