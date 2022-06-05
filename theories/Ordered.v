@@ -13,14 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: Ordered.v
+(** * Ordered lists and their properties
 
-    Definition of ordered list and some properties
+- Key definitions: [ordered]
+- Initial author: Laurent.Thery@inria.fr (2003)
 
-    Definition: ordered
-
-    Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
 From Coq Require Import Sorting.Permutation.
@@ -33,7 +30,7 @@ Variable A : Type.
 Variable order : A -> A -> Prop.
 Hypothesis order_trans : forall a b c : A, order a b -> order b c -> order a c.
 
-(* Ordered list with respect to an order *)
+(** Ordered list with respect to an order *)
 Inductive ordered : list A -> Prop :=
   | ordered_nil : ordered []
   | ordered_one : forall a : A, ordered (a :: [])
@@ -42,21 +39,21 @@ Inductive ordered : list A -> Prop :=
       order a b -> ordered (b :: l) -> ordered (a :: b :: l).
 Local Hint Constructors ordered : core.
 
-(* Inversion theorem *)
+(** Inversion theorem *)
 Theorem ordered_inv_order :
  forall (a b : A) (l : list A), ordered (a :: b :: l) -> order a b.
 Proof.
 intros a b l H; inversion H; auto.
 Qed.
 
-(* Inversion theorem *)
+(** Inversion theorem *)
 Theorem ordered_inv :
  forall (a : A) (l : list A), ordered (a :: l) -> ordered l.
 Proof.
 intros a l H; inversion H; auto.
 Qed.
 
-(* The second element of a list can be skipped *)
+(** The second element of a list can be skipped *)
 Theorem ordered_skip :
  forall (a b : A) (l : list A), ordered (a :: b :: l) -> ordered (a :: l).
 Proof using order_trans.
@@ -68,7 +65,7 @@ apply ordered_inv_order with (1 := ordered_inv _ _ H).
 apply ordered_inv with (1 := ordered_inv _ _ H).
 Qed.
 
-(* All the element of the list are smaller than the first one *)
+(** All the element of the list are smaller than the first one *)
 Theorem ordered_trans :
  forall (a b : A) (l : list A), ordered (a :: l) -> In b l -> order a b.
 Proof using order_trans.
@@ -82,7 +79,7 @@ apply H; auto.
 apply ordered_inv with (1 := H0).
 Qed.
 
-(* 
+(**
   In an ordered list split in two, elements of the first part
   are always smaller than the ones of the second part
 *)
@@ -98,7 +95,7 @@ apply H; auto.
 apply ordered_inv with (1 := H0); auto.
 Qed.
 
-(* If the order is antisymmetric, there is only one ordered list *)
+(** If the order is antisymmetric, there is only one ordered list *)
 Theorem ordered_perm_antisym_eq :
  (forall a b : A, order a b -> order b a -> a = b) ->
  forall l1 l2 : list A,
@@ -133,7 +130,7 @@ End ordered.
 
 Arguments ordered [A].
 
-(* Ordered list are preserved by maps *)
+(** Ordered list are preserved by maps *)
 Theorem ordered_map_inv :
  forall (A B : Type) (order : A -> A -> Prop) (g : B -> A) (l : list B),
  ordered (fun x y => order (g x) (g y)) l -> ordered order (map g l).

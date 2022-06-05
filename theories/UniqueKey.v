@@ -13,12 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: UniqueKey.v
+(** * Uniqueness of keys in association lists
 
-    Definition: uniqueness of keys in association list
+- Key definitions: [unique_key]
+- Initial author: Laurent.Thery@inria.fr (2003)
 
-    Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
 From Coq Require Import Sorting.Permutation.
@@ -34,7 +33,7 @@ Local Hint Resolve Permutation_refl : core.
 Local Hint Resolve Permutation_app : core.
 Local Hint Resolve Permutation_app_swap : core.
 
-(* An association list has unique keys if the keys appear only once *)
+(** An association list has unique keys if the keys appear only once *)
 Inductive unique_key : list (A * B) -> Prop :=
   | unique_key_nil : unique_key []
   | unique_key_cons :
@@ -43,20 +42,20 @@ Inductive unique_key : list (A * B) -> Prop :=
       unique_key l -> unique_key ((a, b) :: l).
 Local Hint Constructors unique_key : core.
  
-(* Inversion theorem *)
+(** Inversion theorem for unique keys *)
 Theorem unique_key_inv : forall a l, unique_key (a :: l) -> unique_key l.
 Proof.  
 intros a l H; inversion H; auto.
 Qed.
 
-(* Inversion theorem *)
+(** Inversion theorem for unique keys *)
 Theorem unique_key_in :
  forall (a : A) (b1 b2 : B) l, unique_key ((a, b1) :: l) -> ~ In (a, b2) l.
 Proof.
 intros a b1 b2 l H; inversion H; auto.
 Qed.
 
-(* Inversion theorem *)
+(** Inversion theorem for unique keys *)
 Theorem unique_key_in_inv :
  forall a l1 l2 l, unique_key l -> In (a, l1) l -> In (a, l2) l -> l1 = l2.
 Proof.
@@ -70,7 +69,7 @@ case (H l1); injection H3; intros H4 H5; rewrite H5; auto.
 apply H1 with (1 := H2) (2 := H3); auto.
 Qed.
 
-(* Uniqueness is compatible with permutation *)
+(** Uniqueness is compatible with permutation *)
 Theorem unique_key_perm :
  forall l1 l2, Permutation l1 l2 -> unique_key l1 -> unique_key l2.
 Proof.
@@ -92,7 +91,7 @@ apply unique_key_inv with (a := (a1, b1));
  apply unique_key_inv with (1 := H0).
 Qed.
 
-(* Uniqueness is compatible with append if the two list are distinct *)
+(** Uniqueness is compatible with append if the two list are distinct *)
 Theorem unique_key_app :
  forall l1 l2,
  unique_key l1 ->
@@ -111,7 +110,7 @@ apply unique_key_inv with (1 := H0); auto.
 intros a b c H3 H4; apply (H2 a b c); auto.
 Qed.
  
-(* The list of keys is unique *)
+(** The list of keys is unique *)
 Theorem unique_key_NoDup :
  forall l : list (A * B), unique_key l -> NoDup (map (fst (B:=_)) l).
 Proof.
@@ -124,7 +123,7 @@ rewrite Hb2; auto.
 apply H; apply unique_key_inv with (1 := H0); auto.
 Qed.
 
-(* A list of keys is unique gives a code with unique keys *)
+(** A list of keys is unique gives a code with unique keys *)
 Theorem NoDup_unique_key :
  forall l : list (A * B), NoDup (map (fst (B:=_)) l) -> unique_key l.
 Proof.
@@ -142,7 +141,7 @@ End UniqueKey.
 #[export] Hint Constructors unique_key : core.
 Arguments unique_key [A B].
  
-(* Uniqueness is compatible with map for injective functions *)
+(** Uniqueness is compatible with map for injective functions *)
 Theorem unique_key_map :
  forall (A B C D : Type) l (f : A * B -> C * D),
  unique_key l ->

@@ -13,17 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: AuxLib.v
+(** * Auxiliary functions and theorems
 
-    Auxiliary functions & theorems
+- Key definitions: [le_bool], [map2], [find_min], [find_max]
+- Initial author: Laurent.Thery@inria.fr (2003)
 
-    Definitions:
-      le_bool, map2, find_min, find_max
-
-    Theorems: minus, map, app
-
-    Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
 From Coq Require Export List Arith.
@@ -40,7 +34,7 @@ Qed.
 
 #[export] Hint Resolve le_minus: arith.
 
-(* Properties of the fold operator *)
+(** Properties of the fold operator *)
 Section Fold.
 
 Variables (A : Type) (B : Type).
@@ -75,13 +69,13 @@ Qed.
  
 End Fold.
 
-(* Some properties of list operators: app, map, ... *)
+(** Some properties of list operators: app, map, ... *)
 Section List.
 
 Variables (A : Type) (B : Type) (C : Type).
 Variable f : A -> B.
 
-(* An induction theorem for list based on length *)
+(** An induction theorem for list based on length *)
 Theorem list_length_ind :
  forall P : list A -> Prop,
  (forall l1 : list A,
@@ -176,7 +170,7 @@ exists (b :: l4); exists l5; exists b1; repeat (simpl in |- *; split; auto).
 apply f_equal2 with (f := cons (A:=B)); auto.
 Qed.
 
-(* Properties of map *)
+(** Properties of map *)
 Theorem in_map_inv :
  forall (b : B) (l : list A),
  In b (map f l) -> exists a : A, In a l /\ b = f a.
@@ -199,7 +193,7 @@ exists (snd a0); left; rewrite <- H0; case a0; simpl in |- *; auto.
 case H; auto; intros l1 Hl1; exists l1; auto.
 Qed.
 
-(* Properties of flat_map *)
+(** Properties of flat_map *)
 Theorem in_flat_map_in :
  forall (l : list B) (f : B -> list C) a b,
  In a (f b) -> In b l -> In a (flat_map f l).
@@ -257,7 +251,7 @@ Qed.
  
 End List.
 
-(* Definition of a map2 *)
+(** Definition of map2 *)
 Section map2.
 Variables (A : Type) (B : Type) (C : Type).
 Variable f : A -> B -> C.
@@ -291,11 +285,11 @@ Qed.
 End map2.
 Arguments map2 [A B C].
 
-(* Definitions of the first and skip function *)
+(** Properties of the firstn and skipn functions *)
 Section First.
 Variable A : Type.
 
-(* Properties of first_n *)
+(** Properties of firstn *)
 Theorem firstn_le_app1 :
  forall (n : nat) (l1 l2 : list A),
  length l1 <= n -> firstn n (l1 ++ l2) = l1 ++ firstn (n - length l1) l2.
@@ -348,7 +342,7 @@ Qed.
 
 End First.
 
-(* Existence of a first max *)
+(** Existence of a first max *)
 Section FirstMax.
  
 Theorem exist_first_max :
@@ -387,12 +381,12 @@ Qed.
  
 End FirstMax.
 
-(* Find the minimum and the maximun in a list *)
+(** Find the minimum and the maximun in a list *)
 Section FindMin.
 Variable A : Type.
 Variable f : A -> nat.
 
-(* Search in the list for the min with respect to a valuation function f *)
+(** Search in the list for the min with respect to a valuation function f *)
 Fixpoint find_min (l : list A) : option (nat * A) :=
   match l with
   | [] => None
@@ -431,7 +425,7 @@ intros H; rewrite H; split; simpl in |- *; auto.
 intros c [H1| H1]; rewrite H1 || case H1; auto.
 Qed.
 
-(* Search in the list for the max with respect to a valuation function f *)
+(** Search in the list for the max with respect to a valuation function f *)
 Fixpoint find_max (l : list A) : option (nat * A) :=
   match l with
   | [] => None
@@ -477,7 +471,7 @@ End FindMin.
 Arguments find_min [A].
 Arguments find_max [A].
 
-(* Permutation is compatible with fold_left *)
+(** Permutation is compatible with fold_left *)
 Theorem fold_left_permutation :
  forall (A B : Type) (f : A -> B -> A),
  (forall (a : A) (b1 b2 : B), f (f a b1) b2 = f (f a b2) b1) ->
@@ -498,8 +492,10 @@ Local Hint Resolve Permutation_refl : core.
 Local Hint Resolve Permutation_app : core.
 Local Hint Resolve Permutation_app_swap : core.
 
-(* Take a list and return tle list of all pairs of an element of the
-   list and the remaining list *)
+(**
+ Take a list and return the list of all pairs of an element of the
+ list and the remaining list 
+*)
 Fixpoint split_one (l : list A) : list (A * list A) :=
   match l with
   | [] => []
@@ -507,7 +503,7 @@ Fixpoint split_one (l : list A) : list (A * list A) :=
      (a, l1) :: map (fun p : A * list A => (fst p, a :: snd p)) (split_one l1)
   end.
 
-(* The pairs of the list are a permutation *)
+(** The pairs of the list are a permutation *)
 Theorem split_one_permutation :
  forall (a : A) (l1 l2 : list A),
  In (a, l1) (split_one l2) -> Permutation (a :: l1) l2.
@@ -526,7 +522,7 @@ apply H2; auto.
 case a1; simpl in |- *; auto.
 Qed.
 
-(* All elements of the list are there *)
+(** All elements of the list are there *)
 Theorem split_one_in_ex :
  forall (a : A) (l1 : list A),
  In a l1 -> exists l2 : list A, In (a, l2) (split_one l1).
@@ -542,7 +538,7 @@ apply
  auto.
 Qed.
 
-(* An auxillary function to generate all permutations *) 
+(** An auxillary function to generate all permutations *) 
 Fixpoint all_permutations_aux (l : list A) (n : nat) {struct n} :
  list (list A) :=
   match n with
@@ -554,7 +550,7 @@ Fixpoint all_permutations_aux (l : list A) (n : nat) {struct n} :
         (split_one l)
   end.
 
-(* Generate all the permutations *)
+(** Generate all the permutations *)
 Definition all_permutations (l : list A) :=
  all_permutations_aux l (length l).
  
@@ -585,7 +581,7 @@ apply Permutation_sym; apply split_one_permutation; auto.
 apply split_one_permutation; auto.
 Qed.
 
-(* All the elements of the list are permutations *) 
+(** All the elements of the list are permutations *) 
 Theorem all_permutations_permutation :
  forall l1 l2 : list A, In l1 (all_permutations l2) -> Permutation l1 l2.
 Proof.
@@ -622,7 +618,7 @@ apply Permutation_trans with (1 := H2).
 apply Permutation_sym; apply split_one_permutation; auto.
 Qed.
 
-(* A permutation is in the list *) 
+(** A permutation is in the list *) 
 Theorem permutation_all_permutations :
  forall l1 l2 : list A, Permutation l1 l2 -> In l1 (all_permutations l2).
 Proof.
@@ -630,7 +626,7 @@ intros l1 l2 H; unfold all_permutations in |- *;
  apply permutation_all_permutations_aux; auto.
 Qed.
 
-(* Permutation is decidable *) 
+(** Permutation is decidable *) 
 Definition Permutation_dec :
   (forall a b : A, {a = b} + {a <> b}) ->
   forall l1 l2 : list A, {Permutation l1 l2} + {~ Permutation l1 l2}.

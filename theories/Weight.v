@@ -13,10 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: Weight.v
+(** * Weights of encodings
 
-    Initial author: Laurent.Thery@inria.fr (2003)
+- Key definitions: [weight]
+- Initial author: Laurent.Thery@inria.fr (2003)
+
 *)
 
 From Coq Require Import Sorting.Permutation.

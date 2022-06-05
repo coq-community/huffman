@@ -13,14 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: Frequency.v
+(** * Frequency lists from messages and some of their properties
 
-    Frequency list from a message and some properties
+- Key definitions: [frequency_list], [number_of_occurrences]
+- Initial author: Laurent.Thery@inria.fr (2003)
 
-    Definitions: frequency_list, number_of_occurrences
-
-    Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
 From Coq Require Import List Sorting.Permutation.
@@ -37,14 +34,14 @@ Local Hint Resolve Permutation_refl : core.
 Local Hint Resolve Permutation_app : core.
 Local Hint Resolve Permutation_app_swap : core.
  
-(* Create a list of a given length with a given element  *)
+(** Create a list of a given length with a given element  *)
 Fixpoint id_list (a : A) (n : nat) {struct n} : list A :=
   match n with
   | O => []
   | S n1 => a :: id_list a n1
   end.
 
-(* An element in a frequency list *)
+(** An element in a frequency list *)
 Fixpoint add_frequency_list (a : A) (l : list (A * nat)) {struct l} :
  list (A * nat) :=
   match l with
@@ -56,7 +53,7 @@ Fixpoint add_frequency_list (a : A) (l : list (A * nat)) {struct l} :
       end
   end.
 
-(* 
+(** 
   Adding an element gives the same list upto permutation if
   the frequency list is developed
 *)
@@ -87,7 +84,7 @@ change
 repeat rewrite <- app_ass; auto.
 Qed.
  
-(* Inversion theorem *)
+(** Inversion theorem *)
 Theorem add_frequency_list_in_inv :
  forall (a1 a2 : A) (b1 : nat) l,
  In (a1, b1) (add_frequency_list a2 l) -> a1 = a2 \/ In (a1, b1) l.
@@ -102,7 +99,7 @@ injection H1; auto.
 intuition.
 Qed.
 
-(* Adding an element does not change the unique key property *)
+(** Adding an element does not change the unique key property *)
 Theorem add_frequency_list_unique_key :
  forall (a : A) l, unique_key l -> unique_key (add_frequency_list a l).
 Proof.
@@ -120,7 +117,7 @@ intros H2; case (unique_key_in _ _ _ _ b _ H); auto.
 apply Rec; apply unique_key_inv with (1 := H); auto.
 Qed.
  
-(* Adding an element that was not in the list gives a frequency of 1 *)
+(** Adding an element that was not in the list gives a frequency of 1 *)
 Theorem add_frequency_list_1 :
  forall a l,
  (forall ca, ~ In (a, ca) l) -> In (a, 1) (add_frequency_list a l).
@@ -134,7 +131,7 @@ intros n; apply in_cons; auto; apply H; auto.
 intros ca; red in |- *; intros H1; case (H0 ca); auto.
 Qed.
 
-(* Adding an element increments the frequency *)
+(** Adding an element increments the frequency *)
 Theorem add_frequency_list_in :
  forall m a n,
  unique_key m -> In (a, n) m -> In (a, S n) (add_frequency_list a m).
@@ -151,7 +148,7 @@ case H1; auto.
 intros H0; case n0; injection H0; auto.
 Qed.
 
-(* Adding an element just changes the frequency of this element *)
+(** Adding an element just changes the frequency of this element *)
 Theorem add_frequency_list_not_in :
  forall m a b n, a <> b -> In (a, n) m -> In (a, n) (add_frequency_list b m).
 Proof.
@@ -162,14 +159,14 @@ intros H2; case H0; injection H1; auto.
 intros; apply trans_equal with (2 := sym_equal H2); auto.
 Qed.
 
-(* Create a frequency list from a message *)
+(** Create a frequency list from a message *)
 Fixpoint frequency_list (l : list A) : list (A * nat) :=
   match l with
   | [] => []
   | a :: l1 => add_frequency_list a (frequency_list l1)
   end.
 
-(* Keys of the frequency are in the original message *)
+(** Keys of the frequency are in the original message *)
 Theorem frequency_list_in :
  forall a n m, In (a, n) (frequency_list m) -> In a m.
 Proof.
@@ -178,7 +175,7 @@ intros a0 l H n H0; case add_frequency_list_in_inv with (1 := H0); auto.
 intros H1; right; apply (H n); auto.
 Qed.
  
-(* Developing the frequency list gives a permutation of the initial message *)
+(** Developing the frequency list gives a permutation of the initial message *)
 Theorem frequency_list_perm :
  forall l : list A,
  Permutation l
@@ -199,7 +196,7 @@ intros a l0 H; apply add_frequency_list_unique_key; auto.
 Qed.
 Local Hint Resolve frequency_list_unique : core.
 
-(* Elements of the message are keys of the frequency list *)
+(** Elements of the message are keys of the frequency list *)
 Theorem in_frequency_map :
  forall l a, In a l -> In a (map fst (frequency_list l)).
 Proof.
@@ -217,7 +214,7 @@ intros e H1 [H2| H2]; auto.
 Qed.
 Local Hint Resolve in_frequency_map : core.
 
-(* Keys of the frequency list are elements of the message *)
+(** Keys of the frequency list are elements of the message *)
 Theorem in_frequency_map_inv :
  forall l a, In a (map (fst (B:=_)) (frequency_list l)) -> In a l.
 Proof.
@@ -226,7 +223,7 @@ intros (a1, l1) (Hl1, Hl2); simpl in |- *.
 rewrite Hl2; apply frequency_list_in with (1 := Hl1).
 Qed.
  
-(* Compute the number of occurrences of an element in a message *)
+(** Compute the number of occurrences of an element in a message *)
 Fixpoint number_of_occurrences (a : A) (l : list A) {struct l} : nat :=
   match l with
   | [] => 0
@@ -237,7 +234,7 @@ Fixpoint number_of_occurrences (a : A) (l : list A) {struct l} : nat :=
       end
   end.
 
-(* If an element is not in a message, its number is 0 *)
+(** If an element is not in a message, its number is 0 *)
 Theorem number_of_occurrences_O :
  forall a l, ~ In a l -> number_of_occurrences a l = 0.
 Proof.
@@ -246,7 +243,7 @@ intros a0 l0 H H0; case (A_eq_dec a a0); auto.
 intros H1; case H0; auto.
 Qed.
 
-(* All the occurrences of an element can be gathered in the list *)
+(** All the occurrences of an element can be gathered in the list *)
 Theorem number_of_occurrences_permutation_ex :
  forall (m : list A) (a : A),
  exists m1 : list A,
@@ -270,7 +267,7 @@ apply Permutation_trans with (1 := H2); auto.
 simpl in |- *; contradict H3; case H3; intros H4; auto; case H1; auto.
 Qed.
 
-(* Number of occurrences in an appended list is the sum of the occurrences *)
+(** Number of occurrences in an appended list is the sum of the occurrences *)
 Theorem number_of_occurrences_app :
  forall l1 l2 a,
  number_of_occurrences a (l1 ++ l2) =
@@ -280,7 +277,7 @@ intros l1; elim l1; simpl in |- *; auto.
 intros a l H l2 a0; case (A_eq_dec a0 a); intros H1; simpl in |- *; auto.
 Qed.
 
-(* Permutation preserves the number of occurrences *)
+(** Permutation preserves the number of occurrences *)
 Theorem number_of_occurrences_permutation :
  forall l1 l2 a,
  Permutation l1 l2 -> number_of_occurrences a l1 = number_of_occurrences a l2.
@@ -293,7 +290,7 @@ intros a b L a0; case (A_eq_dec a0 a); simpl in |- *; auto;
 intros L1 L2 L3 H H0 H1 H2 a; apply trans_equal with (1 := H0 a); auto.
 Qed.
 
-(* The frequency list contains the number of occurrences *)
+(** The frequency list contains the number of occurrences *)
 Theorem frequency_number_of_occurrences :
  forall a m, In a m -> In (a, number_of_occurrences a m) (frequency_list m).
 Proof.

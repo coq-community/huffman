@@ -13,15 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: Prod2List.v
+(** * Properties of products between an integer list and a list of trees
 
-    Definition of a product between an integer list and a list of
-    trees and its properties
+- Key definitions: [prod2list]
+- Initial author: Laurent.Thery@inria.fr (2003)
 
-    Definition: prod2list
-
-    Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
 From Coq Require Import ArithRing Sorting.Permutation.

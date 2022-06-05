@@ -13,14 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: Huffman.v
+(** * The Huffman algorithm and its correctness
 
-    The Huffman algorithm and its proof of correctness
+- Key definitions: [huffman]
+- Initial author: Laurent.Thery@inria.fr (2003)
 
-    Definition: huffman
-
-    Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
 From Coq Require Import Sorting.Permutation.
@@ -40,7 +37,7 @@ Local Hint Resolve Permutation_refl : core.
 Local Hint Resolve Permutation_app : core.
 Local Hint Resolve Permutation_app_swap : core.
 
-(* The message is not null *) 
+(** The message is not null *) 
 Theorem not_null_m : m <> [].
 Proof using frequency_more_than_one.
 generalize frequency_more_than_one; case m; simpl in |- *; auto.
@@ -48,7 +45,7 @@ intros H; contradict H; auto with arith.
 intros; discriminate.
 Qed.
 
-(* Every tree that is built is of minimum weight *)
+(** Every tree that is built is of minimum weight *)
 Theorem huffman_build_minimum :
  forall (c : code A) (t : btree A),
  unique_prefix c ->
@@ -161,7 +158,7 @@ Definition huffman_aux_type (l : list (nat * code A)) : Type :=
     (map (fun x => to_btree (pbbuild empty (snd x))) l)
     (to_btree (pbbuild empty c))}.
 
-(* Auxiliary function to compute minimal code *)
+(** Auxiliary function to compute minimal code *)
 Program Definition huffman_aux_F (l1 : list (nat * code A))
  (huffman_aux_rec : forall l2 : list (nat * code A), length l2 < length l1 -> huffman_aux_type l2) :
  huffman_aux_type l1 :=
@@ -326,7 +323,7 @@ Qed.
 Definition huffman_aux : forall l : list (nat * code A), huffman_aux_type l :=
  list_length_induction (nat * code A) huffman_aux_type huffman_aux_F.
 
-(* The Huffman algorithm *)
+(** The Huffman algorithm *)
 Program Definition huffman :
   {c : code A |
   unique_prefix c /\

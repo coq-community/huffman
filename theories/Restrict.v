@@ -13,15 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: Restrict.v
+(** * Restriction of a code (only the keys of a message appears)
 
-    Definition of a restriction of a code (only the keys of a
-    message appears
+- Key definitions: [restrict_code]
+- Initial author: Laurent.Thery@inria.fr (2003)
 
-    Definition: restrict_code
-
-    Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
 From Coq Require Import Sorting.Permutation.
@@ -35,12 +31,12 @@ Variable empty : A.
 Variable A_eq_dec : forall a b : A, {a = b} + {a <> b}.
 Variable m : list A.
 
-(* Restrict the code putting only codes of element in the frequency list *)
+(** Restrict the code putting only codes of element in the frequency list *)
 Definition restrict_code (m : list A) (c : code A) : code A :=
   map (fun x => (fst x, find_code A_eq_dec (fst x) c))
     (frequency_list A_eq_dec m).
 
-(* The restriction has unique keys *)
+(** The restriction has unique keys *)
 Theorem restrict_code_unique_key :
  forall c : code A, unique_key (restrict_code m c).
 Proof.
@@ -56,7 +52,7 @@ elim (frequency_list A_eq_dec m); simpl in |- *; auto with datatypes.
 intros a l H; apply f_equal2 with (f := cons (A:=A)); auto.
 Qed.
 
-(* Doing the restriction does not change the codes *) 
+(** Doing the restriction does not change the codes *) 
 Theorem restrict_code_in :
  forall (a : A) (c : code A),
  In a m -> find_code A_eq_dec a c = find_code A_eq_dec a (restrict_code m c).
@@ -71,7 +67,7 @@ intros a0; case a0; simpl in |- *; auto with datatypes.
 intros a1 n l H0 [H1| H1]; try rewrite H1; auto.
 Qed.
 
-(*
+(**
   The restriction does not change the encoding for messages in
   the same alphabet
 *)
@@ -86,14 +82,14 @@ apply restrict_code_in; auto with datatypes.
 apply H; apply incl_tran with (2 := H0); auto with datatypes.
 Qed.
 
-(* The restriction does not change the encoding of the initial message *)
+(** The restriction does not change the encoding of the initial message *)
 Theorem restrict_code_encode :
  forall c : code A, encode A_eq_dec c m = encode A_eq_dec (restrict_code m c) m.
 Proof.
 intros c; apply restrict_code_encode_incl; auto with datatypes.
 Qed.
 
-(* 
+(** 
   The restriction does not change the unique prefix property if
   the message is in the alphabet
 *)
@@ -124,7 +120,7 @@ unfold restrict_code in |- *.
 apply unique_key_map; auto.
 Qed.
 
-(* Restricting do not change the frequency list *)
+(** Restricting do not change the frequency list *)
 Theorem frequency_list_restric_code_map :
  forall c,
  map (fst (B:=_)) (frequency_list A_eq_dec m) =
@@ -135,7 +131,7 @@ intros c; unfold restrict_code in |- *; elim (frequency_list A_eq_dec m);
 intros a0 l H; apply f_equal2 with (f := cons (A:=A)); auto.
 Qed.
 
-(* If the message is not null, so is the restriction *)
+(** If the message is not null, so is the restriction *)
 Theorem restrict_not_null : forall c, m <> [] -> restrict_code m c <> [].
 Proof.
 case m; simpl in |- *; auto.
@@ -152,7 +148,7 @@ apply
 apply frequency_number_of_occurrences; auto with datatypes.
 Qed.
 
-(* 
+(** 
   The leaves of the build tree from the restrict code are the keys
   of the frequency list
 *) 

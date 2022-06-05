@@ -13,14 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: PBTree2BTree.v
+(** * Translation from partial trees to binary trees
 
-    Definition of translation from partial trees to binary trees
+- Key definitions: [to_btree]
+- Initial author: Laurent.Thery@inria.fr (2003)
 
-    Definition: to_btree
-
-    Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
 From Coq Require Export Compare_dec.
@@ -34,7 +31,7 @@ Variable A : Type.
 Variable A_eq_dec : forall a b : A, {a = b} + {a <> b}.
 Variable empty : A.
 
-(* Turn a partial tree into a binary tree *)
+(** Turn a partial tree into a binary tree *)
 Fixpoint to_btree (a : pbtree A) : btree A :=
   match a with
   | pbleaf b => leaf b
@@ -43,7 +40,7 @@ Fixpoint to_btree (a : pbtree A) : btree A :=
   | pbnode l1 l2 => node (to_btree l1) (to_btree l2)
   end.
 
-(* Computing the binary tree preserves the leaves*)
+(** Computing the binary tree preserves the leaves*)
 Theorem to_btree_inb :
  forall a b, inpb (pbleaf a) b -> inb (leaf a) (to_btree b).
 Proof.
@@ -54,7 +51,7 @@ intros p H a H0; apply H; auto; inversion H0; auto.
 intros p H p0 H0 a H1; inversion H1; auto.
 Qed.
 
-(* Leaves do not change *)
+(** Leaves do not change *)
 Theorem to_btree_inpb :
  forall a b, inb (leaf a) (to_btree b) -> inpb (pbleaf a) b.
 Proof.
@@ -64,7 +61,7 @@ intros p H p0 H0 a H1.
 inversion H1; auto.
 Qed.
 
-(* The list of all leaves does not change *)
+(** The list of all leaves does not change *)
 Theorem to_btree_all_leaves :
  forall t, all_leaves (to_btree t) = all_pbleaves t.
 Proof.
@@ -72,7 +69,7 @@ intros t; elim t; simpl in |- *; auto.
 intros p H p0 H0; apply f_equal2 with (f := app (A:=A)); auto.
 Qed.
 
-(* Computing the btree preserves the property of having distinct leaves *)
+(** Computing the btree preserves the property of having distinct leaves *)
 Theorem to_btree_distinct_leaves :
  forall a : pbtree A, distinct_pbleaves a -> distinct_leaves (to_btree a).
 Proof.
@@ -82,7 +79,7 @@ rewrite to_btree_all_leaves.
 apply all_pbleaves_NoDup; auto.
 Qed.
 
-(* The transformation perserves distinct leaves *)
+(** The transformation perserves distinct leaves *)
 Theorem to_btree_distinct_pbleaves :
  forall a : pbtree A, distinct_leaves (to_btree a) -> distinct_pbleaves a.
 Proof.
@@ -92,7 +89,7 @@ rewrite <- to_btree_all_leaves.
 apply all_leaves_NoDup; auto.
 Qed.
 
-(* For each key, the resulting code of the computed tree is always smaller *)
+(** For each key, the resulting code of the computed tree is always smaller *)
 Theorem to_btree_smaller :
  forall t a,
  length (find_code A_eq_dec a (compute_code (to_btree t))) <=

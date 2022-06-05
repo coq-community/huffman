@@ -13,14 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: CoverMin.v
+(** * Minimal trees for a cover
 
-    Definition of a minimal tree for a cover
+- Key definitions: [cover_min]
+- Initial author: Laurent.Thery@inria.fr (2003)
 
-    Definition: cover_min
-
-    Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
 From Coq Require Import Sorting.Permutation.
@@ -37,12 +34,12 @@ Local Hint Resolve Permutation_refl : core.
 Local Hint Resolve Permutation_app : core.
 Local Hint Resolve Permutation_app_swap : core.
 
-(* To be a tree of minimum weight for a cover *)
+(** To be a tree of minimum weight for a cover *)
 Definition cover_min (l : list (btree A)) (t1 : btree A) : Prop :=
   cover l t1 /\
   (forall t2 : btree A, cover l t2 -> weight_tree f t1 <= weight_tree f t2).
 
-(* Minimum tree for a singleton cover *)
+(** Minimum tree for a singleton cover *)
 Theorem cover_min_one : forall t : btree A, cover_min (t :: []) t.
 Proof.
 intros t; split; auto.
@@ -52,7 +49,7 @@ Qed.
 
 Local Hint Resolve cover_min_one : core.
 
-(* Minimum trees are preserved by permutation *)
+(** Minimum trees are preserved by permutation *)
 Theorem cover_min_permutation :
  forall (t : btree A) (l1 l2 : list (btree A)),
  cover_min l1 t -> Permutation l1 l2 -> cover_min l2 t.
@@ -67,7 +64,7 @@ apply cover_permutation with (2 := Permutation_sym H0); auto.
 inversion H; auto.
 Qed.
 
-(* For all covers, there is a minimum tree *)
+(** For all covers, there is a minimum tree *)
 Theorem cover_min_ex :
  forall l : list (btree A), l <> [] -> exists t : btree A, cover_min l t.
 Proof.
