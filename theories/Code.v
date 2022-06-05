@@ -13,16 +13,12 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: Code.v
+(** * Codes as association lists and some of their properties
 
-    Definitions of code as association lists and some properties
+- Key definitions: [code], [encode], [decode], [find_code], [find_val],
+  [in_alphabet], [unique_prefix], [not_null]
+- Initial author: Laurent.Thery@inria.fr (2003)
 
-    Definitions:
-      code, encode, decode, find_code, find_val,
-      in_alphabet, unique_prefix, not_null
-
-    Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
 From Coq Require Bool.
@@ -32,9 +28,7 @@ From Huffman Require Export AuxLib UniqueKey Frequency.
 Set Default Proof Using "Type".
 
 Section Code.
-(* Arbitrary set *)
 Variable A : Type.
-(* Equality is decidable *)
 Variable A_eq_dec : forall a b : A, {a = b} + {a <> b}.
 
 Local Hint Constructors Permutation : core.
@@ -42,17 +36,17 @@ Local Hint Resolve Permutation_refl : core.
 Local Hint Resolve Permutation_app : core.
 Local Hint Resolve Permutation_app_swap : core.
 
-(* A code is an association list *)
+(** A code is an association list *)
 Definition code := list (A * list bool).
 
-(* 
+(** 
   Predicate that tells that a message (a list of message) is in the
   alphabet of the code
 *)
 Definition in_alphabet (m : list A) (c : code) :=
   forall a : A, In a m -> exists l : list bool, In (a, l) c.
 
-(* Being in an alphabet is compatible with inclusion *)
+(** Being in an alphabet is compatible with inclusion *)
 Theorem in_alphabet_incl :
  forall m1 m2 c, incl m1 m2 -> in_alphabet m2 c -> in_alphabet m1 c.
 Proof.
@@ -60,14 +54,14 @@ intros m1 m2 c H H0; red in |- *.
 intros a H1; case (H0 a); auto.
 Qed.
 
-(* Every code is in the alphabet of an empty message *)
+(** Every code is in the alphabet of an empty message *)
 Theorem in_alphabet_nil : forall c, in_alphabet [] c.
 Proof.
 intros c a H; inversion H.
 Qed.
 Local Hint Resolve in_alphabet_nil : core.
 
-(* An element can be added in the message if it is in the code *)
+(** An element can be added in the message if it is in the code *)
 Theorem in_alphabet_cons :
  forall (m : list A) c a ca,
  In (a, ca) c -> in_alphabet m c -> in_alphabet (a :: m) c.
@@ -79,7 +73,7 @@ case (H0 a1); auto.
 Qed.
 Local Hint Resolve in_alphabet_cons : core.
 
-(* Inversion theorem *)
+(** Inversion theorem *)
 Theorem in_alphabet_inv :
  forall (c : code) (a : A) (l : list A),
  in_alphabet (a :: l) c -> in_alphabet l c.
@@ -102,7 +96,7 @@ intros n; right; intros l0; red in |- *; intros [H0| H0];
 injection H0; auto.
 Defined.
 
-(* Checking if a code is in an alphabet is decidable *)
+(** Checking if a code is in an alphabet is decidable *)
 Definition in_alphabet_dec :
   forall m c, {in_alphabet m c} + {~ in_alphabet m c}.
 intros m; elim m; simpl in |- *; auto.
@@ -118,10 +112,10 @@ intros a0 H0; case (H1 a0); simpl in |- *; auto.
 intros x H2; exists x; auto.
 Defined.
 
-(* The empty list is associated to none of element of A in the code *)
+(** The empty list is associated to none of element of A in the code *)
 Definition not_null (c : code) := forall a : A, ~ In (a, []) c.
 
-(* Inversion theorem *)
+(** Inversion theorem *)
 Theorem not_null_inv :
  forall (a : A * list bool) l, not_null (a :: l) -> not_null l.
 Proof.
@@ -129,7 +123,7 @@ intros a l H; red in |- *.
 intros a0; red in |- *; intros H0; case (H a0); simpl in |- *; auto.
 Qed.
 
-(* Adding a non-empty element preserves the property of non-emptyness *)
+(** Adding a non-empty element preserves the property of non-emptyness *)
 Theorem not_null_cons :
  forall a b (l : list (A * list bool)),
  b <> [] -> not_null l -> not_null ((a, b) :: l).
@@ -141,7 +135,7 @@ case (H0 a1); simpl in |- *; auto.
 Qed.
 Local Hint Resolve not_null_cons : core.
 
-(* Non emptyness is compatible with append *) 
+(** Non emptyness is compatible with append *) 
 Theorem not_null_app :
  forall l1 l2 : list (A * list bool),
  not_null l1 -> not_null l2 -> not_null (l1 ++ l2).
@@ -156,7 +150,7 @@ apply not_null_inv with (1 := H0).
 Qed.
 Local Hint Resolve not_null_app : core.
 
-(* Adding an element in each component of a code makes it non-empty *)
+(** Adding an element in each component of a code makes it non-empty *)
 Theorem not_null_map :
  forall (l : list (A * list bool)) b,
  not_null (map (fun v => match v with
@@ -170,7 +164,7 @@ red in |- *; intros; discriminate.
 Qed.
 Local Hint Resolve not_null_map : core.
 
-(* Define the property of list of booleans to be a prefix of another *)
+(** Define the property of list of booleans to be a prefix of another *)
 Inductive is_prefix : list bool -> list bool -> Prop :=
   | prefixNull : forall l, is_prefix [] l
   | prefixCons :
@@ -178,20 +172,20 @@ Inductive is_prefix : list bool -> list bool -> Prop :=
       is_prefix l1 l2 -> is_prefix (b :: l1) (b :: l2).
 Local Hint Constructors is_prefix : core.
 
-(* A list is a prefix of itself *)
+(** A list is a prefix of itself *)
 Theorem is_prefix_refl : forall l, is_prefix l l.
 Proof.
 intros l; elim l; simpl in |- *; auto.
 Qed.
 Local Hint Resolve is_prefix_refl : core.
 
-(* A code is unique_prefix, if there is no encoding that is prefix of another *)
+(** A code is a unique prefix if there is no encoding that is a prefix of another *)
 Definition unique_prefix (l : code) :=
   (forall (a1 a2 : A) (lb1 lb2 : list bool),
    In (a1, lb1) l -> In (a2, lb2) l -> is_prefix lb1 lb2 -> a1 = a2) /\
   unique_key l.
 
-(* The empty code is unique prefix *)
+(** The empty code is unique prefix *)
 Theorem unique_prefix_nil : unique_prefix [].
 Proof.
 split; auto.
@@ -199,7 +193,7 @@ intros a1 a2 lb1 lb2 H; inversion H; auto.
 Qed.
 Local Hint Resolve unique_prefix_nil : core.
 
-(* A unique prefix code can not have two elements prefix one from another *)
+(** A unique prefix code can not have two elements prefix one from another *)
 Theorem unique_prefix1 :
  forall (c : code) (a1 a2 : A) (lb1 lb2 : list bool),
  unique_prefix c ->
@@ -208,13 +202,13 @@ Proof.
 intros c a1 a2 lb1 lb2 (H1, H2); apply (H1 a1 a2 lb1 lb2); auto.
 Qed.
 
-(* A unique prefix code has unique keys *)
+(** A unique prefix code has unique keys *)
 Theorem unique_prefix2 : forall c : code, unique_prefix c -> unique_key c.
 Proof.
 intros c (H1, H2); auto.
 Qed.
 
-(* Inversion theorem *)
+(** Inversion theorem *)
 Theorem unique_prefix_inv :
  forall (c : code) (a : A) (l : list bool),
  unique_prefix ((a, l) :: c) -> unique_prefix c.
@@ -224,7 +218,7 @@ intros a1 a2 lb1 lb2 H H0 H3; apply (H1 a1 a2 lb1 lb2); simpl in |- *; auto.
 apply unique_key_inv with (1 := H2); auto.
 Qed.
 
-(* A prefix code with a  least two distinct elements is not_null *)
+(** A prefix code with a  least two distinct elements is not_null *)
 Theorem unique_prefix_not_null :
  forall (c : code) (a b : A),
  a <> b -> in_alphabet (a :: b :: []) c -> unique_prefix c -> not_null c.
@@ -238,7 +232,7 @@ apply sym_equal; apply unique_prefix1 with (3 := Hl1) (2 := Ha1); auto.
 apply unique_prefix1 with (3 := Hl2) (2 := Ha1); auto.
 Qed.
 
-(* Unique prefix is preserved by permutation *)
+(** Unique prefix is preserved by permutation *)
 Theorem unique_prefix_permutation :
  forall c1 c2 : code,
  Permutation c1 c2 -> unique_prefix c1 -> unique_prefix c2.
@@ -252,7 +246,7 @@ apply Permutation_in with (2 := H3); auto.
 apply unique_key_perm with (2 := H2); auto.
 Qed.
 
-(* 
+(** 
   Find the list of booleans associated with an element,
   return the empty list if the element does not exists
 *)
@@ -266,7 +260,7 @@ Fixpoint find_code (a : A) (l : code) {struct l} : list bool :=
       end
   end.
 
-(* The result of find_code is in the code *)
+(** The result of find_code is in the code *)
 Theorem find_code_correct1 :
  forall (c : code) (a : A) (b : bool) (l : list bool),
  find_code a c = b :: l -> In (a, b :: l) c.
@@ -280,7 +274,7 @@ intros e l0 l1 H H0; left;
  auto.
 Qed.
 
-(* What is in the code can be found by find_code *)
+(** What is in the code can be found by find_code *)
 Theorem find_code_correct2 :
  forall (c : code) (a : A) (l : list bool),
  unique_key c -> In (a, l) c -> find_code a c = l.
@@ -300,7 +294,7 @@ intros; apply H; auto.
 apply unique_key_inv with (1 := H0); auto.
 Qed.
 
-(* There is not more than what is in the code *)
+(** There is not more than what is in the code *)
 Theorem not_in_find_code :
  forall a l, (forall p, ~ In (a, p) l) -> find_code a l = [].
 Proof.
@@ -311,7 +305,7 @@ intros H1; case (H0 l1); rewrite H1; auto.
 intros H1; apply H; intros p; red in |- *; intros Hp; case (H0 p); auto.
 Qed.
 
-(* find_code is composed by append *)
+(** find_code is composed by append *)
 Theorem find_code_app :
  forall a l1 l2,
  not_null l1 ->
@@ -329,7 +323,7 @@ cut (not_null l); simpl in |- *; auto.
 apply not_null_inv with (1 := H1); auto.
 Qed.
 
-(* find_code is invariant under permutation *)
+(** find_code is invariant under permutation *)
 Theorem find_code_permutation :
  forall (a : A) (c1 c2 : code),
  Permutation c1 c2 -> unique_prefix c1 -> find_code a c1 = find_code a c2.
@@ -353,7 +347,7 @@ apply H3.
 apply (unique_prefix_permutation _ _ H0); auto.
 Qed.
 
-(* 
+(** 
   Searching in a list with a common first element is equivalent
   to the search skipping the element
 *)
@@ -375,7 +369,7 @@ case (A_eq_dec a0 a1); auto.
 intros n; apply (H a0 l0 b); auto.
 Qed.
 
-(* 
+(** 
   Searching in a list with a common first element is equivalent
   to the search skipping the element
 *)
@@ -395,7 +389,7 @@ intros n; apply (H a0 b); auto.
 intros l0; red in |- *; intros H1; case (H0 l0); auto.
 Qed.
 
-(* 
+(** 
   Find the element associated with a list of booleans,
   return None if it does not exist in the code
 *)
@@ -409,7 +403,7 @@ Fixpoint find_val (a : list bool) (l : code) {struct l} : option A :=
       end
   end.
 
-(* find_val returns an element of the code *)
+(** find_val returns an element of the code *)
 Theorem find_val_correct1 :
  forall (c : code) (a : A) (l : list bool),
  find_val l c = Some a -> In (a, l) c.
@@ -422,7 +416,7 @@ intros e H H0; injection H0.
 intros e1; left; apply f_equal2 with (f := pair (A:=A) (B:=list bool)); auto.
 Qed.
 
-(* An element of the code can be found by find_val *)
+(** An element of the code can be found by find_val *)
 Theorem find_val_correct2 :
  forall (c : code) (a : A) (l : list bool),
  unique_prefix c -> In (a, l) c -> find_val l c = Some a.
@@ -445,7 +439,7 @@ Qed.
 
 Opaque list_eq_dec.
 
-(* The value of an empty list cannot be found in a non empty code *)
+(** The value of an empty list cannot be found in a non empty code *)
 Theorem not_null_find_val :
  forall c : code, not_null c -> find_val [] c = None.
 Proof.
@@ -458,14 +452,14 @@ unfold not_null in |- *; intros a2; red in |- *; intros H1.
 case (H0 a2); simpl in |- *; auto.
 Qed.
 
-(* Encoding is done by iteratively applying find_code *)
+(** Encoding is done by iteratively applying find_code *)
 Fixpoint encode (c : code) (m : list A) {struct m} : list bool :=
   match m with
   | [] => []
   | a :: b => find_code a c ++ encode c b
   end.
 
-(* Encoding can be splitted for appended lists *)
+(** Encoding can be splitted for appended lists *)
 Theorem encode_app :
  forall l1 l2 c, encode c (l1 ++ l2) = encode c l1 ++ encode c l2.
 Proof.
@@ -474,7 +468,7 @@ intros a l H l2 c; rewrite H; auto.
 rewrite app_ass; auto.
 Qed.
 
-(* Inversion theorem for encode *)
+(** Inversion theorem for encode *)
 Theorem encode_cons_inv :
  forall a l1 l m1, ~ In a m1 -> encode ((a, l1) :: l) m1 = encode l m1.
 Proof.
@@ -485,7 +479,7 @@ intros H1; case H0; auto.
 intros e; rewrite H; auto.
 Qed.
 
-(* The encoding does not depend of permutation *)
+(** The encoding does not depend of permutation *)
 Theorem encode_permutation :
  forall (m : list A) (c1 c2 : code),
  Permutation c1 c2 -> unique_prefix c1 -> encode c1 m = encode c2 m.
@@ -496,7 +490,7 @@ apply f_equal2 with (f := app (A:=bool)); auto.
 apply find_code_permutation; auto.
 Qed.
 
-(* Permuting the message permutes the encoding *)
+(** Permuting the message permutes the encoding *)
 Theorem encode_permutation_val :
  forall m1 m2 c, Permutation m1 m2 -> Permutation (encode c m1) (encode c m2).
 Proof.
@@ -505,7 +499,7 @@ intros; repeat rewrite <- app_ass; auto.
 intros l1 l2 l3 H H0 H1 H2; apply Permutation_trans with (1 := H0); auto.
 Qed.
 
-(* 
+(** 
   To decode, first find the initial section of
   booleans that maps an encoding, this initial section is
   accumulated in the head
@@ -523,7 +517,7 @@ Fixpoint decode_aux (c : code) (head m : list bool) {struct m} : list A :=
       end
   end.
 
-(* decode_aux is correct *)
+(** decode_aux is correct *)
 Theorem decode_aux_correct :
  forall c : code,
  unique_prefix c ->
@@ -561,11 +555,11 @@ elim head; simpl in |- *; auto.
 rewrite app_ass; auto.
 Qed.
 
-(* Decode is just decode_aux with an empty head *)
+(** Decode is just decode_aux with an empty head *)
 Definition decode (c : list (A * list bool)) (m : list bool) :=
   decode_aux c [] m.
 
-(* Decoding is correct *)
+(** Decoding is correct *)
 Theorem decode_correct :
  forall c : code,
  unique_prefix c ->
@@ -577,7 +571,7 @@ intros c H H0 m1 m2 a H1; unfold decode in |- *; apply decode_aux_correct;
  auto.
 Qed.
 
-(* Encoding and decoding return the same message if the code is prefix *)
+(** Encoding and decoding return the same message if the code is prefix *)
 Theorem correct_encoding :
  forall c : code,
  unique_prefix c ->
@@ -602,7 +596,7 @@ apply find_code_correct2 with (2 := H3); auto.
 case H1; auto.
 Qed.
 
-(* A unique prefix code in an alphabet of at least 2 elements is non-empty *)
+(** A unique prefix code in an alphabet of at least 2 elements is non-empty *)
 Theorem frequency_not_null :
  forall m (c : code),
  1 < length (frequency_list A_eq_dec m) ->

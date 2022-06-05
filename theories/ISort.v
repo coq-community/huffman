@@ -13,14 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: ISort.v
+(** * Sorting by insertion and its correctness
 
-    Definition of sorting by insertion and its proof of correctness
+- Key definitions: [isort], [insert]
+- Initial author: Laurent.Thery@inria.fr (2003)
 
-    Definitions: isort, insert
-
-    Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
 From Coq Require Import List Sorting.Permutation.
@@ -40,7 +37,7 @@ Local Hint Resolve Permutation_refl : core.
 Local Hint Resolve Permutation_app : core.
 Local Hint Resolve Permutation_app_swap : core.
 
-(* Insert an element *) 
+(** Insert an element *) 
 Fixpoint insert (a : A) (l : list A) {struct l} : list A :=
   match l with
   | [] => a :: []
@@ -51,7 +48,7 @@ Fixpoint insert (a : A) (l : list A) {struct l} : list A :=
       end
   end.
 
-(* Inserting preserves ordering *)
+(** Inserting preserves ordering *)
 Theorem insert_ordered :
  forall l : list A,
  ordered order l -> forall a : A, ordered order (insert a l).
@@ -73,7 +70,7 @@ generalize (refl_equal (order_fun a0 b));
  intros Eq1; auto.
 Qed.
 
-(* Inserting returns a permutation *)
+(** Inserting returns a permutation *)
 Theorem insert_permutation :
  forall (L : list A) (a : A), Permutation (a :: L) (insert a L).
 Proof.
@@ -84,20 +81,20 @@ apply Permutation_trans with (l' := b :: a :: l); auto.
 Qed.
 Local Hint Resolve insert_ordered insert_permutation : core.
 
-(* Sorting by insertion *)
+(** Sorting by insertion *)
 Fixpoint isort (l : list A) : list A :=
   match l with
   | [] => []
   | b :: l1 => insert b (isort l1)
   end.
 
-(* Sorting gives an ordered list *)
+(** Sorting gives an ordered list *)
 Theorem isort_ordered : forall l : list A, ordered order (isort l).
 Proof using order_fun_false order_fun_true.
 intros l; elim l; simpl in |- *; auto.
 Qed.
 
-(* The result is a permutation of the original list *)
+(** The result is a permutation of the original list *)
 Theorem isort_permutation : forall l : list A, Permutation l (isort l).
 Proof.
 intros l; elim l; clear l; simpl in |- *; auto.

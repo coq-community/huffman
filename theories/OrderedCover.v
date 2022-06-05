@@ -13,14 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: OrderedCover.v
+(** * Ordered covers and some of their properties
 
-    Definition of ordered cover and some properties
+- Key definitions: [ordered_cover]
+- Initial author: Laurent.Thery@inria.fr (2003)
 
-    Definition: ordered_cover
-
-    Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
 From Coq Require Import Sorting.Permutation.
@@ -36,7 +33,7 @@ Local Hint Resolve Permutation_refl : core.
 Local Hint Resolve Permutation_app : core.
 Local Hint Resolve Permutation_app_swap : core.
 
-(* 
+(**
   An ordered cover is a cover where the positions of the elements in
   the list are fixed
 *)
@@ -49,7 +46,7 @@ Inductive ordered_cover : list (btree A) -> btree A -> Prop :=
       ordered_cover l2 t2 -> ordered_cover (l1 ++ l2) (node t1 t2).
 Local Hint Resolve ordered_cover_one ordered_cover_node : core.
 
-(* Ordered covers are special cases of covers *)
+(** Ordered covers are special cases of covers *)
 Theorem ordered_cover_cover :
  forall (l : list (btree A)) (t : btree A), ordered_cover l t -> cover l t.
 intros l t H; elim H; auto.
@@ -58,7 +55,7 @@ Proof.
 apply cover_app; auto.
 Qed.
 
-(* It is always possible to get an ordered cover from a cover *)
+(** It is always possible to get an ordered cover from a cover *)
 Theorem cover_ordered_cover :
  forall (l1 : list (btree A)) (t : btree A),
  cover l1 t -> exists l2, Permutation l1 l2 /\ ordered_cover l2 t.
@@ -85,7 +82,7 @@ exists (l4 ++ l5); split; auto.
 apply Permutation_trans with (1 := HH3); auto.
 Qed.
 
-(* 
+(**
   If the ordered cover is composed of only leaves, they are the
   exact leaves of the tree
 *) 

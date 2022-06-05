@@ -13,14 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: SameSumLeaves.v
+(** * Equality of sum leaves
 
-    Definition of the equality of sum leaves
+- Key definitions: [same_sum_leaves]
+- Initial author: Laurent.Thery@inria.fr (2003)
 
-    Definition: same_sum_leaves
-
-    Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
 From Coq Require Import Sorting.Permutation.
@@ -32,7 +29,7 @@ Section SameSumLeaves.
 Variable A : Type.
 Variable f : A -> nat.
 
-(* the sum leaves are the same upto permutation *)
+(** the sum leaves are the same upto permutation *)
 Definition same_sum_leaves (l1 l2 : list (btree A)) : Prop :=
   exists l3 : list (btree A),
     (exists l4 : list (btree A),
@@ -40,7 +37,7 @@ Definition same_sum_leaves (l1 l2 : list (btree A)) : Prop :=
        Permutation l2 l4 /\ 
        map (sum_leaves f) l3 = map (sum_leaves f) l4).
 
-(* if the sum leaves are the same, the list are of same length *)
+(** if the sum leaves are the same, the list are of same length *)
 Theorem same_sum_leaves_length :
  forall l1 l2 : list (btree A),
  same_sum_leaves l1 l2 -> length l1 = length l2.

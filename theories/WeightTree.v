@@ -13,10 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: WeightTree.v
+(** * Weights of binary trees
 
-    Initial author: Laurent.Thery@inria.fr (2003)
+- Key definitions: [sum_leaves]
+- Initial author: Laurent.Thery@inria.fr (2003)
+
 *)
 
 From Coq Require Import ArithRing Sorting.Permutation.
@@ -86,7 +87,7 @@ Arguments le_sum [A].
 Arguments weight_tree [A].
 Arguments weight_tree_list [A].
 
-(* 
+(** 
   sum_leaves are the same for ordered list that are permutations
   one from the other
 *)

@@ -13,13 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: OneStep.v
+(** * One step of the building process (merging the smallest tree)
 
-    Definition of one step of the building process (merging the
-    smallest tree) and its properties
+- Key definitions: [one_step]
+- Initial author: Laurent.Thery@inria.fr (2003)
 
-    Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
 From Coq Require Import Sorting.Permutation.
@@ -36,7 +34,7 @@ Local Hint Resolve Permutation_refl : core.
 Local Hint Resolve Permutation_app : core.
 Local Hint Resolve Permutation_app_swap : core.
 
-(* 
+(** 
   A step is valid if the two smallest elements of the initial list
   have been merged
 *)
@@ -48,7 +46,7 @@ Definition one_step (l1 l2 : list (btree A)) : Prop :=
           Permutation l1 (t1 :: t2 :: l3) /\
           Permutation l2 (node t1 t2 :: l3))).
 
-(* Choosing one step or another does not change the weight *)
+(** Choosing one step or another does not change the weight *)
 Theorem one_step_weight_tree_list :
  forall l1 l2 l3 : list (btree A),
  one_step l1 l2 ->
@@ -72,7 +70,7 @@ rewrite <- weight_tree_list_permutation with (1 := H2).
 apply weight_tree_list_permutation; auto.
 Qed.
 
-(* Choosing one step or another does not change the sum of leaves *)
+(** Choosing one step or another does not change the sum of leaves *)
 Theorem one_step_same_sum_leaves :
  forall l1 l2 l3 : list (btree A),
  one_step l1 l2 -> one_step l1 l3 -> same_sum_leaves f l2 l3.
@@ -92,7 +90,7 @@ apply Permutation_trans with (2 := H5); auto.
 apply Permutation_sym; auto.
 Qed.
 
-(* Choosing one step or another does not change weight and sum leaves *)
+(** Choosing one step or another does not change weight and sum leaves *)
 Theorem one_step_comp :
  forall l1 l2 l3 l4 : list (btree A),
  weight_tree_list f l1 = weight_tree_list f l2 ->

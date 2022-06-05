@@ -13,14 +13,11 @@
 (* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
 (* 02110-1301 USA                                                     *)
 
-(**
-    Proof of Huffman algorithm: Cover.v
+(** * Tree covers and their properties
 
-    Definition of a cover for a tree and some properties
+- Key definitions: [cover]
+- Initial author: Laurent.Thery@inria.fr (2003)
 
-    Definitions: cover
-
-    Initial author: Laurent.Thery@inria.fr (2003)
 *)
 
 From Huffman Require Export BTree.
@@ -37,7 +34,7 @@ Local Hint Resolve Permutation_refl : core.
 Local Hint Resolve Permutation_app : core.
 Local Hint Resolve Permutation_app_swap : core.
 
-(* 
+(**
   A list of trees is a cover of a tree if all the trees in the
   list delimit a frontier in the tree
 *)
@@ -49,7 +46,7 @@ Inductive cover : list (btree A) -> btree A -> Prop :=
       cover (node t1 t2 :: l2) t3 -> cover l1 t3.
 Local Hint Constructors cover : core.
 
-(* Covers are compatible with permutation *)
+(** Covers are compatible with permutation *)
 Theorem cover_permutation :
  forall t l1 l2, cover l1 t -> Permutation l1 l2 -> cover l2 t.
 Proof.
@@ -61,7 +58,7 @@ apply Permutation_trans with (2 := H).
 apply Permutation_sym; auto.
 Qed.
 
-(* A trivial way to cover a node *)
+(** A trivial way to cover a node *)
 Theorem cover_cons_l :
  forall t1 t2 l1, cover l1 t1 -> cover (t2 :: l1) (node t2 t1).
 Proof.
@@ -75,7 +72,7 @@ apply Permutation_trans with (t1 :: t2 :: t0 :: l2); auto.
 apply cover_permutation with (1 := H1); auto.
 Qed.
 
-(* A cover cannot be empty *)
+(** A cover cannot be empty *)
 Theorem cover_not_nil : forall l t, cover l t -> l <> [].
 Proof.
 intros l t H; case H; simpl in |- *; auto.
@@ -86,7 +83,7 @@ rewrite H2; simpl in |- *; intros; discriminate.
 apply Permutation_length with (1 := H0); auto.
 Qed.
 
-(* A non empty list is a cover of something *) 
+(** A non empty list is a cover of something *) 
 Theorem one_cover_ex :
  forall l : list (btree A), l <> [] -> exists t : btree A, cover l t.
 Proof.
@@ -100,7 +97,7 @@ intros x H1; exists (node a x).
 apply cover_cons_l; auto.
 Qed.
 
-(* Subtrees of the cover are subtrees of the tree *)
+(** Subtrees of the cover are subtrees of the tree *)
 Theorem cover_in_inb_inb :
  forall l t1 t2 t3, cover l t1 -> In t2 l -> inb t3 t2 -> inb t3 t1.
 Proof.
@@ -120,7 +117,7 @@ apply (H1 t0); simpl in |- *; auto.
 apply Permutation_in with (1 := H); simpl in |- *; auto.
 Qed.
 
-(* Trees of the cover are subtrees of the tree *)
+(** Trees of the cover are subtrees of the tree *)
 Theorem cover_in_inb : forall l t1 t2, cover l t1 -> In t2 l -> inb t2 t1.
 Proof.
 intros l t1 t2 H H0; apply cover_in_inb_inb with (1 := H) (2 := H0); auto.
@@ -135,14 +132,14 @@ intros.
 generalize (H2 a H3); intros; discriminate.
 Qed.
 
-(* Covers of a leaf are singleton lists *)
+(** Covers of a leaf are singleton lists *)
 Theorem cover_inv_leaf :
  forall (a : A) l, cover l (leaf a) -> l = leaf a :: [].
 Proof.
 intros a l H; (apply cover_inv_leaf_aux with (t := leaf a); auto).
 Qed.
 
-(* Singleton cover are composed of the tree *)
+(** Singleton cover are composed of the tree *)
 Theorem cover_one_inv : forall t1 t2, cover (t1 :: []) t2 -> t1 = t2.
 Proof.
 intros t1 t2 H; inversion H; auto.
@@ -212,7 +209,7 @@ apply Permutation_trans with ((node t0 t3 :: l6) ++ l5); auto.
 simpl in |- *; auto.
 Qed.
 
-(* A cover on a node can be splitted in two *)
+(** A cover on a node can be splitted in two *)
 Theorem cover_inv_app :
  forall t1 t2 l,
  cover l (node t1 t2) ->
@@ -223,7 +220,7 @@ Proof.
 intros t1 t2 l H; apply cover_inv_app_aux with (t := node t1 t2); auto.
 Qed.
 
-(* Covers of the direct subtrees generate a cover of the whole tree *)
+(** Covers of the direct subtrees generate a cover of the whole tree *)
 Theorem cover_app :
  forall t1 t2 l1 l2,
  cover l1 t1 -> cover l2 t2 -> cover (l1 ++ l2) (node t1 t2).
@@ -236,7 +233,7 @@ apply cover_node with (l2 := l2 ++ l0) (t1 := t1) (t2 := t2); auto.
 apply Permutation_trans with ((t1 :: t2 :: l2) ++ l0); auto.
 Qed.
 
-(* A cover gives a direct account of the number of the tree *)
+(** A cover gives a direct account of the number of the tree *)
 Theorem cover_number_of_nodes :
  forall t l,
  cover l t ->
@@ -253,7 +250,7 @@ intros a b1 b2; repeat rewrite <- Nat.add_assoc.
 apply f_equal2 with (f := plus); auto; apply Nat.add_comm.
 Qed.
 
-(* A local function to compute all covers of a certain length *)
+(** A local function to compute all covers of a certain length *)
 Fixpoint all_cover_aux (l : list (btree A)) (n : nat) {struct n} : list (btree A) :=
   match n with
   | O => []
@@ -267,10 +264,10 @@ Fixpoint all_cover_aux (l : list (btree A)) (n : nat) {struct n} : list (btree A
          end) (all_permutations l)
   end.
 
-(* A function to compute all covers *)
+(** A function to compute all covers *)
 Definition all_cover l := all_cover_aux l (length l).
 
-(* The local function generates covers of a given length *)
+(** The local function generates covers of a given length *)
 Theorem all_cover_aux_cover :
  forall (n : nat) l t, n = length l -> In t (all_cover_aux l n) -> cover l t.
 Proof.
@@ -296,13 +293,13 @@ apply Permutation_length.
 apply Permutation_sym; apply all_permutations_permutation; auto.
 Qed.
 
-(* The list of all covers contain only covers *)
+(** The list of all covers contain only covers *)
 Theorem all_cover_cover : forall l t, In t (all_cover l) -> cover l t.
 Proof.
 intros l t H; apply all_cover_aux_cover with (n := length l); auto.
 Qed.
 
-(* A cover of a given length is in the local list *)
+(** A cover of a given length is in the local list *)
 Theorem cover_all_cover_aux :
  forall (n : nat) l t, n = length l -> cover l t -> In t (all_cover_aux l n).
 Proof.
@@ -323,13 +320,13 @@ apply permutation_all_permutations; auto.
 apply Permutation_sym; auto.
 Qed.
 
-(* A cover is in the list of all covers *)
+(** A cover is in the list of all covers *)
 Theorem cover_all_cover : forall l t, cover l t -> In t (all_cover l).
 Proof.
 intros l t H; unfold all_cover in |- *; apply cover_all_cover_aux; auto.
 Qed.
 
-(* Covers are decidable *)
+(** Covers are decidable *)
 Definition cover_dec :
   (forall a b : A, {a = b} + {a <> b}) ->
   forall l t, {cover l t} + {~ cover l t}.
@@ -339,7 +336,7 @@ intros H1; left; apply all_cover_cover; auto.
 intros H1; right; contradict H1; apply cover_all_cover; auto.
 Defined.
 
-(* All the leaves of the tree gives a cover to the tree. *)
+(** All the leaves of the tree gives a cover to the tree. *)
 Theorem cover_all_leaves :
  forall t : btree A, cover (map (fun x : A => leaf x) (all_leaves t)) t.
 Proof.
