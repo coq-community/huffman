@@ -42,14 +42,12 @@ supported_coq_versions:
   opam: '{(>= "8.12" & < "8.17~") | (= "dev")}'
 
 tested_coq_opam_versions:
-- version: 'dev-ocaml-4.13.1-flambda'
+- version: 'dev'
+- version: '8.16'
 - version: '8.15'
 - version: '8.14'
 - version: '8.13'
 - version: '8.12'
-
-tested_coq_nix_versions:
-- coq_version: '8.15'
 
 ci_cron_schedule: '10 1 * * 0'
 
