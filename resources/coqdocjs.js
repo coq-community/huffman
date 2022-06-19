@@ -82,7 +82,7 @@ function isVernacStart(l, t){
 }
 
 function isProofStart(n){
-    return isVernacStart(["Proof"], n.textContent) ||
+    return (isVernacStart(["Proof"], n.textContent) && !isVernacStart(["Using"], n.nextSibling.nextSibling.textContent)) ||
         (isVernacStart(["Next"], n.textContent) && isVernacStart(["Obligation"], n.nextSibling.nextSibling.textContent));
 }
 
