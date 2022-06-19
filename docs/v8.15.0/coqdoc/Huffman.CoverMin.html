@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<link href="coqdocjs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="config.js"></script>
+<script type="text/javascript" src="coqdocjs.js"></script>
+</head>
+
+<body onload="document.getElementById('content').focus()">
+  <div id="header">
+    <span class="left">
+      <span class="modulename"> <script> document.write(document.title) </script> </span>
+    </span>
+
+    <span class="button" id="toggle-proofs"></span>
+
+    <span class="right">
+      <a href="./../../..">Project Website</a>
+      <a href="./indexpage.html">Index</a>
+      <a href="./toc.html">Table of Contents</a>
+    </span>
+</div>
+    <div id="content" tabindex="-1" onblur="document.getElementById('content').focus()">
+    <div id="main">
+<div class="code">
+<span class="comment">(*&nbsp;This&nbsp;program&nbsp;is&nbsp;free&nbsp;software;&nbsp;you&nbsp;can&nbsp;redistribute&nbsp;it&nbsp;and/or&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;modify&nbsp;it&nbsp;under&nbsp;the&nbsp;terms&nbsp;of&nbsp;the&nbsp;GNU&nbsp;Lesser&nbsp;General&nbsp;Public&nbsp;License&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;as&nbsp;published&nbsp;by&nbsp;the&nbsp;Free&nbsp;Software&nbsp;Foundation;&nbsp;either&nbsp;version&nbsp;2.1&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;of&nbsp;the&nbsp;License,&nbsp;or&nbsp;(at&nbsp;your&nbsp;option)&nbsp;any&nbsp;later&nbsp;version.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;This&nbsp;program&nbsp;is&nbsp;distributed&nbsp;in&nbsp;the&nbsp;hope&nbsp;that&nbsp;it&nbsp;will&nbsp;be&nbsp;useful,&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;but&nbsp;WITHOUT&nbsp;ANY&nbsp;WARRANTY;&nbsp;without&nbsp;even&nbsp;the&nbsp;implied&nbsp;warranty&nbsp;of&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;MERCHANTABILITY&nbsp;or&nbsp;FITNESS&nbsp;FOR&nbsp;A&nbsp;PARTICULAR&nbsp;PURPOSE.&nbsp;&nbsp;See&nbsp;the&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;GNU&nbsp;Lesser&nbsp;General&nbsp;Public&nbsp;License&nbsp;for&nbsp;more&nbsp;details.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;You&nbsp;should&nbsp;have&nbsp;received&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;GNU&nbsp;Lesser&nbsp;General&nbsp;Public&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;License&nbsp;along&nbsp;with&nbsp;this&nbsp;program;&nbsp;if&nbsp;not,&nbsp;write&nbsp;to&nbsp;the&nbsp;Free&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;Software&nbsp;Foundation,&nbsp;Inc.,&nbsp;51&nbsp;Franklin&nbsp;St,&nbsp;Fifth&nbsp;Floor,&nbsp;Boston,&nbsp;MA&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;02110-1301&nbsp;USA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab15"></a><h1 class="section">Minimal trees for a cover</h1>
+
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> Key definitions: <span class="inlinecode"><a class="idref" href="Huffman.CoverMin.html#cover_min"><span class="id" title="definition">cover_min</span></a></span>
+
+</li>
+<li> Initial author: Laurent.Thery@inria.fr (2003)
+
+</li>
+</ul>
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Coq</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Sorting.Permutation.html#"><span class="id" title="library">Sorting.Permutation</span></a>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Huffman</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <a class="idref" href="Huffman.Cover.html#"><span class="id" title="library">Cover</span></a> <a class="idref" href="Huffman.WeightTree.html#"><span class="id" title="library">WeightTree</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Set</span> <span class="id" title="var">Default</span> <span class="id" title="keyword">Proof</span> <span class="id" title="var">Using</span> "Type".<br/>
+
+<br/>
+<span class="id" title="keyword">Section</span> <a id="CoverMin" class="idref" href="#CoverMin"><span class="id" title="section">CoverMin</span></a>.<br/>
+<span class="id" title="keyword">Variable</span> <a id="CoverMin.A" class="idref" href="#CoverMin.A"><span class="id" title="variable">A</span></a> : <span class="id" title="keyword">Type</span>.<br/>
+<span class="id" title="keyword">Variable</span> <a id="CoverMin.f" class="idref" href="#CoverMin.f"><span class="id" title="variable">f</span></a> : <a class="idref" href="Huffman.CoverMin.html#CoverMin.A"><span class="id" title="variable">A</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Local Hint Constructors</span> <a class="idref" href="Huffman.CoverMin.html#Permutation"><span class="id" title="inductive">Permutation</span></a> : <span class="id" title="var">core</span>.<br/>
+<span class="id" title="keyword">Local Hint Resolve</span> <span class="id" title="var">Permutation_refl</span> : <span class="id" title="var">core</span>.<br/>
+<span class="id" title="keyword">Local Hint Resolve</span> <span class="id" title="var">Permutation_app</span> : <span class="id" title="var">core</span>.<br/>
+<span class="id" title="keyword">Local Hint Resolve</span> <span class="id" title="var">Permutation_app_swap</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+To be a tree of minimum weight for a cover 
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <a id="cover_min" class="idref" href="#cover_min"><span class="id" title="definition">cover_min</span></a> (<a id="l:3" class="idref" href="#l:3"><span class="id" title="binder">l</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> (<a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.CoverMin.html#CoverMin.A"><span class="id" title="variable">A</span></a>)) (<a id="t1:4" class="idref" href="#t1:4"><span class="id" title="binder">t1</span></a> : <a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.CoverMin.html#CoverMin.A"><span class="id" title="variable">A</span></a>) : <span class="id" title="keyword">Prop</span> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="Huffman.Cover.html#cover"><span class="id" title="inductive">cover</span></a> <a class="idref" href="Huffman.CoverMin.html#l:3"><span class="id" title="variable">l</span></a> <a class="idref" href="Huffman.CoverMin.html#t1:4"><span class="id" title="variable">t1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">/\</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">(</span></a><span class="id" title="keyword">forall</span> <a id="t2:5" class="idref" href="#t2:5"><span class="id" title="binder">t2</span></a> : <a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.CoverMin.html#CoverMin.A"><span class="id" title="variable">A</span></a>, <a class="idref" href="Huffman.Cover.html#cover"><span class="id" title="inductive">cover</span></a> <a class="idref" href="Huffman.CoverMin.html#l:3"><span class="id" title="variable">l</span></a> <a class="idref" href="Huffman.CoverMin.html#t2:5"><span class="id" title="variable">t2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Huffman.WeightTree.html#weight_tree"><span class="id" title="definition">weight_tree</span></a> <a class="idref" href="Huffman.CoverMin.html#CoverMin.f"><span class="id" title="variable">f</span></a> <a class="idref" href="Huffman.CoverMin.html#t1:4"><span class="id" title="variable">t1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Peano.html#cb53cf0ee22c036a03b4a9281c68b5a3"><span class="id" title="notation">&lt;=</span></a> <a class="idref" href="Huffman.WeightTree.html#weight_tree"><span class="id" title="definition">weight_tree</span></a> <a class="idref" href="Huffman.CoverMin.html#CoverMin.f"><span class="id" title="variable">f</span></a> <a class="idref" href="Huffman.CoverMin.html#t2:5"><span class="id" title="variable">t2</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">)</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Minimum tree for a singleton cover 
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <a id="cover_min_one" class="idref" href="#cover_min_one"><span class="id" title="lemma">cover_min_one</span></a> : <span class="id" title="keyword">forall</span> <a id="t:6" class="idref" href="#t:6"><span class="id" title="binder">t</span></a> : <a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.CoverMin.html#CoverMin.A"><span class="id" title="variable">A</span></a>, <a class="idref" href="Huffman.CoverMin.html#cover_min"><span class="id" title="definition">cover_min</span></a> (<a class="idref" href="Huffman.CoverMin.html#t:6"><span class="id" title="variable">t</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a>) <a class="idref" href="Huffman.CoverMin.html#t:6"><span class="id" title="variable">t</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">t</span>; <span class="id" title="tactic">split</span>; <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">t2</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">inversion</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="tactic">generalize</span> (<a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Sorting.Permutation.html#Permutation_length"><span class="id" title="lemma">Permutation_length</span></a> <span class="id" title="var">H0</span>); <span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> |- *; <span class="id" title="tactic">intros</span>; <span class="id" title="tactic">discriminate</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Local Hint Resolve</span> <span class="id" title="var">cover_min_one</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Minimum trees are preserved by permutation 
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <a id="cover_min_permutation" class="idref" href="#cover_min_permutation"><span class="id" title="lemma">cover_min_permutation</span></a> :<br/>
+&nbsp;<span class="id" title="keyword">forall</span> (<a id="t:7" class="idref" href="#t:7"><span class="id" title="binder">t</span></a> : <a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.CoverMin.html#CoverMin.A"><span class="id" title="variable">A</span></a>) (<a id="l1:8" class="idref" href="#l1:8"><span class="id" title="binder">l1</span></a> <a id="l2:9" class="idref" href="#l2:9"><span class="id" title="binder">l2</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> (<a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.CoverMin.html#CoverMin.A"><span class="id" title="variable">A</span></a>)),<br/>
+&nbsp;<a class="idref" href="Huffman.CoverMin.html#cover_min"><span class="id" title="definition">cover_min</span></a> <a class="idref" href="Huffman.CoverMin.html#l1:8"><span class="id" title="variable">l1</span></a> <a class="idref" href="Huffman.CoverMin.html#t:7"><span class="id" title="variable">t</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Sorting.Permutation.html#Permutation"><span class="id" title="inductive">Permutation</span></a> <a class="idref" href="Huffman.CoverMin.html#l1:8"><span class="id" title="variable">l1</span></a> <a class="idref" href="Huffman.CoverMin.html#l2:9"><span class="id" title="variable">l2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Huffman.CoverMin.html#cover_min"><span class="id" title="definition">cover_min</span></a> <a class="idref" href="Huffman.CoverMin.html#l2:9"><span class="id" title="variable">l2</span></a> <a class="idref" href="Huffman.CoverMin.html#t:7"><span class="id" title="variable">t</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">t</span> <span class="id" title="var">l1</span> <span class="id" title="var">l2</span> <span class="id" title="var">H</span> <span class="id" title="var">H0</span>; <span class="id" title="tactic">split</span>.<br/>
+<span class="id" title="tactic">apply</span> <a class="idref" href="Huffman.Cover.html#cover_permutation"><span class="id" title="lemma">cover_permutation</span></a> <span class="id" title="keyword">with</span> (2 := <span class="id" title="var">H0</span>); <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="tactic">inversion</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">t2</span> <span class="id" title="var">H1</span>.<br/>
+<span class="id" title="tactic">assert</span> (<a class="idref" href="Huffman.Cover.html#cover"><span class="id" title="inductive">cover</span></a> <span class="id" title="var">l1</span> <span class="id" title="var">t2</span>).<br/>
+<span class="id" title="tactic">inversion</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="tactic">apply</span> <a class="idref" href="Huffman.Cover.html#cover_permutation"><span class="id" title="lemma">cover_permutation</span></a> <span class="id" title="keyword">with</span> (2 := <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Sorting.Permutation.html#Permutation_sym"><span class="id" title="lemma">Permutation_sym</span></a> <span class="id" title="var">H0</span>); <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="tactic">inversion</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+For all covers, there is a minimum tree 
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <a id="cover_min_ex" class="idref" href="#cover_min_ex"><span class="id" title="lemma">cover_min_ex</span></a> :<br/>
+&nbsp;<span class="id" title="keyword">forall</span> <a id="l:10" class="idref" href="#l:10"><span class="id" title="binder">l</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> (<a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.CoverMin.html#CoverMin.A"><span class="id" title="variable">A</span></a>), <a class="idref" href="Huffman.CoverMin.html#l:10"><span class="id" title="variable">l</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#::type_scope:x_'&lt;&gt;'_x"><span class="id" title="notation">&lt;&gt;</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#a883bdd010993579f99d60b3775bcf54"><span class="id" title="notation">exists</span></a> <a id="t:11" class="idref" href="#t:11"><span class="id" title="binder">t</span></a> : <a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.CoverMin.html#CoverMin.A"><span class="id" title="variable">A</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#a883bdd010993579f99d60b3775bcf54"><span class="id" title="notation">,</span></a> <a class="idref" href="Huffman.CoverMin.html#cover_min"><span class="id" title="definition">cover_min</span></a> <a class="idref" href="Huffman.CoverMin.html#l:10"><span class="id" title="variable">l</span></a> <a class="idref" href="Huffman.CoverMin.html#t:11"><span class="id" title="variable">t</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">l</span> <span class="id" title="var">H</span>;<br/>
+&nbsp;<span class="id" title="tactic">generalize</span> (<a class="idref" href="Huffman.AuxLib.html#find_min_correct"><span class="id" title="lemma">find_min_correct</span></a> (<a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.CoverMin.html#CoverMin.A"><span class="id" title="variable">A</span></a>) (<a class="idref" href="Huffman.WeightTree.html#weight_tree"><span class="id" title="definition">weight_tree</span></a> <a class="idref" href="Huffman.CoverMin.html#CoverMin.f"><span class="id" title="variable">f</span></a>) (<a class="idref" href="Huffman.Cover.html#all_cover"><span class="id" title="definition">all_cover</span></a> <span class="id" title="var">_</span> <span class="id" title="var">l</span>)).<br/>
+<span class="id" title="tactic">case</span> (<a class="idref" href="Huffman.AuxLib.html#find_min"><span class="id" title="definition">find_min</span></a> (<a class="idref" href="Huffman.WeightTree.html#weight_tree"><span class="id" title="definition">weight_tree</span></a> <a class="idref" href="Huffman.CoverMin.html#CoverMin.f"><span class="id" title="variable">f</span></a>) (<a class="idref" href="Huffman.Cover.html#all_cover"><span class="id" title="definition">all_cover</span></a> <span class="id" title="var">_</span> <span class="id" title="var">l</span>)).<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">p</span>; <span class="id" title="tactic">case</span> <span class="id" title="var">p</span>.<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">n</span> <span class="id" title="var">b</span> ((<span class="id" title="var">H1</span>, <span class="id" title="var">H2</span>), <span class="id" title="var">H3</span>); <span class="id" title="tactic">exists</span> <span class="id" title="var">b</span>; <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="tactic">split</span>; <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="tactic">apply</span> <a class="idref" href="Huffman.Cover.html#all_cover_cover"><span class="id" title="lemma">all_cover_cover</span></a>; <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">t2</span> <span class="id" title="var">H4</span>; <span class="id" title="tactic">apply</span> <span class="id" title="var">H3</span>.<br/>
+<span class="id" title="tactic">apply</span> <a class="idref" href="Huffman.Cover.html#cover_all_cover"><span class="id" title="lemma">cover_all_cover</span></a>; <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">H0</span>.<br/>
+<span class="id" title="tactic">case</span> (<a class="idref" href="Huffman.Cover.html#one_cover_ex"><span class="id" title="lemma">one_cover_ex</span></a> <span class="id" title="var">_</span> <span class="id" title="var">l</span>); <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">x</span> <span class="id" title="var">H1</span>; <span class="id" title="var">absurd</span> (<a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <span class="id" title="var">x</span> (<a class="idref" href="Huffman.Cover.html#all_cover"><span class="id" title="definition">all_cover</span></a> <a class="idref" href="Huffman.CoverMin.html#CoverMin.A"><span class="id" title="variable">A</span></a> <span class="id" title="var">l</span>)).<br/>
+<span class="id" title="tactic">rewrite</span> <span class="id" title="var">H0</span>; <span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> |- *; <span class="id" title="tactic">red</span> <span class="id" title="tactic">in</span> |- *; <span class="id" title="tactic">intros</span> <span class="id" title="var">H2</span>; <span class="id" title="tactic">case</span> <span class="id" title="var">H2</span>.<br/>
+<span class="id" title="tactic">apply</span> <a class="idref" href="Huffman.Cover.html#cover_all_cover"><span class="id" title="lemma">cover_all_cover</span></a>; <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">End</span> <a class="idref" href="Huffman.CoverMin.html#CoverMin"><span class="id" title="section">CoverMin</span></a>.<br/>
+
+<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">cover_min_one</span> : <span class="id" title="var">core</span>.<br/>
+</div>
+</div>
+<div id="footer">
+  Generated by <a href="http://coq.inria.fr">coqdoc</a> and improved with <a href="https://github.com/palmskog/coqdocjs">CoqdocJS</a> as adapted for <a href="https://github.com/coq-community">coq-community</a>
+</div>
+</div>
+</body>
+
+</html>

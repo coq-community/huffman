@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<link href="coqdocjs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="config.js"></script>
+<script type="text/javascript" src="coqdocjs.js"></script>
+</head>
+
+<body onload="document.getElementById('content').focus()">
+  <div id="header">
+    <span class="left">
+      <span class="modulename"> <script> document.write(document.title) </script> </span>
+    </span>
+
+    <span class="button" id="toggle-proofs"></span>
+
+    <span class="right">
+      <a href="./../../..">Project Website</a>
+      <a href="./indexpage.html">Index</a>
+      <a href="./toc.html">Table of Contents</a>
+    </span>
+</div>
+    <div id="content" tabindex="-1" onblur="document.getElementById('content').focus()">
+    <div id="main">
+<div class="code">
+<span class="comment">(*&nbsp;This&nbsp;program&nbsp;is&nbsp;free&nbsp;software;&nbsp;you&nbsp;can&nbsp;redistribute&nbsp;it&nbsp;and/or&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;modify&nbsp;it&nbsp;under&nbsp;the&nbsp;terms&nbsp;of&nbsp;the&nbsp;GNU&nbsp;Lesser&nbsp;General&nbsp;Public&nbsp;License&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;as&nbsp;published&nbsp;by&nbsp;the&nbsp;Free&nbsp;Software&nbsp;Foundation;&nbsp;either&nbsp;version&nbsp;2.1&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;of&nbsp;the&nbsp;License,&nbsp;or&nbsp;(at&nbsp;your&nbsp;option)&nbsp;any&nbsp;later&nbsp;version.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;This&nbsp;program&nbsp;is&nbsp;distributed&nbsp;in&nbsp;the&nbsp;hope&nbsp;that&nbsp;it&nbsp;will&nbsp;be&nbsp;useful,&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;but&nbsp;WITHOUT&nbsp;ANY&nbsp;WARRANTY;&nbsp;without&nbsp;even&nbsp;the&nbsp;implied&nbsp;warranty&nbsp;of&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;MERCHANTABILITY&nbsp;or&nbsp;FITNESS&nbsp;FOR&nbsp;A&nbsp;PARTICULAR&nbsp;PURPOSE.&nbsp;&nbsp;See&nbsp;the&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;GNU&nbsp;Lesser&nbsp;General&nbsp;Public&nbsp;License&nbsp;for&nbsp;more&nbsp;details.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;You&nbsp;should&nbsp;have&nbsp;received&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;GNU&nbsp;Lesser&nbsp;General&nbsp;Public&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;License&nbsp;along&nbsp;with&nbsp;this&nbsp;program;&nbsp;if&nbsp;not,&nbsp;write&nbsp;to&nbsp;the&nbsp;Free&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;Software&nbsp;Foundation,&nbsp;Inc.,&nbsp;51&nbsp;Franklin&nbsp;St,&nbsp;Fifth&nbsp;Floor,&nbsp;Boston,&nbsp;MA&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;02110-1301&nbsp;USA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab11"></a><h1 class="section">Weights of binary trees</h1>
+
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> Key definitions: <span class="inlinecode"><a class="idref" href="Huffman.WeightTree.html#sum_leaves"><span class="id" title="definition">sum_leaves</span></a></span>
+
+</li>
+<li> Initial author: Laurent.Thery@inria.fr (2003)
+
+</li>
+</ul>
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Coq</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.setoid_ring.ArithRing.html#"><span class="id" title="library">ArithRing</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Sorting.Permutation.html#"><span class="id" title="library">Sorting.Permutation</span></a>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Huffman</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <a class="idref" href="Huffman.BTree.html#"><span class="id" title="library">BTree</span></a> <a class="idref" href="Huffman.Ordered.html#"><span class="id" title="library">Ordered</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Set</span> <span class="id" title="var">Default</span> <span class="id" title="keyword">Proof</span> <span class="id" title="var">Using</span> "Type".<br/>
+
+<br/>
+<span class="id" title="keyword">Section</span> <a id="WeightTree" class="idref" href="#WeightTree"><span class="id" title="section">WeightTree</span></a>.<br/>
+<span class="id" title="keyword">Variable</span> <a id="WeightTree.A" class="idref" href="#WeightTree.A"><span class="id" title="variable">A</span></a> : <span class="id" title="keyword">Type</span>.<br/>
+<span class="id" title="keyword">Variable</span> <a id="WeightTree.f" class="idref" href="#WeightTree.f"><span class="id" title="variable">f</span></a> : <a class="idref" href="Huffman.WeightTree.html#WeightTree.A"><span class="id" title="variable">A</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Fixpoint</span> <a id="sum_leaves" class="idref" href="#sum_leaves"><span class="id" title="definition">sum_leaves</span></a> (<a id="t:3" class="idref" href="#t:3"><span class="id" title="binder">t</span></a> : <a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.WeightTree.html#WeightTree.A"><span class="id" title="variable">A</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="Huffman.WeightTree.html#t:3"><span class="id" title="variable">t</span></a> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <a class="idref" href="Huffman.BTree.html#leaf"><span class="id" title="constructor">leaf</span></a> <span class="id" title="var">n</span> =&gt; <a class="idref" href="Huffman.WeightTree.html#WeightTree.f"><span class="id" title="variable">f</span></a> <span class="id" title="var">n</span><br/>
+&nbsp;&nbsp;| <a class="idref" href="Huffman.BTree.html#node"><span class="id" title="constructor">node</span></a> <span class="id" title="var">t1</span> <span class="id" title="var">t2</span> =&gt; <a class="idref" href="Huffman.WeightTree.html#sum_leaves:4"><span class="id" title="definition">sum_leaves</span></a> <span class="id" title="var">t1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Peano.html#0dacc1786c5ba797d47dd85006231633"><span class="id" title="notation">+</span></a> <a class="idref" href="Huffman.WeightTree.html#sum_leaves:4"><span class="id" title="definition">sum_leaves</span></a> <span class="id" title="var">t2</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="sum_order" class="idref" href="#sum_order"><span class="id" title="definition">sum_order</span></a> <a id="x:6" class="idref" href="#x:6"><span class="id" title="binder">x</span></a> <a id="y:7" class="idref" href="#y:7"><span class="id" title="binder">y</span></a> := <a class="idref" href="Huffman.WeightTree.html#sum_leaves"><span class="id" title="definition">sum_leaves</span></a> <a class="idref" href="Huffman.WeightTree.html#x:6"><span class="id" title="variable">x</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Peano.html#cb53cf0ee22c036a03b4a9281c68b5a3"><span class="id" title="notation">&lt;=</span></a> <a class="idref" href="Huffman.WeightTree.html#sum_leaves"><span class="id" title="definition">sum_leaves</span></a> <a class="idref" href="Huffman.WeightTree.html#y:7"><span class="id" title="variable">y</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="le_sum" class="idref" href="#le_sum"><span class="id" title="definition">le_sum</span></a> <a id="x:8" class="idref" href="#x:8"><span class="id" title="binder">x</span></a> <a id="y:9" class="idref" href="#y:9"><span class="id" title="binder">y</span></a> := <a class="idref" href="Huffman.WeightTree.html#sum_leaves"><span class="id" title="definition">sum_leaves</span></a> <a class="idref" href="Huffman.WeightTree.html#x:8"><span class="id" title="variable">x</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Arith.PeanoNat.html#0f31f5c1c6b6a21a3a187247222bc9e4"><span class="id" title="notation">&lt;=?</span></a> <a class="idref" href="Huffman.WeightTree.html#sum_leaves"><span class="id" title="definition">sum_leaves</span></a> <a class="idref" href="Huffman.WeightTree.html#y:9"><span class="id" title="variable">y</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Theorem</span> <a id="le_sum_correct1" class="idref" href="#le_sum_correct1"><span class="id" title="lemma">le_sum_correct1</span></a> :<br/>
+&nbsp;<span class="id" title="keyword">forall</span> <a id="a:10" class="idref" href="#a:10"><span class="id" title="binder">a</span></a> <a id="b1:11" class="idref" href="#b1:11"><span class="id" title="binder">b1</span></a> : <a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.WeightTree.html#WeightTree.A"><span class="id" title="variable">A</span></a>, <a class="idref" href="Huffman.WeightTree.html#le_sum"><span class="id" title="definition">le_sum</span></a> <a class="idref" href="Huffman.WeightTree.html#a:10"><span class="id" title="variable">a</span></a> <a class="idref" href="Huffman.WeightTree.html#b1:11"><span class="id" title="variable">b1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#true"><span class="id" title="constructor">true</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Huffman.WeightTree.html#sum_order"><span class="id" title="definition">sum_order</span></a> <a class="idref" href="Huffman.WeightTree.html#a:10"><span class="id" title="variable">a</span></a> <a class="idref" href="Huffman.WeightTree.html#b1:11"><span class="id" title="variable">b1</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">a</span> <span class="id" title="var">b1</span>; <span class="id" title="tactic">apply</span> (<a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Arith.Compare_dec.html#leb_complete"><span class="id" title="lemma">leb_complete</span></a> (<a class="idref" href="Huffman.WeightTree.html#sum_leaves"><span class="id" title="definition">sum_leaves</span></a> <span class="id" title="var">a</span>) (<a class="idref" href="Huffman.WeightTree.html#sum_leaves"><span class="id" title="definition">sum_leaves</span></a> <span class="id" title="var">b1</span>)).<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Theorem</span> <a id="le_sum_correct2" class="idref" href="#le_sum_correct2"><span class="id" title="lemma">le_sum_correct2</span></a> :<br/>
+&nbsp;<span class="id" title="keyword">forall</span> <a id="a:12" class="idref" href="#a:12"><span class="id" title="binder">a</span></a> <a id="b1:13" class="idref" href="#b1:13"><span class="id" title="binder">b1</span></a> : <a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.WeightTree.html#WeightTree.A"><span class="id" title="variable">A</span></a>, <a class="idref" href="Huffman.WeightTree.html#le_sum"><span class="id" title="definition">le_sum</span></a> <a class="idref" href="Huffman.WeightTree.html#a:12"><span class="id" title="variable">a</span></a> <a class="idref" href="Huffman.WeightTree.html#b1:13"><span class="id" title="variable">b1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#false"><span class="id" title="constructor">false</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Huffman.WeightTree.html#sum_order"><span class="id" title="definition">sum_order</span></a> <a class="idref" href="Huffman.WeightTree.html#b1:13"><span class="id" title="variable">b1</span></a> <a class="idref" href="Huffman.WeightTree.html#a:12"><span class="id" title="variable">a</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">a</span> <span class="id" title="var">b1</span> <span class="id" title="var">Hsum</span>; <span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Arith.PeanoNat.html#Nat.leb_gt"><span class="id" title="lemma">Nat.leb_gt</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">Hsum</span>.<br/>
+<span class="id" title="tactic">unfold</span> <a class="idref" href="Huffman.WeightTree.html#sum_order"><span class="id" title="definition">sum_order</span></a>; <span class="id" title="tactic">auto</span> <span class="id" title="keyword">with</span> <span class="id" title="var">arith</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Fixpoint</span> <a id="weight_tree" class="idref" href="#weight_tree"><span class="id" title="definition">weight_tree</span></a> (<a id="t:14" class="idref" href="#t:14"><span class="id" title="binder">t</span></a> : <a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.WeightTree.html#WeightTree.A"><span class="id" title="variable">A</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="Huffman.WeightTree.html#t:14"><span class="id" title="variable">t</span></a> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <a class="idref" href="Huffman.BTree.html#leaf"><span class="id" title="constructor">leaf</span></a> <span class="id" title="var">n</span> =&gt; 0<br/>
+&nbsp;&nbsp;| <a class="idref" href="Huffman.BTree.html#node"><span class="id" title="constructor">node</span></a> <span class="id" title="var">t1</span> <span class="id" title="var">t2</span> =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Huffman.WeightTree.html#sum_leaves"><span class="id" title="definition">sum_leaves</span></a> <span class="id" title="var">t1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Peano.html#0dacc1786c5ba797d47dd85006231633"><span class="id" title="notation">+</span></a> <a class="idref" href="Huffman.WeightTree.html#weight_tree:15"><span class="id" title="definition">weight_tree</span></a> <span class="id" title="var">t1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Peano.html#0dacc1786c5ba797d47dd85006231633"><span class="id" title="notation">+</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Peano.html#0dacc1786c5ba797d47dd85006231633"><span class="id" title="notation">(</span></a><a class="idref" href="Huffman.WeightTree.html#sum_leaves"><span class="id" title="definition">sum_leaves</span></a> <span class="id" title="var">t2</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Peano.html#0dacc1786c5ba797d47dd85006231633"><span class="id" title="notation">+</span></a> <a class="idref" href="Huffman.WeightTree.html#weight_tree:15"><span class="id" title="definition">weight_tree</span></a> <span class="id" title="var">t2</span><a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Peano.html#0dacc1786c5ba797d47dd85006231633"><span class="id" title="notation">)</span></a><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="weight_tree_list" class="idref" href="#weight_tree_list"><span class="id" title="definition">weight_tree_list</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> (<a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.WeightTree.html#WeightTree.A"><span class="id" title="variable">A</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Lists.List.html#fold_right"><span class="id" title="definition">fold_right</span></a> (<span class="id" title="keyword">fun</span> <a id="x:17" class="idref" href="#x:17"><span class="id" title="binder">x</span></a> : <a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.WeightTree.html#WeightTree.A"><span class="id" title="variable">A</span></a> =&gt; <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Peano.html#plus"><span class="id" title="abbreviation">plus</span></a> (<a class="idref" href="Huffman.WeightTree.html#weight_tree"><span class="id" title="definition">weight_tree</span></a> <a class="idref" href="Huffman.WeightTree.html#x:17"><span class="id" title="variable">x</span></a>)) 0.<br/>
+
+<br/>
+<span class="id" title="keyword">Theorem</span> <a id="weight_tree_list_node" class="idref" href="#weight_tree_list_node"><span class="id" title="lemma">weight_tree_list_node</span></a> :<br/>
+&nbsp;<span class="id" title="keyword">forall</span> (<a id="t1:18" class="idref" href="#t1:18"><span class="id" title="binder">t1</span></a> <a id="t2:19" class="idref" href="#t2:19"><span class="id" title="binder">t2</span></a> : <a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.WeightTree.html#WeightTree.A"><span class="id" title="variable">A</span></a>) (<a id="l:20" class="idref" href="#l:20"><span class="id" title="binder">l</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> (<a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.WeightTree.html#WeightTree.A"><span class="id" title="variable">A</span></a>)),<br/>
+&nbsp;<a class="idref" href="Huffman.WeightTree.html#weight_tree_list"><span class="id" title="definition">weight_tree_list</span></a> (<a class="idref" href="Huffman.BTree.html#node"><span class="id" title="constructor">node</span></a> <a class="idref" href="Huffman.WeightTree.html#t1:18"><span class="id" title="variable">t1</span></a> <a class="idref" href="Huffman.WeightTree.html#t2:19"><span class="id" title="variable">t2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <a class="idref" href="Huffman.WeightTree.html#l:20"><span class="id" title="variable">l</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a><br/>
+&nbsp;<a class="idref" href="Huffman.WeightTree.html#sum_leaves"><span class="id" title="definition">sum_leaves</span></a> <a class="idref" href="Huffman.WeightTree.html#t1:18"><span class="id" title="variable">t1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Peano.html#0dacc1786c5ba797d47dd85006231633"><span class="id" title="notation">+</span></a> <a class="idref" href="Huffman.WeightTree.html#sum_leaves"><span class="id" title="definition">sum_leaves</span></a> <a class="idref" href="Huffman.WeightTree.html#t2:19"><span class="id" title="variable">t2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Peano.html#0dacc1786c5ba797d47dd85006231633"><span class="id" title="notation">+</span></a> <a class="idref" href="Huffman.WeightTree.html#weight_tree_list"><span class="id" title="definition">weight_tree_list</span></a> (<a class="idref" href="Huffman.WeightTree.html#t1:18"><span class="id" title="variable">t1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <a class="idref" href="Huffman.WeightTree.html#t2:19"><span class="id" title="variable">t2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <a class="idref" href="Huffman.WeightTree.html#l:20"><span class="id" title="variable">l</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">t1</span> <span class="id" title="var">t2</span> <span class="id" title="var">l</span>; <span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> |- *; <span class="id" title="tactic">ring</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Theorem</span> <a id="weight_tree_list_permutation" class="idref" href="#weight_tree_list_permutation"><span class="id" title="lemma">weight_tree_list_permutation</span></a> :<br/>
+&nbsp;<span class="id" title="keyword">forall</span> <a id="l1:21" class="idref" href="#l1:21"><span class="id" title="binder">l1</span></a> <a id="l2:22" class="idref" href="#l2:22"><span class="id" title="binder">l2</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> (<a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.WeightTree.html#WeightTree.A"><span class="id" title="variable">A</span></a>),<br/>
+&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Sorting.Permutation.html#Permutation"><span class="id" title="inductive">Permutation</span></a> <a class="idref" href="Huffman.WeightTree.html#l1:21"><span class="id" title="variable">l1</span></a> <a class="idref" href="Huffman.WeightTree.html#l2:22"><span class="id" title="variable">l2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="Huffman.WeightTree.html#weight_tree_list"><span class="id" title="definition">weight_tree_list</span></a> <a class="idref" href="Huffman.WeightTree.html#l1:21"><span class="id" title="variable">l1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Huffman.WeightTree.html#weight_tree_list"><span class="id" title="definition">weight_tree_list</span></a> <a class="idref" href="Huffman.WeightTree.html#l2:22"><span class="id" title="variable">l2</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">l1</span> <span class="id" title="var">l2</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">elim</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> |- *; <span class="id" title="tactic">auto</span>; <span class="id" title="tactic">intros</span>; <span class="id" title="tactic">ring</span>.<br/>
+<span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> |- *; <span class="id" title="tactic">auto</span>; <span class="id" title="tactic">intros</span>; <span class="id" title="tactic">ring</span>.<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">l0</span> <span class="id" title="var">l3</span> <span class="id" title="var">l4</span> <span class="id" title="var">H0</span> <span class="id" title="var">H1</span> <span class="id" title="var">H2</span> <span class="id" title="var">H3</span>; <span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#trans_equal"><span class="id" title="abbreviation">trans_equal</span></a> <span class="id" title="keyword">with</span> (1 := <span class="id" title="var">H1</span>); <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">End</span> <a class="idref" href="Huffman.WeightTree.html#WeightTree"><span class="id" title="section">WeightTree</span></a>.<br/>
+<span class="id" title="keyword">Arguments</span> <a class="idref" href="Huffman.WeightTree.html#sum_leaves"><span class="id" title="definition">sum_leaves</span></a> [<span class="id" title="var">A</span>].<br/>
+<span class="id" title="keyword">Arguments</span> <a class="idref" href="Huffman.WeightTree.html#sum_order"><span class="id" title="definition">sum_order</span></a> [<span class="id" title="var">A</span>].<br/>
+<span class="id" title="keyword">Arguments</span> <a class="idref" href="Huffman.WeightTree.html#le_sum"><span class="id" title="definition">le_sum</span></a> [<span class="id" title="var">A</span>].<br/>
+<span class="id" title="keyword">Arguments</span> <a class="idref" href="Huffman.WeightTree.html#weight_tree"><span class="id" title="definition">weight_tree</span></a> [<span class="id" title="var">A</span>].<br/>
+<span class="id" title="keyword">Arguments</span> <a class="idref" href="Huffman.WeightTree.html#weight_tree_list"><span class="id" title="definition">weight_tree_list</span></a> [<span class="id" title="var">A</span>].<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+  sum_leaves are the same for ordered list that are permutations
+  one from the other
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <a id="ordered_sum_leaves_eq" class="idref" href="#ordered_sum_leaves_eq"><span class="id" title="lemma">ordered_sum_leaves_eq</span></a> :<br/>
+&nbsp;<span class="id" title="keyword">forall</span> (<a id="A:23" class="idref" href="#A:23"><span class="id" title="binder">A</span></a> : <span class="id" title="keyword">Type</span>) (<a id="f:24" class="idref" href="#f:24"><span class="id" title="binder">f</span></a> : <a class="idref" href="Huffman.WeightTree.html#A:23"><span class="id" title="variable">A</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a>) (<a id="l1:25" class="idref" href="#l1:25"><span class="id" title="binder">l1</span></a> <a id="l2:26" class="idref" href="#l2:26"><span class="id" title="binder">l2</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> (<a class="idref" href="Huffman.BTree.html#btree"><span class="id" title="inductive">btree</span></a> <a class="idref" href="Huffman.WeightTree.html#A:23"><span class="id" title="variable">A</span></a>)),<br/>
+&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Sorting.Permutation.html#Permutation"><span class="id" title="inductive">Permutation</span></a> <a class="idref" href="Huffman.WeightTree.html#l1:25"><span class="id" title="variable">l1</span></a> <a class="idref" href="Huffman.WeightTree.html#l2:26"><span class="id" title="variable">l2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a><br/>
+&nbsp;<a class="idref" href="Huffman.Ordered.html#ordered"><span class="id" title="inductive">ordered</span></a> (<a class="idref" href="Huffman.WeightTree.html#sum_order"><span class="id" title="definition">sum_order</span></a> <a class="idref" href="Huffman.WeightTree.html#f:24"><span class="id" title="variable">f</span></a>) <a class="idref" href="Huffman.WeightTree.html#l1:25"><span class="id" title="variable">l1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a><br/>
+&nbsp;<a class="idref" href="Huffman.Ordered.html#ordered"><span class="id" title="inductive">ordered</span></a> (<a class="idref" href="Huffman.WeightTree.html#sum_order"><span class="id" title="definition">sum_order</span></a> <a class="idref" href="Huffman.WeightTree.html#f:24"><span class="id" title="variable">f</span></a>) <a class="idref" href="Huffman.WeightTree.html#l2:26"><span class="id" title="variable">l2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Lists.List.html#map"><span class="id" title="definition">map</span></a> (<a class="idref" href="Huffman.WeightTree.html#sum_leaves"><span class="id" title="definition">sum_leaves</span></a> <a class="idref" href="Huffman.WeightTree.html#f:24"><span class="id" title="variable">f</span></a>) <a class="idref" href="Huffman.WeightTree.html#l1:25"><span class="id" title="variable">l1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Lists.List.html#map"><span class="id" title="definition">map</span></a> (<a class="idref" href="Huffman.WeightTree.html#sum_leaves"><span class="id" title="definition">sum_leaves</span></a> <a class="idref" href="Huffman.WeightTree.html#f:24"><span class="id" title="variable">f</span></a>) <a class="idref" href="Huffman.WeightTree.html#l2:26"><span class="id" title="variable">l2</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+<span class="id" title="tactic">intros</span> <span class="id" title="var">A</span> <span class="id" title="var">f</span> <span class="id" title="var">l1</span> <span class="id" title="var">l2</span> <span class="id" title="var">H</span> <span class="id" title="var">H0</span> <span class="id" title="var">H1</span>.<br/>
+<span class="id" title="tactic">apply</span> <a class="idref" href="Huffman.Ordered.html#ordered_perm_antisym_eq"><span class="id" title="lemma">ordered_perm_antisym_eq</span></a> <span class="id" title="keyword">with</span> (<span class="id" title="var">order</span> := <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Init.Peano.html#le"><span class="id" title="inductive">le</span></a>).<br/>
+<span class="id" title="tactic">exact</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Arith.PeanoNat.html#Nat.le_trans"><span class="id" title="lemma">Nat.le_trans</span></a>.<br/>
+<span class="id" title="tactic">exact</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Arith.PeanoNat.html#Nat.le_antisymm"><span class="id" title="lemma">Nat.le_antisymm</span></a>.<br/>
+<span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.15.2/stdlib//Coq.Sorting.Permutation.html#Permutation_map"><span class="id" title="lemma">Permutation_map</span></a>; <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="tactic">apply</span> <a class="idref" href="Huffman.Ordered.html#ordered_map_inv"><span class="id" title="lemma">ordered_map_inv</span></a>; <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="tactic">apply</span> <a class="idref" href="Huffman.Ordered.html#ordered_map_inv"><span class="id" title="lemma">ordered_map_inv</span></a>; <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+</div>
+</div>
+<div id="footer">
+  Generated by <a href="http://coq.inria.fr">coqdoc</a> and improved with <a href="https://github.com/palmskog/coqdocjs">CoqdocJS</a> as adapted for <a href="https://github.com/coq-community">coq-community</a>
+</div>
+</div>
+</body>
+
+</html>
