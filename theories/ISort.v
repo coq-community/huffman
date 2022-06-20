@@ -32,10 +32,10 @@ Variable order_fun : A -> A -> bool.
 Hypothesis order_fun_true : forall a b : A, order_fun a b = true -> order a b.
 Hypothesis order_fun_false : forall a b : A, order_fun a b = false -> order b a.
 
-Local Hint Constructors Permutation : core.
-Local Hint Resolve Permutation_refl : core.
-Local Hint Resolve Permutation_app : core.
-Local Hint Resolve Permutation_app_swap : core.
+#[local] Hint Constructors Permutation : core.
+#[local] Hint Resolve Permutation_refl : core.
+#[local] Hint Resolve Permutation_app : core.
+#[local] Hint Resolve Permutation_app_swap : core.
 
 (** Insert an element *) 
 Fixpoint insert (a : A) (l : list A) {struct l} : list A :=
@@ -79,7 +79,7 @@ intros b l H' a.
 case_eq (order_fun a b); intros H1; auto.
 apply Permutation_trans with (l' := b :: a :: l); auto.
 Qed.
-Local Hint Resolve insert_ordered insert_permutation : core.
+#[local] Hint Resolve insert_ordered insert_permutation : core.
 
 (** Sorting by insertion *)
 Fixpoint isort (l : list A) : list A :=
@@ -101,7 +101,7 @@ intros l; elim l; clear l; simpl in |- *; auto.
 intros a l H'.
 apply Permutation_trans with (l' := a :: isort l); auto.
 Qed.
-Local Hint Resolve isort_ordered isort_permutation : core.
+#[local] Hint Resolve isort_ordered isort_permutation : core.
 
 End ISortExample.
 

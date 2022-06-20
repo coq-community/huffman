@@ -28,10 +28,10 @@ Set Default Proof Using "Type".
 Section OrderedCover.
 Variable A : Type.
 
-Local Hint Constructors Permutation : core.
-Local Hint Resolve Permutation_refl : core.
-Local Hint Resolve Permutation_app : core.
-Local Hint Resolve Permutation_app_swap : core.
+#[local] Hint Constructors Permutation : core.
+#[local] Hint Resolve Permutation_refl : core.
+#[local] Hint Resolve Permutation_app : core.
+#[local] Hint Resolve Permutation_app_swap : core.
 
 (**
   An ordered cover is a cover where the positions of the elements in
@@ -44,7 +44,7 @@ Inductive ordered_cover : list (btree A) -> btree A -> Prop :=
       forall (t1 t2 : btree A) (l1 l2 l3 : list (btree A)),
       ordered_cover l1 t1 ->
       ordered_cover l2 t2 -> ordered_cover (l1 ++ l2) (node t1 t2).
-Local Hint Resolve ordered_cover_one ordered_cover_node : core.
+#[local] Hint Resolve ordered_cover_one ordered_cover_node : core.
 
 (** Ordered covers are special cases of covers *)
 Theorem ordered_cover_cover :

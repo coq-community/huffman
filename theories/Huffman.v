@@ -32,10 +32,10 @@ Variable A_eq_dec : forall a b : A, {a = b} + {a <> b}.
 Variable m : list A.
 Hypothesis frequency_more_than_one : 1 < length (frequency_list A_eq_dec m).
 
-Local Hint Constructors Permutation : core.
-Local Hint Resolve Permutation_refl : core.
-Local Hint Resolve Permutation_app : core.
-Local Hint Resolve Permutation_app_swap : core.
+#[local] Hint Constructors Permutation : core.
+#[local] Hint Resolve Permutation_refl : core.
+#[local] Hint Resolve Permutation_app : core.
+#[local] Hint Resolve Permutation_app_swap : core.
 
 (** The message is not null *) 
 Theorem not_null_m : m <> [].

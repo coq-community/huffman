@@ -29,10 +29,10 @@ Section Build.
 Variable A : Type.
 Variable f : A -> nat.
 
-Local Hint Constructors Permutation : core.
-Local Hint Resolve Permutation_refl : core.
-Local Hint Resolve Permutation_app : core.
-Local Hint Resolve Permutation_app_swap : core.
+#[local] Hint Constructors Permutation : core.
+#[local] Hint Resolve Permutation_refl : core.
+#[local] Hint Resolve Permutation_app : core.
+#[local] Hint Resolve Permutation_app_swap : core.
 
 (** Iterative the one step predicate *)
 Inductive build : list (btree A) -> btree A -> Prop :=

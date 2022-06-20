@@ -31,10 +31,10 @@ Section Code.
 Variable A : Type.
 Variable A_eq_dec : forall a b : A, {a = b} + {a <> b}.
 
-Local Hint Constructors Permutation : core.
-Local Hint Resolve Permutation_refl : core.
-Local Hint Resolve Permutation_app : core.
-Local Hint Resolve Permutation_app_swap : core.
+#[local] Hint Constructors Permutation : core.
+#[local] Hint Resolve Permutation_refl : core.
+#[local] Hint Resolve Permutation_app : core.
+#[local] Hint Resolve Permutation_app_swap : core.
 
 (** A code is an association list *)
 Definition code := list (A * list bool).
@@ -59,7 +59,7 @@ Theorem in_alphabet_nil : forall c, in_alphabet [] c.
 Proof.
 intros c a H; inversion H.
 Qed.
-Local Hint Resolve in_alphabet_nil : core.
+#[local] Hint Resolve in_alphabet_nil : core.
 
 (** An element can be added in the message if it is in the code *)
 Theorem in_alphabet_cons :
@@ -71,7 +71,7 @@ intros a1 [H1| H1].
 exists ca; rewrite <- H1; auto.
 case (H0 a1); auto.
 Qed.
-Local Hint Resolve in_alphabet_cons : core.
+#[local] Hint Resolve in_alphabet_cons : core.
 
 (** Inversion theorem *)
 Theorem in_alphabet_inv :
@@ -133,7 +133,7 @@ intros a1; simpl in |- *; red in |- *; intros [H1| H1]; auto.
 case H; injection H1; auto.
 case (H0 a1); simpl in |- *; auto.
 Qed.
-Local Hint Resolve not_null_cons : core.
+#[local] Hint Resolve not_null_cons : core.
 
 (** Non emptyness is compatible with append *) 
 Theorem not_null_app :
@@ -148,7 +148,7 @@ red in |- *; intros H2; discriminate.
 apply H; auto.
 apply not_null_inv with (1 := H0).
 Qed.
-Local Hint Resolve not_null_app : core.
+#[local] Hint Resolve not_null_app : core.
 
 (** Adding an element in each component of a code makes it non-empty *)
 Theorem not_null_map :
@@ -162,7 +162,7 @@ intros b; red in |- *; intros a; red in |- *; intros H; inversion H.
 intros (a1, l1) l0 H b; apply not_null_cons; auto.
 red in |- *; intros; discriminate.
 Qed.
-Local Hint Resolve not_null_map : core.
+#[local] Hint Resolve not_null_map : core.
 
 (** Define the property of list of booleans to be a prefix of another *)
 Inductive is_prefix : list bool -> list bool -> Prop :=
@@ -170,14 +170,14 @@ Inductive is_prefix : list bool -> list bool -> Prop :=
   | prefixCons :
       forall (b : bool) l1 l2,
       is_prefix l1 l2 -> is_prefix (b :: l1) (b :: l2).
-Local Hint Constructors is_prefix : core.
+#[local] Hint Constructors is_prefix : core.
 
 (** A list is a prefix of itself *)
 Theorem is_prefix_refl : forall l, is_prefix l l.
 Proof.
 intros l; elim l; simpl in |- *; auto.
 Qed.
-Local Hint Resolve is_prefix_refl : core.
+#[local] Hint Resolve is_prefix_refl : core.
 
 (** A code is a unique prefix if there is no encoding that is a prefix of another *)
 Definition unique_prefix (l : code) :=
@@ -191,7 +191,7 @@ Proof.
 split; auto.
 intros a1 a2 lb1 lb2 H; inversion H; auto.
 Qed.
-Local Hint Resolve unique_prefix_nil : core.
+#[local] Hint Resolve unique_prefix_nil : core.
 
 (** A unique prefix code can not have two elements prefix one from another *)
 Theorem unique_prefix1 :

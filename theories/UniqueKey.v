@@ -28,10 +28,10 @@ Set Default Proof Using "Type".
 Section UniqueKey.
 Variables (A : Type) (B : Type).
 
-Local Hint Constructors Permutation : core.
-Local Hint Resolve Permutation_refl : core.
-Local Hint Resolve Permutation_app : core.
-Local Hint Resolve Permutation_app_swap : core.
+#[local] Hint Constructors Permutation : core.
+#[local] Hint Resolve Permutation_refl : core.
+#[local] Hint Resolve Permutation_app : core.
+#[local] Hint Resolve Permutation_app_swap : core.
 
 (** An association list has unique keys if the keys appear only once *)
 Inductive unique_key : list (A * B) -> Prop :=
@@ -40,7 +40,7 @@ Inductive unique_key : list (A * B) -> Prop :=
       forall (a : A) (b : B) l,
       (forall b : B, ~ In (a, b) l) ->
       unique_key l -> unique_key ((a, b) :: l).
-Local Hint Constructors unique_key : core.
+#[local] Hint Constructors unique_key : core.
  
 (** Inversion theorem for unique keys *)
 Theorem unique_key_inv : forall a l, unique_key (a :: l) -> unique_key l.
