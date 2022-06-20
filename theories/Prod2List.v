@@ -34,15 +34,15 @@ Local Hint Resolve Permutation_refl : core.
 Local Hint Resolve Permutation_app : core.
 Local Hint Resolve Permutation_app_swap : core.
 
-(* 
- In the product the sum of the leaves is multiplied by the integer
+(**
+ In the product, the sum of the leaves is multiplied by the integer
  and added to the weight of the tree
 *)
 Definition prod2list l1 l2 :=
   fold_left plus
     (map2 (fun a b => a * sum_leaves f b + weight_tree f b) l1 l2) 0.
 
-(* The product of the appended list is the sum of the product *)
+(** The product of the appended list is the sum of the product *)
 Theorem prod2list_app :
  forall l1 l2 l3 l4,
  length l1 = length l2 ->
@@ -62,7 +62,7 @@ apply sym_equal; rewrite <- fold_plus_split with (f := fun x : nat => x);
 apply Nat.add_comm.
 Qed.
 
-(* Permuting two choosen elements lower the product *)
+(** Permuting two choosen elements lower the product *)
 Theorem prod2list_le_l :
  forall a b c d l1 l2 l3 l4 l5 l6,
  length l1 = length l4 ->
@@ -106,7 +106,7 @@ replace
 auto with arith.
 Qed.
 
-(* Permuting two choosen elements lower the product *)
+(** Permuting two choosen elements lower the product *)
 Theorem prod2list_le_r :
  forall a b c d l1 l2 l3 l4 l5 l6,
  length l1 = length l4 ->
@@ -141,7 +141,7 @@ replace
 ring_simplify; auto with arith.
 Qed.
 
-(* Permuting two choosen elements with same integer does not change the product *)
+(** Permuting two choosen elements with same integer does not change the product *)
 Theorem prod2list_eq :
  forall a b c l1 l2 l3 l4 l5 l6,
  length l1 = length l4 ->
@@ -161,7 +161,7 @@ repeat rewrite prod2list_app; auto with arith.
 ring.
 Qed.
 
-(* Putting the smallest tree with the smallest integer lower the product *)
+(** Putting the smallest tree with the smallest integer lower the product *)
 Theorem prod2list_reorder :
  forall a b b1 l1 l2 l3 l4 l5,
  length l1 = length l3 ->
@@ -236,7 +236,7 @@ unfold sum_order in |- *; intros a0 b0 c H5 H6; apply Nat.le_trans with (1 := H5
 apply H2; rewrite HH7; auto with datatypes.
 Qed.
 
-(* Putting the smallest tree with the smallest integer lower the product *) 
+(** Putting the smallest tree with the smallest integer lower the product *) 
 Theorem prod2list_reorder2 :
  forall a b c b1 c1 l1 l2 l3 l4 l5,
  length l1 = length l3 ->
