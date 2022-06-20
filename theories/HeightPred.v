@@ -43,7 +43,7 @@ Inductive height_pred : nat -> list nat -> list (btree A) -> btree A -> Prop :=
       height_pred (S n) ln1 l1 t1 ->
       height_pred (S n) ln2 l2 t2 ->
       height_pred n (ln1 ++ ln2) (l1 ++ l2) (node t1 t2).
-Local Hint Resolve height_pred_nil height_pred_node : core.
+#[local] Hint Resolve height_pred_nil height_pred_node : core.
 
 (** The cover is an ordered cover *)
 Theorem height_pred_ordered_cover :

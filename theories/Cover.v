@@ -29,10 +29,10 @@ Section Cover.
 Variable A : Type.
 Variable empty : A.
 
-Local Hint Constructors Permutation : core.
-Local Hint Resolve Permutation_refl : core.
-Local Hint Resolve Permutation_app : core.
-Local Hint Resolve Permutation_app_swap : core.
+#[local] Hint Constructors Permutation : core.
+#[local] Hint Resolve Permutation_refl : core.
+#[local] Hint Resolve Permutation_app : core.
+#[local] Hint Resolve Permutation_app_swap : core.
 
 (**
   A list of trees is a cover of a tree if all the trees in the
@@ -44,7 +44,7 @@ Inductive cover : list (btree A) -> btree A -> Prop :=
       forall l1 l2 t1 t2 t3,
       Permutation l1 (t1 :: t2 :: l2) ->
       cover (node t1 t2 :: l2) t3 -> cover l1 t3.
-Local Hint Constructors cover : core.
+#[local] Hint Constructors cover : core.
 
 (** Covers are compatible with permutation *)
 Theorem cover_permutation :

@@ -29,10 +29,10 @@ Section CoverMin.
 Variable A : Type.
 Variable f : A -> nat.
 
-Local Hint Constructors Permutation : core.
-Local Hint Resolve Permutation_refl : core.
-Local Hint Resolve Permutation_app : core.
-Local Hint Resolve Permutation_app_swap : core.
+#[local] Hint Constructors Permutation : core.
+#[local] Hint Resolve Permutation_refl : core.
+#[local] Hint Resolve Permutation_app : core.
+#[local] Hint Resolve Permutation_app_swap : core.
 
 (** To be a tree of minimum weight for a cover *)
 Definition cover_min (l : list (btree A)) (t1 : btree A) : Prop :=
@@ -47,7 +47,7 @@ intros t2 H; inversion H; auto.
 generalize (Permutation_length H0); simpl in |- *; intros; discriminate.
 Qed.
 
-Local Hint Resolve cover_min_one : core.
+#[local] Hint Resolve cover_min_one : core.
 
 (** Minimum trees are preserved by permutation *)
 Theorem cover_min_permutation :

@@ -29,10 +29,10 @@ Section Frequency.
 Variable A : Type.
 Variable A_eq_dec : forall a b : A, {a = b} + {a <> b}.
 
-Local Hint Constructors Permutation : core.
-Local Hint Resolve Permutation_refl : core.
-Local Hint Resolve Permutation_app : core.
-Local Hint Resolve Permutation_app_swap : core.
+#[local] Hint Constructors Permutation : core.
+#[local] Hint Resolve Permutation_refl : core.
+#[local] Hint Resolve Permutation_app : core.
+#[local] Hint Resolve Permutation_app_swap : core.
  
 (** Create a list of a given length with a given element  *)
 Fixpoint id_list (a : A) (n : nat) {struct n} : list A :=
@@ -194,7 +194,7 @@ Proof.
 intros l; elim l; simpl in |- *; auto.
 intros a l0 H; apply add_frequency_list_unique_key; auto.
 Qed.
-Local Hint Resolve frequency_list_unique : core.
+#[local] Hint Resolve frequency_list_unique : core.
 
 (** Elements of the message are keys of the frequency list *)
 Theorem in_frequency_map :
@@ -212,7 +212,7 @@ case (A_eq_dec a a1); simpl in |- *; auto.
 intros e H1 [H2| H2]; auto; left; rewrite <- H2; auto.
 intros e H1 [H2| H2]; auto.
 Qed.
-Local Hint Resolve in_frequency_map : core.
+#[local] Hint Resolve in_frequency_map : core.
 
 (** Keys of the frequency list are elements of the message *)
 Theorem in_frequency_map_inv :

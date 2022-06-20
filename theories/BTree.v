@@ -42,7 +42,7 @@ Inductive inb : btree -> btree -> Prop :=
   | inleaf : forall t : btree, inb t t
   | innodeL : forall t t1 t2 : btree, inb t t1 -> inb t (node t1 t2)
   | innodeR : forall t t1 t2 : btree, inb t t2 -> inb t (node t1 t2).
-Local Hint Constructors inb : core.
+#[local] Hint Constructors inb : core.
 
 (** inb is transitive *)
 Theorem inb_trans : forall t1 t2 t3, inb t1 t2 -> inb t2 t3 -> inb t1 t3.
@@ -164,7 +164,7 @@ Proof.
 intros a; red in |- *.
 intros a0 t1 t2 H; inversion H.
 Qed.
-Local Hint Resolve distinct_leaves_leaf : core.
+#[local] Hint Resolve distinct_leaves_leaf : core.
 
 (** An inversion theorem for node *)
 Theorem distinct_leaves_l :
@@ -246,7 +246,7 @@ apply Nat.add_lt_mono.
 generalize H; elim (compute_code b); simpl in |- *; auto with arith.
 generalize H0; elim (compute_code b0); simpl in |- *; auto with arith.
 Qed.
-Local Hint Resolve length_compute_lt_O : core.
+#[local] Hint Resolve length_compute_lt_O : core.
 
 (** If the computed code has a key it was a leaf of the tree *)
 Theorem inCompute_inb :

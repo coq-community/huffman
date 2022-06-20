@@ -37,7 +37,7 @@ Inductive subst_pred : list (btree A) -> list (btree A) -> btree A -> btree A ->
       subst_pred l1 l2 t1 t2 ->
       subst_pred l3 l4 t3 t4 ->
       subst_pred (l1 ++ l3) (l2 ++ l4) (node t1 t3) (node t2 t4).
-Local Hint Resolve subst_pred_id subst_pred_node : core.
+#[local] Hint Resolve subst_pred_id subst_pred_node : core.
 
 (** The first cover of the substitution is an ordered cover *)
 Theorem subst_pred_ordered_cover_l :
