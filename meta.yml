@@ -24,6 +24,8 @@ publications:
 authors:
 - name: Laurent Théry
   initial: true
+- name: Karl Palmskog
+  orcid: 0000-0003-0228-1240
 
 maintainers:
 - name: Karl Palmskog
