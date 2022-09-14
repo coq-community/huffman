@@ -34,6 +34,7 @@ Codes, Proc. IRE, pp. 1098-1101, September 1952.
 
 - Author(s):
   - Laurent Théry (initial)
+  - Karl Palmskog [![ORCID logo](https://zenodo.org/static/img/orcid.png)](https://orcid.org/0000-0003-0228-1240)
 - Coq-community maintainer(s):
   - Karl Palmskog ([**@palmskog**](https://github.com/palmskog))
 - License: [GNU Lesser General Public License v2.1 or later](LICENSE)

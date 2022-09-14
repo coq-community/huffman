@@ -49,3 +49,4 @@ Other related publications, if any, are listed below.
 ## Authors and contributors
 
 - Laurent Théry
+- Karl Palmskog [![ORCID logo](https://zenodo.org/static/img/orcid.png)](https://orcid.org/0000-0003-0228-1240)
