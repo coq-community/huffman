@@ -488,7 +488,7 @@ Theorem pbadd_prop2 :
 Proof.
 intros a1 l1 l2 H; generalize a1; elim H; clear H a1 l1 l2; simpl in |- *;
  auto.
-intros b l a1; rewrite pbadd_prop1; simpl in |- *; auto.
+intros b l a1; rewrite pbadd_prop1; simpl in |- *.
 apply
  Permutation_trans
   with
@@ -814,7 +814,7 @@ elim l; simpl in |- *; auto.
 intuition.
 intros a3; case a3; simpl in |- *; auto.
 intros p p0 H0; case in_app_or with (1 := H0); auto with datatypes.
-intros H1; case H with (1 := H1); intuition.
+intros H1; case H with (1 := H1); intuition auto with datatypes.
 intros l H a1 a2 l0; case l0; simpl in |- *; auto.
 intros a0; elim l; simpl in |- *; auto.
 intuition.
@@ -824,7 +824,7 @@ elim l; simpl in |- *; auto.
 intuition.
 intros a3; case a3; simpl in |- *; auto.
 intros p p0 H0; case in_app_or with (1 := H0); auto with datatypes.
-intros H1; case H with (1 := H1); intuition.
+intros H1; case H with (1 := H1); intuition auto with datatypes.
 Qed.
 
 (** Adding in a leaf just creates a singleton list *)
