@@ -173,8 +173,8 @@ exists (t0 :: t3 :: l5 ++ l6); exists l4; repeat (split; auto).
 apply cover_node with (l2 := l5 ++ l6) (t1 := t0) (t2 := t3); auto.
 apply cover_permutation with (1 := Hl1).
 rewrite Hl5.
-apply Permutation_trans with (node t0 t3 :: l6 ++ l5); auto.
-apply (Permutation_app_swap l5 (node t0 t3 :: l6)).
+apply Permutation_trans with (node t0 t3 :: l6 ++ l5);
+ try apply (Permutation_app_swap l5 (node t0 t3 :: l6)); auto.
 apply Permutation_trans with (1 := H0).
 simpl in |- *; repeat apply perm_skip.
 apply Permutation_cons_inv with (a := node t0 t3).
@@ -192,8 +192,8 @@ exists l3; exists (t0 :: t3 :: l5 ++ l6); repeat (split; auto).
 apply cover_node with (l2 := l5 ++ l6) (t1 := t0) (t2 := t3); auto.
 apply cover_permutation with (1 := Hl2).
 rewrite Hl5.
-apply Permutation_trans with (node t0 t3 :: l6 ++ l5); auto.
-apply (Permutation_app_swap l5 (node t0 t3 :: l6)).
+apply Permutation_trans with (node t0 t3 :: l6 ++ l5); 
+ try apply (Permutation_app_swap l5 (node t0 t3 :: l6)); auto.
 apply Permutation_trans with (1 := H0).
 apply Permutation_trans with ((t0 :: t3 :: l5 ++ l6) ++ l3); auto.
 simpl in |- *; repeat apply perm_skip.
