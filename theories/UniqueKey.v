@@ -117,9 +117,9 @@ Proof.
 intros l; elim l; simpl in |- *; auto using NoDup_nil.
 intros a l0 H H0; apply NoDup_cons.
 inversion H0.
-red in |- *; intros H5; case in_map_inv with (1 := H5).
-intros (b2, l2); simpl in |- *; intros (Hb1, Hb2); case (H3 l2); auto.
-rewrite Hb2; auto.
+red in |- *; intros H5; case (proj1 (in_map_iff _ _ _)) with (1 := H5).
+intros (b2, l2); simpl in |- *; intros (Hb2,Hb1); case (H3 l2); auto.
+rewrite <- Hb2; auto.
 apply H; apply unique_key_inv with (1 := H0); auto.
 Qed.
 

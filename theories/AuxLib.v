@@ -15,7 +15,7 @@
 
 (** * Auxiliary functions and theorems
 
-- Key definitions: [le_bool], [map2], [find_min], [find_max]
+- Key definitions: [map2], [find_min], [find_max]
 - Initial author: Laurent.Thery@inria.fr (2003)
 
 *)
@@ -25,14 +25,6 @@ From Coq Require Import Inverse_Image Wf_nat Sorting.Permutation.
 Export ListNotations.
 
 Set Default Proof Using "Type".
- 
-Theorem le_minus : forall a b : nat, a - b <= a.
-Proof.
-intros a; elim a; simpl in |- *; auto.
-intros n H b; case b; simpl in |- *; auto.
-Qed.
-
-#[export] Hint Resolve le_minus: arith.
 
 (** Properties of the fold operator *)
 Section Fold.
@@ -90,26 +82,12 @@ apply lt_wf.
 Qed.
 
 Program Definition list_length_induction (P : list A -> Type)
- (rec: forall l1 : list A, (forall l2 : list A, length l2 < length l1 -> P l2) -> P l1)
+ (rec : forall l1 : list A, (forall l2 : list A, length l2 < length l1 -> P l2) -> P l1)
  (l : list A) : P l :=
 @well_founded_induction_type _
  (fun x y : list A => length x < length y)
   ((fun _ _ _ => @wf_inverse_image _ _ lt _ _) P rec l) P rec l.
 
-Theorem in_ex_app :
- forall (a : A) (l : list A),
- In a l -> exists l1 : list A, (exists l2 : list A, l = l1 ++ a :: l2).
-Proof.
-intros a l; elim l; clear l; simpl in |- *; auto.
-intros H; case H.
-intros a1 l H [H1| H1]; auto.
-exists []; exists l; simpl in |- *; auto.
-apply f_equal2 with (f := cons (A:=A)); auto.
-case H; auto; intros l1 (l2, Hl2); exists (a1 :: l1); exists l2;
- simpl in |- *; auto.
-apply f_equal2 with (f := cons (A:=A)); auto.
-Qed.
- 
 Theorem app_inv_app :
  forall l1 l2 l3 l4 a,
  l1 ++ l2 = l3 ++ a :: l4 ->
@@ -168,18 +146,6 @@ case (H l2 l0); auto.
 intros l4 (l5, (b1, (HH1, (HH2, HH3)))).
 exists (b :: l4); exists l5; exists b1; repeat (simpl in |- *; split; auto).
 apply f_equal2 with (f := cons (A:=B)); auto.
-Qed.
-
-(** Properties of map *)
-Theorem in_map_inv :
- forall (b : B) (l : list A),
- In b (map f l) -> exists a : A, In a l /\ b = f a.
-Proof.
-intros b l; elim l; simpl in |- *; auto.
-intros tmp; case tmp.
-intros a0 l0 H [H1| H1]; auto.
-exists a0; auto.
-case (H H1); intros a1 (H2, H3); exists a1; auto.
 Qed.
  
 Theorem in_map_fst_inv :
@@ -283,6 +249,7 @@ rewrite H; auto.
 Qed.
  
 End map2.
+
 Arguments map2 [A B C].
 
 (** Properties of the firstn and skipn functions *)
@@ -567,9 +534,9 @@ simpl in |- *; intros; discriminate.
 intros n0 H l1 l2 H0 H1.
 case in_flat_map_ex with (1 := H1).
 clear H1; intros x; case x; clear x; intros a1 l3 (H1, H2).
-case in_map_inv with (1 := H2).
-simpl in |- *; intros y (H3, H4).
-rewrite H4; auto.
+case (proj1 (in_map_iff _ _ _)) with (1 := H2).
+simpl in |- *; intros y (H4, H3).
+rewrite <- H4; auto.
 apply Permutation_trans with (a1 :: l3); auto.
 apply perm_skip; auto.
 apply H with (2 := H3).

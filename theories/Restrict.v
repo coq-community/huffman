@@ -101,18 +101,18 @@ Proof.
 intros c HH HH0 (HH1, HH2); split.
 intros a1 a2 lb1 lb2 H0 H1 H2; apply HH1 with (lb1 := lb1) (lb2 := lb2); auto.
 unfold restrict_code in H0.
-case in_map_inv with (1 := H0).
+case (proj1 (in_map_iff _ _ _)) with (1 := H0).
 intros x; case x; simpl in |- *.
-intros a0 n (HP1, HP2).
-rewrite HP2.
+intros a0 n (HP2, HP1).
+rewrite <- HP2.
 case (HH0 a0); auto.
 apply frequency_list_in with (1 := HP1).
 intros x0 H; rewrite find_code_correct2 with (2 := H); auto.
 unfold restrict_code in H1.
-case in_map_inv with (1 := H1).
+case (proj1 (in_map_iff _ _ _)) with (1 := H1).
 intros x; case x; simpl in |- *.
-intros a0 n (HP1, HP2).
-rewrite HP2.
+intros a0 n (HP2, HP1).
+rewrite <- HP2.
 case (HH0 a0); auto.
 apply frequency_list_in with (1 := HP1).
 intros x0 H; rewrite find_code_correct2 with (2 := H); auto.

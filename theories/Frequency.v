@@ -218,9 +218,9 @@ Qed.
 Theorem in_frequency_map_inv :
  forall l a, In a (map (fst (B:=_)) (frequency_list l)) -> In a l.
 Proof.
-intros l a H; case in_map_inv with (1 := H); auto.
-intros (a1, l1) (Hl1, Hl2); simpl in |- *.
-rewrite Hl2; apply frequency_list_in with (1 := Hl1).
+intros l a H; case (proj1 (in_map_iff _ _ _)) with (1 := H); auto.
+intros (a1, l1) (Hl2, Hl1); simpl in |- *.
+rewrite <- Hl2; apply frequency_list_in with (1 := Hl1).
 Qed.
  
 (** Compute the number of occurrences of an element in a message *)

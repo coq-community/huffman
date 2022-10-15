@@ -365,9 +365,9 @@ Next Obligation.
     (In (n, c)
         (map (fun x : A * nat => (snd x, (fst x, []) :: []))
              (frequency_list A_eq_dec m))).
-  intros H1; case in_map_inv with (1 := H1); auto.
+  intros H1; case (proj1 (in_map_iff _ _ _)) with (1 := H1); auto.
   intros x; case x; simpl in |- *; auto.
-  intros a0 n0 (H2,H3).
+  intros a0 n0 (H3,H2).
   inversion H3; subst; simpl in |- *; auto.
   apply Permutation_in with (2 := H); auto.
   apply Permutation_sym; apply isort_permutation; auto.
@@ -377,9 +377,9 @@ Next Obligation.
     (In (n, c)
         (map (fun x : A * nat => (snd x, (fst x, []) :: []))
              (frequency_list A_eq_dec m))).
-  intros H1; case in_map_inv with (1 := H1); auto.
+  intros H1; case (proj1 (in_map_iff _ _ _)) with (1 := H1); auto.
   intros x; case x; simpl in |- *; auto.
-  intros a0 n0 (H2, H3). inversion H3; subst; simpl in |- *; auto.
+  intros a0 n0 (H3,H2). inversion H3; subst; simpl in |- *; auto.
   apply unique_key_in_inv with (a := a0) (l := frequency_list A_eq_dec m); auto.
   apply frequency_number_of_occurrences; auto.
   apply frequency_list_in with (1 := H2); auto.
@@ -391,9 +391,9 @@ Next Obligation.
     (In (n, c)
         (map (fun x : A * nat => (snd x, (fst x, []) :: []))
              (frequency_list A_eq_dec m))).
-  intros H1; case in_map_inv with (1 := H1); auto.
+  intros H1; case (proj1 (in_map_iff _ _ _)) with (1 := H1); auto.
   intros x; case x; simpl in |- *; auto.
-  intros a0 n0 (H2, H3); inversion H3; subst; simpl in |- *; auto.
+  intros a0 n0 (H3,H2); inversion H3; subst; simpl in |- *; auto.
   intros; discriminate.
   apply Permutation_in with (2 := H); auto.
   apply Permutation_sym; apply isort_permutation; auto.
