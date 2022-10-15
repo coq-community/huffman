@@ -88,13 +88,6 @@ Program Definition list_length_induction (P : list A -> Type)
  (fun x y : list A => length x < length y)
   ((fun _ _ _ => @wf_inverse_image _ _ lt _ _) P rec l) P rec l.
 
-Theorem in_ex_app :
- forall (a : A) (l : list A),
- In a l -> exists l1 : list A, (exists l2 : list A, l = l1 ++ a :: l2).
-Proof.
-intros a l Hin; auto using in_split.
-Qed.
-
 Theorem app_inv_app :
  forall l1 l2 l3 l4 a,
  l1 ++ l2 = l3 ++ a :: l4 ->
@@ -153,16 +146,6 @@ case (H l2 l0); auto.
 intros l4 (l5, (b1, (HH1, (HH2, HH3)))).
 exists (b :: l4); exists l5; exists b1; repeat (simpl in |- *; split; auto).
 apply f_equal2 with (f := cons (A:=B)); auto.
-Qed.
-
-(** Properties of map *)
-Theorem in_map_inv :
- forall (b : B) (l : list A),
- In b (map f l) -> exists a : A, In a l /\ b = f a.
-Proof.
-intros b l Hin.
-apply in_map_iff in Hin.
-destruct Hin; destruct H; eauto.
 Qed.
  
 Theorem in_map_fst_inv :
@@ -551,9 +534,9 @@ simpl in |- *; intros; discriminate.
 intros n0 H l1 l2 H0 H1.
 case in_flat_map_ex with (1 := H1).
 clear H1; intros x; case x; clear x; intros a1 l3 (H1, H2).
-case in_map_inv with (1 := H2).
-simpl in |- *; intros y (H3, H4).
-rewrite H4; auto.
+case (proj1 (in_map_iff _ _ _)) with (1 := H2).
+simpl in |- *; intros y (H4, H3).
+rewrite <- H4; auto.
 apply Permutation_trans with (a1 :: l3); auto.
 apply perm_skip; auto.
 apply H with (2 := H3).

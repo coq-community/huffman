@@ -190,7 +190,7 @@ cut (In b1 (l3 ++ b :: l4));
  | apply Permutation_in with (1 := Permutation_sym H3);
     auto with datatypes ].
 case in_app_or with (1 := HH1); intros HH2.
-case in_ex_app with (1 := HH2).
+case in_split with (1 := HH2).
 intros l6 (l7, HH3); exists (l6 ++ b :: l7); exists l4; repeat (split; auto).
 apply trans_equal with (1 := H).
 rewrite HH3; repeat rewrite app_length; simpl in |- *; auto with arith.
@@ -215,7 +215,7 @@ apply H1; rewrite HH6; auto with datatypes.
 simpl in HH2; case HH2; intros HH3.
 exists l3; exists l4; repeat (split; auto); try (rewrite <- HH3; auto; fail).
 pattern b1 at 2 in |- *; rewrite <- HH3; apply Permutation_sym; auto.
-case in_ex_app with (1 := HH3).
+case in_split with (1 := HH3).
 intros l6 (l7, HH4); exists l3; exists (l6 ++ b :: l7); repeat (split; auto).
 apply trans_equal with (1 := H0).
 rewrite HH4; repeat rewrite app_length; simpl in |- *; auto with arith.

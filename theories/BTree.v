@@ -42,6 +42,7 @@ Inductive inb : btree -> btree -> Prop :=
   | inleaf : forall t : btree, inb t t
   | innodeL : forall t t1 t2 : btree, inb t t1 -> inb t (node t1 t2)
   | innodeR : forall t t1 t2 : btree, inb t t2 -> inb t (node t1 t2).
+
 #[local] Hint Constructors inb : core.
 
 (** inb is transitive *)
@@ -258,14 +259,14 @@ intros a a0 l [H1| H1]; try (case H1; fail).
 injection H1; intros H2 H3; rewrite H3; auto.
 intros h H h0 H0 a l H1.
 case in_app_or with (1 := H1); auto; intros H2.
-case in_map_inv with (1 := H2).
-intros (a1, l1) (Ha1, Hl1); auto.
+case (proj1 (in_map_iff _ _ _)) with (1 := H2).
+intros (a1, l1) (Hl1, Ha1); auto.
 apply innodeL; apply (H a l1).
-injection Hl1; intros Hl2 Hl3; rewrite Hl3; auto.
-case in_map_inv with (1 := H2).
-intros (a1, l1) (Ha1, Hl1); auto.
+injection Hl1; intros Hl2 Hl3; rewrite <- Hl3; auto.
+case (proj1 (in_map_iff _ _ _)) with (1 := H2).
+intros (a1, l1) (Hl1, Ha1); auto.
 apply innodeR; apply (H0 a l1).
-injection Hl1; intros Hl2 Hl3; rewrite Hl3; auto.
+injection Hl1; intros Hl2 Hl3; rewrite <- Hl3; auto.
 Qed.
 
 (** For every leaf in the tree there is an associated key in the code *)
@@ -326,41 +327,41 @@ intros t1 Rec1 t2 Rec2 a1 a2 lb1 lb2 H1 H2.
 case (in_app_or _ _ _ H1); case (in_app_or _ _ _ H2); clear H1 H2;
  intros H2 H1 H3.
 generalize H1 H2; inversion H3.
-intros H4; case in_map_inv with (1 := H4).
-intros x; case x; intros x1 x2 (H5, H6); discriminate.
+intros H4; case (proj1 (in_map_iff _ _ _)) with (1 := H4).
+intros x; case x; intros x1 x2 (H6, H5); discriminate.
 intros H5 H6; apply Rec1 with (lb1 := l1) (lb2 := l2); auto.
-case in_map_inv with (1 := H5).
+case (proj1 (in_map_iff _ _ _)) with (1 := H5).
 intros x; case x.
-intros a l (H7, H8); injection H8.
-intros R1 R2 R3; rewrite R1; rewrite R3; auto.
-case in_map_inv with (1 := H6).
+intros a l (H8, H7); injection H8.
+intros R1 R2 R3; rewrite <- R1; rewrite <- R3; auto.
+case (proj1 (in_map_iff _ _ _)) with (1 := H6).
 intros x; case x.
-intros a l (H7, H8); injection H8.
-intros R1 R2 R3; rewrite R1; rewrite R3; auto.
+intros a l (H8, H7); injection H8.
+intros R1 R2 R3; rewrite <- R1; rewrite <- R3; auto.
 generalize H3.
-case in_map_inv with (1 := H1).
-intros x; case x; intros aa1 ll1 (H4, H5).
-case in_map_inv with (1 := H2).
-intros x1; case x1; intros aa2 ll2 (H6, H7).
+case (proj1 (in_map_iff _ _ _)) with (1 := H1).
+intros x; case x; intros aa1 ll1 (H5, H4).
+case (proj1 (in_map_iff _ _ _)) with (1 := H2).
+intros x1; case x1; intros aa2 ll2 (H7, H6).
 inversion H5; inversion H7; intros tH8; inversion tH8.
 generalize H3.
-case in_map_inv with (1 := H1).
-intros x; case x; intros aa1 ll1 (H4, H5).
-case in_map_inv with (1 := H2).
-intros x1; case x1; intros aa2 ll2 (H6, H7).
+case (proj1 (in_map_iff _ _ _)) with (1 := H1).
+intros x; case x; intros aa1 ll1 (H5, H4).
+case (proj1 (in_map_iff _ _ _)) with (1 := H2).
+intros x1; case x1; intros aa2 ll2 (H7, H6).
 inversion H5; inversion H7; intros tH8; inversion tH8.
 generalize H1 H2; inversion H3.
-intros H4; case in_map_inv with (1 := H4).
-intros x; case x; intros x1 x2 (H5, H6); discriminate.
+intros H4; case (proj1 (in_map_iff _ _ _)) with (1 := H4).
+intros x; case x; intros x1 x2 (H6, H5); discriminate.
 intros H5 H6; apply Rec2 with (lb1 := l1) (lb2 := l2); auto.
-case in_map_inv with (1 := H5).
+case (proj1 (in_map_iff _ _ _)) with (1 := H5).
 intros x; case x.
-intros a l (H7, H8); injection H8.
-intros R1 R2 R3; rewrite R1; rewrite R3; auto.
-case in_map_inv with (1 := H6).
+intros a l (H8, H7); injection H8.
+intros R1 R2 R3; rewrite <- R1; rewrite <- R3; auto.
+case (proj1 (in_map_iff _ _ _)) with (1 := H6).
 intros x; case x.
-intros a l (H7, H8); injection H8.
-intros R1 R2 R3; rewrite R1; rewrite R3; auto.
+intros a l (H8, H7); injection H8.
+intros R1 R2 R3; rewrite <- R1; rewrite <- R3; auto.
 Qed.
 
 (** If a tree has distinc leaves its computed tree has unique keys *)
@@ -377,12 +378,13 @@ apply unique_key_map; auto.
 apply H0; apply distinct_leaves_r with (1 := H1); auto.
 intros (a1, b1) (a2, b2); simpl in |- *; auto.
 intros a b1 c H2 H3.
-case in_map_inv with (1 := H2); auto; case in_map_inv with (1 := H3); auto.
-intros (a1, l1) (Ha1, Hl1) (a2, l2) (Ha2, Hl2).
+case (proj1 (in_map_iff _ _ _)) with (1 := H2); auto;
+ case (proj1 (in_map_iff _ _ _)) with (1 := H3); auto.
+intros (a1, l1) (Hl1, Ha1) (a2, l2) (Hl2, Ha2).
 apply (H1 (leaf a) b b0); auto.
-injection Hl2; intros HH1 HH2; rewrite HH2.
+injection Hl2; intros HH1 HH2; rewrite <- HH2.
 apply inCompute_inb with (1 := Ha2).
-injection Hl1; intros HH1 HH2; rewrite HH2.
+injection Hl1; intros HH1 HH2; rewrite <- HH2.
 apply inCompute_inb with (1 := Ha1).
 Qed.
 

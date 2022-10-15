@@ -167,7 +167,7 @@ injection H4; intros H5 H6 H7; rewrite <- H5; rewrite <- H6; rewrite <- H7;
 clear H2 H3; intros (l3, (l4, ((Hl1, Hl2), Hl3))).
 case (in_app_or l3 l4 (node t0 t3)).
 apply Permutation_in with (1 := Hl3); auto with datatypes.
-intros H2; case in_ex_app with (1 := H2).
+intros H2; case in_split with (1 := H2).
 intros l5 (l6, Hl5).
 exists (t0 :: t3 :: l5 ++ l6); exists l4; repeat (split; auto).
 apply cover_node with (l2 := l5 ++ l6) (t1 := t0) (t2 := t3); auto.
@@ -186,7 +186,7 @@ change
 apply Permutation_app; auto.
 apply Permutation_trans with ((node t0 t3 :: l6) ++ l5); auto.
 simpl in |- *; auto.
-intros H2; case in_ex_app with (1 := H2).
+intros H2; case in_split with (1 := H2).
 intros l5 (l6, Hl5).
 exists l3; exists (t0 :: t3 :: l5 ++ l6); repeat (split; auto).
 apply cover_node with (l2 := l5 ++ l6) (t1 := t0) (t2 := t3); auto.
