@@ -1,6 +1,3 @@
-# This file was generated from `meta.yml`, please do not edit manually.
-# Follow the instructions on https://github.com/coq-community/templates to regenerate.
-
 opam-version: "2.0"
 maintainer: "palmskog@gmail.com"
 version: "dev"
@@ -19,8 +16,8 @@ Codes, Proc. IRE, pp. 1098-1101, September 1952."""
 
 build: ["dune" "build" "-p" name "-j" jobs]
 depends: [
-  "dune" {>= "2.5"}
-  "coq" {(>= "8.12" & < "8.18~") | (= "dev")}
+  "dune" {>= "3.8"}
+  "coq" {>= "8.12"}
 ]
 
 tags: [
