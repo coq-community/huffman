@@ -81,7 +81,7 @@ change
      (id_list a n ++
       (b :: []) ++ flat_map (fun p => id_list (fst p) (snd p)) l)) 
  in |- *.
-repeat rewrite <- app_ass; auto.
+repeat rewrite app_assoc; auto.
 Qed.
  
 (** Inversion theorem *)

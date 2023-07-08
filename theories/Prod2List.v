@@ -196,16 +196,16 @@ apply trans_equal with (1 := H).
 rewrite HH3; repeat rewrite app_length; simpl in |- *; auto with arith.
 apply Permutation_sym; apply Permutation_trans with (2 := H3); auto.
 rewrite HH3.
-repeat rewrite app_ass.
+repeat rewrite <- app_assoc.
 simpl in |- *; apply Permutation_app; auto.
 apply Permutation_transposition.
 rewrite HH3; auto.
-repeat rewrite app_ass.
+repeat rewrite <- app_assoc.
 case (same_length_ex _ _ b1 l6 l7 l1); auto.
 rewrite <- HH3; auto.
 intros l8 (l9, (b2, (HH4, (HH5, HH6)))).
 rewrite HH6.
-repeat rewrite app_ass; simpl in |- *.
+repeat rewrite <- app_assoc; simpl in |- *.
 apply prod2list_le_l; auto.
 change (sum_order f b1 b) in |- *.
 apply ordered_trans with (2 := H4); auto.
@@ -268,7 +268,7 @@ apply Permutation_sym; apply Permutation_trans with (1 := HH3).
 change
   (Permutation (l6 ++ (b1 :: []) ++ c2 :: l7)
      (((b1 :: []) ++ l6) ++ c2 :: l7)) in |- *.
-repeat rewrite <- app_ass.
+repeat rewrite app_assoc.
 apply Permutation_app; auto.
 apply ordered_inv with (1 := H4); auto.
 intros l8 (l9, (HH5, (HH6, (HH7, HH8)))).
