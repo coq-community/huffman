@@ -169,8 +169,8 @@ case app_inv_app with (1 := H3).
 intros (ln4, H7); auto.
 cut (ln3 = ln4 ++ ln2);
  [ intros E1
- | apply app_inv_head with (l := ln0 ++ a :: []); repeat rewrite app_ass;
-    simpl in |- *; rewrite <- H3; rewrite H7; rewrite app_ass; 
+ | apply app_inv_head with (l := ln0 ++ a :: []); repeat rewrite <- app_assoc;
+    simpl in |- *; rewrite <- H3; rewrite H7; rewrite <- app_assoc; 
     auto ].
 case H0 with (1 := H7); auto; clear H0 H2.
 intros n1 H8; apply H5; rewrite E1; auto with datatypes.
@@ -197,7 +197,7 @@ intros (ln4, H7); auto.
 cut (ln0 = ln1 ++ ln4);
  [ intros E1
  | apply app_inv_tail with (l := a :: ln3); rewrite <- H3; rewrite H7;
-    rewrite app_ass; auto ].
+    rewrite <- app_assoc; auto ].
 case H2 with (1 := H7); auto.
 intros n1 H6; apply H4; rewrite E1; auto with datatypes.
 intros (HH1, HH2).
@@ -244,8 +244,8 @@ case app_inv_app with (1 := H3).
 intros (ln4, H4); auto.
 cut (ln3 = ln4 ++ ln2);
  [ intros E1
- | apply app_inv_head with (l := ln0 ++ a :: []); repeat rewrite app_ass;
-    simpl in |- *; rewrite <- H3; rewrite H4; rewrite app_ass; 
+ | apply app_inv_head with (l := ln0 ++ a :: []); repeat rewrite <- app_assoc;
+    simpl in |- *; rewrite <- H3; rewrite H4; rewrite <- app_assoc; 
     auto ].
 case H0 with (1 := H4); auto; intros [(n1, (HH1, HH2))| (HH1, HH2)]; auto;
  clear H0 H2.
@@ -262,7 +262,7 @@ intros (ln4, H4); auto.
 cut (ln0 = ln1 ++ ln4);
  [ intros E1
  | apply app_inv_tail with (l := a :: ln3); rewrite <- H3; rewrite H4;
-    rewrite app_ass; auto ].
+    rewrite <- app_assoc; auto ].
 case H2 with (1 := H4); auto; clear H0 H2.
 intros (n1, (HH1, HH2)); left; exists n1; split; auto; rewrite E1;
  auto with datatypes.
@@ -321,7 +321,7 @@ cut (length ln2 = length l2);
 cut (length ln3 = length l3);
  [ intros Eq4
  | apply Nat.add_cancel_l with (length (ln0 ++ a :: b :: []));
-    rewrite <- app_length; rewrite app_ass; simpl in |- *;
+    rewrite <- app_length; rewrite <- app_assoc; simpl in |- *;
     rewrite <- H3; repeat rewrite app_length; simpl in |- *;
     rewrite Eq2; rewrite Eq3; rewrite <- app_length;
     rewrite H7; repeat rewrite app_length; simpl in |- *;
@@ -332,22 +332,22 @@ intros (ln4, Hp1).
 cut (ln3 = ln4 ++ ln2);
  [ intros E1
  | apply app_inv_head with (l := ln0 ++ a :: b :: []);
-    repeat rewrite app_ass; simpl in |- *; rewrite <- H3; 
-    rewrite Hp1; repeat rewrite app_ass; auto ].
+    repeat rewrite <- app_assoc; simpl in |- *; rewrite <- H3; 
+    rewrite Hp1; repeat rewrite <- app_assoc; auto ].
 replace (ln0 ++ pred a :: ln3) with ((ln0 ++ pred a :: ln4) ++ ln2);
- [ idtac | rewrite app_ass; rewrite E1; auto ].
+ [ idtac | rewrite <- app_assoc; rewrite E1; auto ].
 cut (l3 = firstn (length ln4) l3 ++ l2).
 intros HH;
  replace (l0 ++ node t0 t3 :: l3) with
   ((l0 ++ node t0 t3 :: firstn (length ln4) l3) ++ l2);
- [ idtac | pattern l3 at 2 in |- *; rewrite HH; rewrite app_ass; auto ].
+ [ idtac | pattern l3 at 2 in |- *; rewrite HH; rewrite <- app_assoc; auto ].
 apply height_pred_node; auto.
 apply H0 with (1 := Hp1); auto.
 intros n1 HH1; (apply H5; auto).
 simpl in HH1; case HH1; intros H9; try rewrite H9; auto with datatypes.
 rewrite E1; auto with datatypes.
 apply app_inv_tail with (l := l2).
-repeat rewrite app_ass; apply trans_equal with (1 := H7); auto.
+repeat rewrite <- app_assoc; apply trans_equal with (1 := H7); auto.
 pattern l3 at 1 in |- *; rewrite HH; auto.
 apply sym_equal;
  apply trans_equal with (2 := firstn_skipn (length ln4) l3).
@@ -367,9 +367,9 @@ intros [(ln4, HH)| (HH1, HH2)].
 cut (ln0 = ln1 ++ ln4);
  [ intros E1
  | apply app_inv_tail with (l := a :: b :: ln3); rewrite <- H3; rewrite HH;
-    rewrite app_ass; auto ].
+    rewrite <- app_assoc; auto ].
 cut (l0 = l1 ++ skipn (length l1) l0).
-intros Eq1; rewrite Eq1; rewrite E1; repeat rewrite app_ass.
+intros Eq1; rewrite Eq1; rewrite E1; repeat rewrite <- app_assoc.
 apply height_pred_node; auto.
 apply H2 with (b := b); auto.
 intros n1 H8; apply H4; (rewrite E1; auto with datatypes).
@@ -377,7 +377,7 @@ rewrite skipn_length; rewrite <- Eq2; rewrite <- H6;
  rewrite <- skipn_length; rewrite E1; rewrite skipn_le_app2;
  auto; rewrite skipn_all; simpl in |- *; auto.
 apply app_inv_head with (l := l1).
-rewrite <- app_ass; rewrite <- Eq1; auto.
+rewrite app_assoc; rewrite <- Eq1; auto.
 apply sym_equal;
  apply trans_equal with (2 := firstn_skipn (length l1) l0).
 apply f_equal2 with (f := app (A:=btree A)); auto.

@@ -465,7 +465,7 @@ Theorem encode_app :
 Proof.
 intros l1; elim l1; simpl in |- *; auto.
 intros a l H l2 c; rewrite H; auto.
-rewrite app_ass; auto.
+rewrite <- app_assoc; auto.
 Qed.
 
 (** Inversion theorem for encode *)
@@ -495,7 +495,7 @@ Theorem encode_permutation_val :
  forall m1 m2 c, Permutation m1 m2 -> Permutation (encode c m1) (encode c m2).
 Proof.
 intros m1 m2 c H; elim H; simpl in |- *; auto; clear H m1 m2.
-intros; repeat rewrite <- app_ass; auto.
+intros; repeat rewrite app_assoc; auto.
 intros l1 l2 l3 H H0 H1 H2; apply Permutation_trans with (1 := H0); auto.
 Qed.
 
@@ -528,10 +528,10 @@ Theorem decode_aux_correct :
 Proof.
 intros c Hc1 Hc2 m1; elim m1; simpl in |- *; auto.
 intros m2; case m2; simpl in |- *; auto.
-intros head a; rewrite <- app_nil_end.
+intros head a; rewrite app_nil_r.
 intros H1; rewrite H1; auto.
 rewrite not_null_find_val; auto.
-intros b l head a; rewrite <- app_nil_end.
+intros b l head a; rewrite app_nil_r.
 intros H1; rewrite H1; auto.
 rewrite not_null_find_val; auto.
 intros a l Rec m2 head a1 H2.
@@ -552,7 +552,7 @@ apply unique_prefix2; auto.
 rewrite Heq; auto.
 apply sym_equal; apply (unique_prefix1 c a0 a1 head (head ++ a :: l)); auto.
 elim head; simpl in |- *; auto.
-rewrite app_ass; auto.
+rewrite <- app_assoc; auto.
 Qed.
 
 (** Decode is just decode_aux with an empty head *)
