@@ -19,7 +19,7 @@ Codes, Proc. IRE, pp. 1098-1101, September 1952."""
 
 build: ["dune" "build" "-p" name "-j" jobs]
 depends: [
-  "dune" {>= "3.7"}
+  "dune" {>= "3.5"}
   "coq" {(>= "8.12" & < "8.19~") | (= "dev")}
 ]
 

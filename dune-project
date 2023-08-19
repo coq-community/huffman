@@ -1,3 +1,3 @@
-(lang dune 3.7)
-(using coq 0.7)
+(lang dune 3.5)
+(using coq 0.6)
 (name huffman)
