@@ -3,7 +3,7 @@ with lib; mkCoqDerivation {
   pname = "huffman";
   inherit version;
 
-  useDune2 = true;
+  useDune = true;
 
   meta = {
     description = "Coq proof of the correctness of the Huffman coding algorithm";
