@@ -10,8 +10,8 @@ Follow the instructions on https://github.com/coq-community/templates to regener
 [![Zulip][zulip-shield]][zulip-link]
 [![coqdoc][coqdoc-shield]][coqdoc-link]
 
-[docker-action-shield]: https://github.com/coq-community/huffman/workflows/Docker%20CI/badge.svg?branch=master
-[docker-action-link]: https://github.com/coq-community/huffman/actions?query=workflow:"Docker%20CI"
+[docker-action-shield]: https://github.com/coq-community/huffman/actions/workflows/docker-action.yml/badge.svg?branch=master
+[docker-action-link]: https://github.com/coq-community/huffman/actions/workflows/docker-action.yml
 
 [contributing-shield]: https://img.shields.io/badge/contributions-welcome-%23f7931e.svg
 [contributing-link]: https://github.com/coq-community/manifesto/blob/master/CONTRIBUTING.md
@@ -34,7 +34,7 @@ Codes, Proc. IRE, pp. 1098-1101, September 1952.
 
 - Author(s):
   - Laurent Théry (initial)
-  - Karl Palmskog [<img src="https://zenodo.org/static/img/orcid.svg" height="14px" alt="ORCID logo" />](https://orcid.org/0000-0003-0228-1240)
+  - Karl Palmskog [<img src="https://zenodo.org/static/images/orcid.svg" height="14px" alt="ORCID logo" />](https://orcid.org/0000-0003-0228-1240)
 - Coq-community maintainer(s):
   - Karl Palmskog ([**@palmskog**](https://github.com/palmskog))
 - License: [GNU Lesser General Public License v2.1 or later](LICENSE)
