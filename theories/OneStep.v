@@ -76,7 +76,6 @@ Theorem one_step_same_sum_leaves :
  one_step l1 l2 -> one_step l1 l3 -> same_sum_leaves f l2 l3.
 intros l1 l2 l3 (l4, (t1, (t2, (H1, (H2, H3)))))
  (l5, (t3, (t4, (H4, (H5, H6))))).
-Proof.
 red in |- *.
 exists (node t1 t2 :: l4); exists (node t3 t4 :: l5); auto; simpl in |- *;
  auto.

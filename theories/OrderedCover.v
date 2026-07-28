@@ -51,7 +51,6 @@ Theorem ordered_cover_cover :
  forall (l : list (btree A)) (t : btree A), ordered_cover l t -> cover l t.
 intros l t H; elim H; auto.
 intros t1 t2 l1 l2 l3 H0 H1 H2 H3.
-Proof.
 apply cover_app; auto.
 Qed.
 
